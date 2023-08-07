@@ -1,0 +1,32 @@
+\chapter{Humanoid Robots Codesign}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+\multicolumn{2}{c}{\textbf{Training Parameters}} \\
+Time Horizon & $2048$ \\
+Minibatch size & $4096$ \\
+Num Minibatch & $32$ \\
+Number of Epochs & $10$ \\
+\midrule
+\multicolumn{2}{c}{\textbf{PPO Algorithm Parameters}} \\
+Clipping & $0.3$ \\
+KL Target & Not Implemented \\
+KL Initialization & Not Implemented \\
+Discount Factor $\gamma$ & $0.99$ \\
+GAE Parameter $\lambda$ & $0.95$ \\
+\midrule
+\multicolumn{2}{c}{\textbf{Coefficients}} \\
+Value Function Coefficient & $1.0$ \\
+Entropy Coefficient $\beta$ & $0.01$ \\
+\midrule
+\multicolumn{2}{c}{\textbf{Optimization Parameters}} \\
+Learning Rate & $0.0003$ \\
+Maximum Gradient Norm & $0.5$ \\
+\bottomrule
+\end{tabular}
+\caption{PPO Hyperparameters}
+\end{table}

@@ -96,7 +96,18 @@
 %----------------------------------------------------------------------------
 %	ADD YOUR PACKAGES (be careful of package interaction)
 %----------------------------------------------------------------------------
-
+\usepackage[footnote, smaller]{acronym}
+\usepackage{nomencl}
+\makenomenclature 
+% \renewcommand\nomgroup[1]{%
+%   \item[\bfseries
+%   \ifstrequal{#1}{D}{Dynamics}{%
+%   \ifstrequal{#1}{N}{Number sets}{%
+%   \ifstrequal{#1}{O}{Other symbols}{}}}%
+% ]}
+\usepackage[bb=boondox]{mathalfa}
+\usepackage{booktabs}
+\usepackage{amsmath}
 %----------------------------------------------------------------------------
 %	ADD YOUR DEFINITIONS AND COMMANDS (be careful of existing commands)
 %----------------------------------------------------------------------------
@@ -125,8 +136,8 @@
 	name=Filippo Luca Ferretti, % Author Name and Surname
 	course=Mechanical Engineering - Ingegneria Meccanica, % Study Programme (in Italian)
 	ID  = 994428,  % Student ID number (numero di matricola)
-	advisor= Prof. Francesco Braghin, % Supervisor name
-	coadvisor={Dr. Daniele Pucci}, % Co-Supervisor name, remove this line if there is none
+	advisor= {Prof. Francesco Braghin, Dr. Daniele Pucci},% Supervisor name
+	coadvisor={Dr. Carlotta Sartore, Dr. Stefano Dafarra}, % Co-Supervisor name, remove this line if there is none
 	academicyear={2022-23},  % Academic Year
 } % These info will be put into your Title page 
 
@@ -195,14 +206,25 @@ Qui va l'Abstract in lingua italiana della tesi seguito dalla lista di parole ch
 % NUMBERED CHAPTERS % Regular chapters following
 % --------------------------------------------------------------------------
 % \include{00-Chapter}
-\include{01-State_Art}
-\include{04-PPO}
+
+\include{Chapters/00-Prologue}
+\include{Chapters/01-}
+\include{Chapters/03-PhysicsSimulators}
+\include{Chapters/04-DeepRL}
+\include{Chapters/05-GA}
+\include{Chapters/06-MotorDynamics}
+\include{Chapters/07-Codesign}
+
+\include{Chapters/99-Epilogue}
+
+\include{Front_Back_Matter/Acronym}
+\include{Front_Back_Matter/Symbols}
 %-------------------------------------------------------------------------
 %	BIBLIOGRAPHY
 %-------------------------------------------------------------------------
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
-\bibliography{Thesis_bibliography} % The references information are stored in the file named "Thesis_bibliography.bib"
+\bibliography{references}
 
 %-------------------------------------------------------------------------
 %	APPENDICES
@@ -228,19 +250,20 @@ It may be necessary to include another appendix to better organize the presentat
 
 % LIST OF SYMBOLS
 % Write out the List of Symbols in this page
-\chapter*{List of Symbols} % You have to include a chapter for your list of symbols (
-\begin{table}[H]
-    \centering
-    \begin{tabular}{lll}
-        \textbf{Variable} & \textbf{Description} & \textbf{SI unit} \\\hline\\[-9px]
-        $\bm{u}$ & solid displacement & m \\[2px]
-        $\bm{u}_f$ & fluid displacement & m \\[2px]
-    \end{tabular}
-\end{table}
+% \chapter*{List of Symbols} % You have to include a chapter for your list of symbols (
+% \begin{table}[H]
+%     \centering
+%     \begin{tabular}{lll}
+%         \textbf{Variable} & \textbf{Description} & \textbf{SI unit} \\\hline\\[-9px]
+%         $\bm{u}$ & solid displacement & m \\[2px]
+%         $\bm{u}_f$ & fluid displacement & m \\[2px]
+%     \end{tabular}
+% \end{table}
 
 % ACKNOWLEDGEMENTS
 \chapter*{Acknowledgements}
 Here you might want to acknowledge someone.
+
 
 \cleardoublepage
 
