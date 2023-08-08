@@ -80,7 +80,32 @@ where $\lambda$ is the exponential weight discount. If this is set to $0$, then 
 
 \section{Policy Gradient Methods}
 
-\subsubsection{Proximal Policy Optimization}
+The most common optimizer for \ac{NN} parameters is the first-order gradient-based optimization of stochastic objective function update ADAM \cite{kingma_adam_2017}. The \cref{alg:adam}
+updates exponential moving averages of the two gradients, where $\beta_1$ and $\beta_2$ control the decay rates of the moving averages, which are then estimates of the first and second raw moment, corresponding respectively to the mean and uncentered variance.
+
+\begin{algorithm}[H]
+    \caption{ADAM}
+    \label{alg:adam}
+    \begin{algorithmic}[1]
+        \REQUIRE learning rate $\gamma$, exponential decay rates for the moment estimates $\beta_1, \beta_2$, initial parameter vector $\theta_0$, stochastic objective $f(\theta)$, weight decay $\lambda$
+        \REQUIRE $m_0 \leftarrow 0, v_0 \leftarrow 0$
+        \FOR{$t = 1$ \textbf{to} convergence}
+        \IF{$\lambda \neq 0$}
+        \STATE $g_t \leftarrow g_t + \lambda\theta_{t-1}$
+        \ENDIF
+        \STATE $g_t \leftarrow \nabla _{\theta} f_t (\theta_{t-1}$)
+        \STATE $m_t \leftarrow \beta_1 m_{t-1} + (1-\beta_1)g_t$
+        \STATE $m_t \leftarrow \beta_1 m_{t-1} + (1-\beta_1)g_t$
+        \STATE $\hat{m_t} \leftarrow \beta_1 m_{t-1} + (1-\beta_1)g_t$
+        \STATE $\hat{v_t} \leftarrow v_t / (1-\eta_2 ^t)$
+        \STATE $\theta_t \leftarrow \theta_t - \gamma \hat{m_t} / (\sqrt{\hat{v}} + \varepsilon)$
+        \ENDFOR
+        \RETURN $\theta_t$
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{Proximal Policy Optimization}
+
 \begin{algorithm}[H]
     \caption{Clipped Proximal Policy Optimization}
     \label{alg:ppo}
