@@ -88,7 +88,7 @@ we can rewrite the equation \ref{eqn:mot_dyn} in the joints' space as:
 
 Therefore, the \ac{EoM} of the multibody system can be rewritten as:
 
-$$
+\begin{equation}
     \underbrace{\begin{bmatrix}
             \mathbf{M} _{\mathcal{B}}(q)     & \mathbf{M} _{\mathcal{B}S}(q)                                                      \\
             \mathbf{M} _{\mathcal{B}S} ^T(q) & \mathbf{M} _s(q) + \boldsymbol{\Gamma} ^{-T}\mathbf{I} _m\boldsymbol{\Gamma} ^{-1}
@@ -123,7 +123,7 @@ $$
         \mathrm{\mathbf{v}} \\
         \dot{\mathbf{s}}
     \end{bmatrix}
-$$
+\end{equation}
 
 or, in a more compact form that will be used for computation as:
 
@@ -135,55 +135,58 @@ or, in a more compact form that will be used for computation as:
 
 For the \textit{Lagrange-d'Alembert} formulation, in the case of systems with constant mass, the the virtual work $\delta W$ of the active and inertial forces through a virtual displacement $\delta \mathbf{q}$ is given by:
 
-$$
+\begin{equation}
     \delta W = \delta W _{act} + \delta W _{inert} = \sum _{i = 1} ^{N _B} \mathbf{f} _i ^T \delta \mathbf{q} + \sum _{i = 1} ^{N _B} \mathbf{p} ^A _i \delta \mathbf{v} _i
-$$
+\end{equation}
 
 where $\mathbf{f} _i$ is the generalized force and $\mathbf{p} ^A _i$ is the momentum of the $i$-th body. The momentum $\mathbf{p} ^A _i$ is given by:
 
-$$
+\begin{equation}
     \mathbf{p} ^A _i = \mathbf{v} _i \times ^* \mathbf{I} _i \mathbf{v} _i - \mathbf{X} ^* _0 f ^x _i
-$$
+\end{equation}
 
 where $\mathbf{v} _i$ is the velocity of the $i$-th body, $\mathbf{I} _i$ is the inertia matrix of the $i$-th body, and $\mathbf{X} _0$ is the spatial transformation from the world frame to the base frame. The generalized force $\mathbf{f} _i$ considering that the joints are massless is given by:
 
-$$
+\begin{equation}
     \mathbf{f} _i = \mathbf{S} ^T _i \mathbf{p} ^A _i
-$$
+\end{equation}
 
 where $\mathbf{S} _i$ is the motion subspace of the $i$-th link, which is a matrix with dimensions $6 \times N _{DOF}$ where $N _{DOF}$ is the number of joints. The Coriolis acceleration $\mathbf{c} _i$ is given by:
 
-$$
+\begin{equation}
     \mathbf{c} _i = \mathbf{v} _i \times ^* {} ^{ii}\mathbf{v} _J
-$$
+\end{equation}
 
 where $\mathbf{v} _i$ is the velocity of the $i$-th body and $\mathbf{v} _J$ is the velocity of the $i$-th joint. The velocity of the $ii$-th joint ${} ^{ii}\mathbf{v} _J$ is given by:
 
-$$
+\begin{equation}
     \mathbf{v} _i = \mathbf{X} _i \mathbf{v} _{\lambda _i} + {} ^{ii}\mathbf{v} _J
-$$
+\end{equation}
+
 
 where $\mathbf{X} _i$ is the spatial transformation from the $i$-th body to the parent body and $\mathbf{v} _{\lambda _i}$ is the velocity of the parent body. The velocity of the $ii$-th joint ${} ^{ii}\mathbf{v} _J$ is given by:
 
-$$
+\begin{equation}
     {} ^{ii}\mathbf{v} _J = \mathbf{S} _i \dot{\mathbf{q}} _i
-$$
+\end{equation}
+
 
 where $\mathbf{S} _i$ is the selection matrix of the $i$-th joint and $\dot{\mathbf{q}} _i$ is the velocity of the $i$-th joint.
 
 If we consider the motor dynamics, the generalized force $\mathbf{f} _i$ is given by:
 
-$$
+\begin{equation}
     \mathbf{f} _i = \mathbf{S} ^T _i \mathbf{p} ^A _i + {} ^{ii} \mathbf{K} _v {} ^{ii}\mathbf{v} _J
-$$
+\end{equation}
+
 
 where $\mathbf{K} _v$ is the viscous friction matrix of the joints. This will act as a damping term in the joint dynamics.
 
 Considering also the motor inertia $I _m$ the momentum $\mathbf{p} ^A _i$, for the aforementioned principle, will have the additional term $\mathbf{I} _m \mathbf{v} _J$:
 
-$$
+\begin{equation}
     \mathbf{p} ^A _i = \mathbf{v} _i \times ^* \mathbf{I} _i \mathbf{v} _i - \mathbf{X} ^* _0 f ^x _i + {} ^{ii}\mathbf{I} _m {} ^{ii}\mathbf{v} _J
-$$
+\end{equation}
 
 
 \begin{algorithm}[H]
