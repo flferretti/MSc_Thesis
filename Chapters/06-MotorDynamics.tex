@@ -79,7 +79,7 @@ where $\mathbf{K _v}$ is the diagonal matrix of motor viscous coefficients and $
     \mathbf{s} = \boldsymbol{\theta} \boldsymbol{\Gamma} &  & \dot{\mathbf{s}} = \dot{\boldsymbol{\theta}} \boldsymbol{\Gamma} &  & \ddot{\mathbf{s}} = \ddot{\boldsymbol{\theta}} \boldsymbol{\Gamma}
 \end{align}
 
-we can rewrite the \cref{eqn:mot_dyn} in the joints' space as:
+we can rewrite the equation \ref{eqn:mot_dyn} in the joints' space as:
 
 \begin{equation}
     \label{eqn:mot_dyn_jointspace}
@@ -88,7 +88,7 @@ we can rewrite the \cref{eqn:mot_dyn} in the joints' space as:
 
 Therefore, the \ac{EoM} of the multibody system can be rewritten as:
 
-\begin{equation}
+$$
     \underbrace{\begin{bmatrix}
             \mathbf{M} _{\mathcal{B}}(q)     & \mathbf{M} _{\mathcal{B}S}(q)                                                      \\
             \mathbf{M} _{\mathcal{B}S} ^T(q) & \mathbf{M} _s(q) + \boldsymbol{\Gamma} ^{-T}\mathbf{I} _m\boldsymbol{\Gamma} ^{-1}
@@ -123,7 +123,7 @@ Therefore, the \ac{EoM} of the multibody system can be rewritten as:
         \mathrm{\mathbf{v}} \\
         \dot{\mathbf{s}}
     \end{bmatrix}
-\end{equation}
+$$
 
 or, in a more compact form that will be used for computation as:
 
