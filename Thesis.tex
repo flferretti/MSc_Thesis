@@ -34,7 +34,7 @@
 % PACKAGES FOR LANGUAGE AND FONT
 \usepackage[english]{babel} % The document is in English  
 \usepackage[utf8]{inputenc} % UTF8 encoding
-\usepackage[T1]{fontenc} % Font encoding
+\usepackage[T1]{fontenc} % Font encoding 
 \usepackage[11pt]{moresize} % Big fonts
 
 % PACKAGES FOR IMAGES
@@ -119,10 +119,10 @@
 \begin{document}
 
 \fancypagestyle{plain}{%
-\fancyhf{} % Clear all header and footer fields
-\fancyhead[RO,RE]{\thepage} %RO=right odd, RE=right even
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}}
+    \fancyhf{} % Clear all header and footer fields
+    \fancyhead[RO,RE]{\thepage} %RO=right odd, RE=right even
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
 
 %----------------------------------------------------------------------------
 %	TITLE PAGE
@@ -132,13 +132,13 @@
 \frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the preamble pages
 
 \puttitle{
-	title=Deep Reinforcement Learning for Advanced Codesign of High Performance Humanoid Robots, % Title of the thesis
-	name=Filippo Luca Ferretti, % Author Name and Surname
-	course=Mechanical Engineering - Ingegneria Meccanica, % Study Programme (in Italian)
-	ID  = 994428,  % Student ID number (numero di matricola)
-	advisor= {Prof. Francesco Braghin, Dr. Daniele Pucci},% Supervisor name
-	coadvisor={Dr. Carlotta Sartore, Dr. Stefano Dafarra}, % Co-Supervisor name, remove this line if there is none
-	academicyear={2022-23},  % Academic Year
+    title=Deep Reinforcement Learning for Advanced Codesign of High Performance Humanoid Robots, % Title of the thesis
+    name=Filippo Luca Ferretti, % Author Name and Surname
+    course=Mechanical Engineering - Ingegneria Meccanica, % Study Programme (in Italian)
+    ID  = 994428,  % Student ID number (numero di matricola)
+    advisor= {Prof. Francesco Braghin, Dr. Daniele Pucci},% Supervisor name
+    coadvisor={Dr. Carlotta Sartore, Dr. Stefano Dafarra}, % Co-Supervisor name, remove this line if there is none
+    academicyear={2022-23},  % Academic Year
 } % These info will be put into your Title page 
 
 %----------------------------------------------------------------------------
@@ -148,7 +148,7 @@
 \setcounter{page}{1} % Set page counter to 1
 
 % ABSTRACT IN ENGLISH
-\chapter*{Abstract} 
+\chapter*{Abstract}
 Here goes the Abstract in English of your thesis followed by a list of keywords.
 The Abstract is a concise summary of the content of the thesis (single page of text)
 and a guide to the most important contributions included in your thesis.
@@ -162,7 +162,7 @@ The Abstract will be followed by a list of four to six keywords.
 Keywords are a tool to help indexers and search engines to find relevant documents.
 To be relevant and effective, keywords must be chosen carefully.
 They should represent the content of your work and be specific to your field or sub-field.
-Keywords may be a single word or two to four words. 
+Keywords may be a single word or two to four words.
 \\
 \\
 \textbf{Keywords:} here, the keywords, of your thesis % Keywords

@@ -6,7 +6,7 @@
 Starting from the equation of motion of a robot manipulator:
 
 $$
-\mathbf{M}(q)\dot{\boldsymbol{\nu}} + \mathbf{h}(q,\boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J} ^T \mathbf{f}
+    \mathbf{M}(q)\dot{\boldsymbol{\nu}} + \mathbf{h}(q,\boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J} ^T \mathbf{f}
 $$
 
 where:
@@ -18,7 +18,6 @@ where:
     \item $\boldsymbol{\tau}$ is the vector of actuation torques
     \item $\mathbf{J}$ is the Jacobian matrix
     \item $\mathbf{f}$ is the vector of the external forces
-
 \end{itemize}
 
 we can isolate the terms related to the base link (usually in position 0) from the joints' poses:
@@ -28,7 +27,7 @@ we can isolate the terms related to the base link (usually in position 0) from t
     \begin{bmatrix}
         \mathrm{\mathbf{v}} \\
         \dot{\mathbf{s}}
-    \end{bmatrix} &&
+    \end{bmatrix} &  &
     \dot{\boldsymbol{\nu}} =
     \begin{bmatrix}
         \dot{\mathrm{\mathbf{v}}} \\
@@ -38,99 +37,98 @@ we can isolate the terms related to the base link (usually in position 0) from t
 
 where $\mathbb{\mathrm{v}} \in \mathbb{R} ^{6}$ and $\mathbf{s} \in \mathbb{R}^{N_B}$, we get to the form:
 
-$$
-\begin{bmatrix}
-\mathbf{M} _{\mathcal{B}}(q) & \mathbf{M} _{\mathcal{B}S}(q) \\
-\mathbf{M} _{\mathcal{B}S} ^T(q) & \mathbf{M} _s(q) 
-\end{bmatrix}
-\begin{bmatrix}
-\dot{\mathrm{\mathbf{v}}} \\
-\ddot{\mathbf{s}}
-\end{bmatrix}+
-\begin{bmatrix}
-\mathbf{h} _{\mathcal{B}} \\
-\mathbf{h} _S
-\end{bmatrix}=
-\begin{bmatrix}
-\mathbb{0} \\
-\mathbb{1}
-\end{bmatrix}
-\boldsymbol{\tau}
-+
-\begin{bmatrix}
-\mathbf{J} _{\mathcal{B}} \\
-\mathbf{J} _S
-\end{bmatrix} ^T
-\begin{bmatrix}
-\mathbf{f} _{\mathcal{B}} \\
-\mathbf{f} _S
-\end{bmatrix}
-$$
-
+\begin{equation}
+    \begin{bmatrix}
+        \mathbf{M} _{\mathcal{B}}(q)     & \mathbf{M} _{\mathcal{B}S}(q) \\
+        \mathbf{M} _{\mathcal{B}S} ^T(q) & \mathbf{M} _s(q)
+    \end{bmatrix}
+    \begin{bmatrix}
+        \dot{\mathrm{\mathbf{v}}} \\
+        \ddot{\mathbf{s}}
+    \end{bmatrix}+
+    \begin{bmatrix}
+        \mathbf{h} _{\mathcal{B}} \\
+        \mathbf{h} _S
+    \end{bmatrix}=
+    \begin{bmatrix}
+        \mathbb{0} \\
+        \mathbb{1}
+    \end{bmatrix}
+    \boldsymbol{\tau}
+    +
+    \begin{bmatrix}
+        \mathbf{J} _{\mathcal{B}} \\
+        \mathbf{J} _S
+    \end{bmatrix} ^T
+    \begin{bmatrix}
+        \mathbf{f} _{\mathcal{B}} \\
+        \mathbf{f} _S
+    \end{bmatrix}
+\end{equation}
 
 Given that the dynamics of the set of motors can be described by the following equation:
 
 \begin{equation}
     \label{eqn:mot_dyn}
-\mathbf{I_m} \ddot{\boldsymbol{\theta}} + \mathbf{K}_v \dot{\boldsymbol{\theta}} = \boldsymbol{\tau}_m
+    \mathbf{I_m} \ddot{\boldsymbol{\theta}} + \mathbf{K}_v \dot{\boldsymbol{\theta}} = \boldsymbol{\tau}_m
 \end{equation}
 
 where $\mathbf{K _v}$ is the diagonal matrix of motor viscous coefficients and $\mathbf{I}_m$ is the diagonal matrix of motors' inertias. Considering that given the set of transmission ratios $\boldsymbol{\Gamma}$, the relation between the joints' velocities and the motors' velocities is:
 
 \begin{align}
-    \mathbf{s} = \boldsymbol{\theta} \boldsymbol{\Gamma} && \dot{\mathbf{s}} = \dot{\boldsymbol{\theta}} \boldsymbol{\Gamma} && \ddot{\mathbf{s}} = \ddot{\boldsymbol{\theta}} \boldsymbol{\Gamma}
+    \mathbf{s} = \boldsymbol{\theta} \boldsymbol{\Gamma} &  & \dot{\mathbf{s}} = \dot{\boldsymbol{\theta}} \boldsymbol{\Gamma} &  & \ddot{\mathbf{s}} = \ddot{\boldsymbol{\theta}} \boldsymbol{\Gamma}
 \end{align}
 
 we can rewrite the equation \ref{eqn:mot_dyn} in the joints' space as:
 
 \begin{equation}
     \label{eqn:mot_dyn_jointspace}
-\boldsymbol{\tau} = \boldsymbol{\Gamma} ^{-T} (\mathbf{I_m}\boldsymbol{\Gamma} ^{-1} \ddot{s} + \mathbf{K}_v \boldsymbol{\Gamma} ^{-1}\dot{s}) 
+    \boldsymbol{\tau} = \boldsymbol{\Gamma} ^{-T} (\mathbf{I_m}\boldsymbol{\Gamma} ^{-1} \ddot{s} + \mathbf{K}_v \boldsymbol{\Gamma} ^{-1}\dot{s})
 \end{equation}
 
 Therefore, the \ac{EoM} of the multibody system can be rewritten as:
 
 $$
-\underbrace{\begin{bmatrix}
-\mathbf{M} _{\mathcal{B}}(q) & \mathbf{M} _{\mathcal{B}S}(q) \\
-\mathbf{M} _{\mathcal{B}S} ^T(q) & \mathbf{M} _s(q) + \boldsymbol{\Gamma} ^{-T}\mathbf{I} _m\boldsymbol{\Gamma} ^{-1}
-\end{bmatrix}} _{\mathbf{\bar{M}}(q)}
-\begin{bmatrix}
-\dot{\mathrm{\mathbf{v}}} \\
-\ddot{\mathbf{s}}
-\end{bmatrix}+
-\underbrace{\begin{bmatrix}
-\mathbf{h} _{\mathcal{B}} \\
-\mathbf{h} _S
-\end{bmatrix}} _\mathbf{\bar{h}}(q,\boldsymbol{\nu}) =
-\underbrace{\begin{bmatrix}
-\mathbb{0} \\
-\boldsymbol{\Gamma} ^{-T}
-\end{bmatrix}} _{\mathbf{\bar{B}}}
-\boldsymbol{\tau} _m
-+
-\begin{bmatrix}
-\mathbf{J} _{\mathcal{B}} \\
-\mathbf{J} _S
-\end{bmatrix} ^T
-\begin{bmatrix}
-\mathbf{f} _{\mathcal{B}} \\
-\mathbf{f} _S
-\end{bmatrix}-
-\underbrace{\begin{bmatrix}
-\mathbb{0} \\
-\boldsymbol{\Gamma} ^{-T}\mathbf{K _v}\boldsymbol{\Gamma} ^{-1}
-\end{bmatrix}} _\mathbf{\bar{K _v}}
-\begin{bmatrix}
-\mathrm{\mathbf{v}} \\
-\dot{\mathbf{s}}
-\end{bmatrix}
+    \underbrace{\begin{bmatrix}
+            \mathbf{M} _{\mathcal{B}}(q)     & \mathbf{M} _{\mathcal{B}S}(q)                                                      \\
+            \mathbf{M} _{\mathcal{B}S} ^T(q) & \mathbf{M} _s(q) + \boldsymbol{\Gamma} ^{-T}\mathbf{I} _m\boldsymbol{\Gamma} ^{-1}
+        \end{bmatrix}} _{\mathbf{\bar{M}}(q)}
+    \begin{bmatrix}
+        \dot{\mathrm{\mathbf{v}}} \\
+        \ddot{\mathbf{s}}
+    \end{bmatrix}+
+    \underbrace{\begin{bmatrix}
+            \mathbf{h} _{\mathcal{B}} \\
+            \mathbf{h} _S
+        \end{bmatrix}} _\mathbf{\bar{h}}(q,\boldsymbol{\nu}) =
+    \underbrace{\begin{bmatrix}
+            \mathbb{0} \\
+            \boldsymbol{\Gamma} ^{-T}
+        \end{bmatrix}} _{\mathbf{\bar{B}}}
+    \boldsymbol{\tau} _m
+    +
+    \begin{bmatrix}
+        \mathbf{J} _{\mathcal{B}} \\
+        \mathbf{J} _S
+    \end{bmatrix} ^T
+    \begin{bmatrix}
+        \mathbf{f} _{\mathcal{B}} \\
+        \mathbf{f} _S
+    \end{bmatrix}-
+    \underbrace{\begin{bmatrix}
+            \mathbb{0} \\
+            \boldsymbol{\Gamma} ^{-T}\mathbf{K _v}\boldsymbol{\Gamma} ^{-1}
+        \end{bmatrix}} _\mathbf{\bar{K _v}}
+    \begin{bmatrix}
+        \mathrm{\mathbf{v}} \\
+        \dot{\mathbf{s}}
+    \end{bmatrix}
 $$
 
 or, in a more compact form that will be used for computation as:
 
 $$
-\mathbf{\bar{M}}(q)\dot{\boldsymbol{\nu}} + \mathbf{\bar{h}}(q,\boldsymbol{\nu}) = \mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^T \mathbf{f} - \bar{\mathbf{K _v}}\boldsymbol{\nu}
+    \mathbf{\bar{M}}(q)\dot{\boldsymbol{\nu}} + \mathbf{\bar{h}}(q,\boldsymbol{\nu}) = \mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^T \mathbf{f} - \bar{\mathbf{K _v}}\boldsymbol{\nu}
 $$
 
 \subsection{Articulated Body Algorithm}
@@ -138,45 +136,45 @@ $$
 For the \textit{Lagrange-d'Alembert} formulation, in the case of systems with constant mass, the the virtual work $\delta W$ of the active and inertial forces through a virtual displacement $\delta \mathbf{q}$ is given by:
 
 $$
-\delta W = \delta W _{act} + \delta W _{inert} = \sum _{i = 1} ^{N _B} \mathbf{f} _i ^T \delta \mathbf{q} + \sum _{i = 1} ^{N _B} \mathbf{p} ^A _i \delta \mathbf{v} _i
+    \delta W = \delta W _{act} + \delta W _{inert} = \sum _{i = 1} ^{N _B} \mathbf{f} _i ^T \delta \mathbf{q} + \sum _{i = 1} ^{N _B} \mathbf{p} ^A _i \delta \mathbf{v} _i
 $$
 
 where $\mathbf{f} _i$ is the generalized force and $\mathbf{p} ^A _i$ is the momentum of the $i$-th body. The momentum $\mathbf{p} ^A _i$ is given by:
 
 $$
-\mathbf{p} ^A _i = \mathbf{v} _i \times ^* \mathbf{I} _i \mathbf{v} _i - \mathbf{X} ^* _0 f ^x _i
+    \mathbf{p} ^A _i = \mathbf{v} _i \times ^* \mathbf{I} _i \mathbf{v} _i - \mathbf{X} ^* _0 f ^x _i
 $$
 
 where $\mathbf{v} _i$ is the velocity of the $i$-th body, $\mathbf{I} _i$ is the inertia matrix of the $i$-th body, and $\mathbf{X} _0$ is the spatial transformation from the world frame to the base frame. The generalized force $\mathbf{f} _i$ considering that the joints are massless is given by:
 
 $$
-\mathbf{f} _i = \mathbf{S} ^T _i \mathbf{p} ^A _i
+    \mathbf{f} _i = \mathbf{S} ^T _i \mathbf{p} ^A _i
 $$
 
 where $\mathbf{S} _i$ is the motion subspace of the $i$-th link, which is a matrix with dimensions $6 \times N _{DOF}$ where $N _{DOF}$ is the number of joints. The Coriolis acceleration $\mathbf{c} _i$ is given by:
 
 $$
-\mathbf{c} _i = \mathbf{v} _i \times ^* {} ^{ii}\mathbf{v} _J
+    \mathbf{c} _i = \mathbf{v} _i \times ^* {} ^{ii}\mathbf{v} _J
 $$
 
 where $\mathbf{v} _i$ is the velocity of the $i$-th body and $\mathbf{v} _J$ is the velocity of the $i$-th joint. The velocity of the $ii$-th joint ${} ^{ii}\mathbf{v} _J$ is given by:
 
 $$
-\mathbf{v} _i = \mathbf{X} _i \mathbf{v} _{\lambda _i} + {} ^{ii}\mathbf{v} _J
+    \mathbf{v} _i = \mathbf{X} _i \mathbf{v} _{\lambda _i} + {} ^{ii}\mathbf{v} _J
 $$
 
 where $\mathbf{X} _i$ is the spatial transformation from the $i$-th body to the parent body and $\mathbf{v} _{\lambda _i}$ is the velocity of the parent body. The velocity of the $ii$-th joint ${} ^{ii}\mathbf{v} _J$ is given by:
 
 $$
-{} ^{ii}\mathbf{v} _J = \mathbf{S} _i \dot{\mathbf{q}} _i
+    {} ^{ii}\mathbf{v} _J = \mathbf{S} _i \dot{\mathbf{q}} _i
 $$
 
-where $\mathbf{S} _i$ is the selection matrix of the $i$-th joint and $\dot{\mathbf{q}} _i$ is the velocity of the $i$-th joint. 
+where $\mathbf{S} _i$ is the selection matrix of the $i$-th joint and $\dot{\mathbf{q}} _i$ is the velocity of the $i$-th joint.
 
 If we consider the motor dynamics, the generalized force $\mathbf{f} _i$ is given by:
 
 $$
-\mathbf{f} _i = \mathbf{S} ^T _i \mathbf{p} ^A _i + {} ^{ii} \mathbf{K} _v {} ^{ii}\mathbf{v} _J
+    \mathbf{f} _i = \mathbf{S} ^T _i \mathbf{p} ^A _i + {} ^{ii} \mathbf{K} _v {} ^{ii}\mathbf{v} _J
 $$
 
 where $\mathbf{K} _v$ is the viscous friction matrix of the joints. This will act as a damping term in the joint dynamics.
@@ -184,7 +182,7 @@ where $\mathbf{K} _v$ is the viscous friction matrix of the joints. This will ac
 Considering also the motor inertia $I _m$ the momentum $\mathbf{p} ^A _i$, for the aforementioned principle, will have the additional term $\mathbf{I} _m \mathbf{v} _J$:
 
 $$
-\mathbf{p} ^A _i = \mathbf{v} _i \times ^* \mathbf{I} _i \mathbf{v} _i - \mathbf{X} ^* _0 f ^x _i + {} ^{ii}\mathbf{I} _m {} ^{ii}\mathbf{v} _J
+    \mathbf{p} ^A _i = \mathbf{v} _i \times ^* \mathbf{I} _i \mathbf{v} _i - \mathbf{X} ^* _0 f ^x _i + {} ^{ii}\mathbf{I} _m {} ^{ii}\mathbf{v} _J
 $$
 
 
@@ -192,44 +190,44 @@ $$
     \caption{Articulated Body Algorithm}
     \label{alg:aba}
     \begin{algorithmic}[1]
-    \REQUIRE Joints' velocities $\dot{\mathbf{q}}$, torques applied $\boldsymbol{\tau}$
-    \FOR{$i = 1 \text{ to } N_B$} 
+        \REQUIRE Joints' velocities $\dot{\mathbf{q}}$, torques applied $\boldsymbol{\tau}$
+        \FOR{$i = 1 \text{ to } N_B$}
         \STATE{$[\mathbf{X}_J, \mathbf{S}_i] = \text{jcalc}(\text{jtype}(i), \dot{\mathbf{q}}_i)$}
         \STATE $\mathrm{\mathbf{v}}_J = \mathbf{S}_i \dot{\mathbf{q}}_i$
         \STATE $^i\mathbf{X}_{\lambda(i)} = \mathbf{X}_J\mathbf{X}_T (i)$
-            \IF{$\lambda_i = 0$}
-                \STATE $\mathrm{\mathbf{v}}_i = \mathrm{\mathbf{v}}_J$
-                \STATE $\mathbf{c}_i = \mathbf{0}$
-            \ELSE
-                \STATE $\mathrm{\mathbf{v}}_i = ^i\mathbf{X} _{\lambda(i)}\mathrm{\mathbf{v}}_{\lambda(i)} + \mathrm{\mathbf{v}}_J$
-                \STATE $\mathbf{c}_i = \mathrm{\mathbf{v}}_i \times ^* \mathrm{\mathbf{v}}_J$
-            \ENDIF
+        \IF{$\lambda_i = 0$}
+        \STATE $\mathrm{\mathbf{v}}_i = \mathrm{\mathbf{v}}_J$
+        \STATE $\mathbf{c}_i = \mathbf{0}$
+        \ELSE
+        \STATE $\mathrm{\mathbf{v}}_i = ^i\mathbf{X} _{\lambda(i)}\mathrm{\mathbf{v}}_{\lambda(i)} + \mathrm{\mathbf{v}}_J$
+        \STATE $\mathbf{c}_i = \mathrm{\mathbf{v}}_i \times ^* \mathrm{\mathbf{v}}_J$
+        \ENDIF
         \STATE $\mathbf{I}_i ^A = \mathbf{I}_i$
         \STATE $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbf{I}_i\mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i - \boldsymbol{\Gamma} ^{-T}\mathbf{K}_v \boldsymbol{\Gamma} ^{-1} \mathbf{\dot{q}}$
-    \ENDFOR 
-    
-    % Pass 2
-    \FOR{$i = N_B \text{ to } 1$}
+        \ENDFOR
+
+        % Pass 2
+        \FOR{$i = N_B \text{ to } 1$}
         \STATE $\mathbf{U}_i = \mathbf{I}_i \mathbf{S}_i$
         \STATE $\mathbf{D}_i = \mathbf{S}_i ^T \mathbf{U}_i$
         \STATE $\mathbf{u}_i = \boldsymbol{\Gamma}^{-T}\boldsymbol{\tau}_i - \mathbf{S}_i\mathbf{p}_i^A$
-            \IF{$\lambda_i \neq 0$}
-                \STATE $\mathbf{I}^a = \mathbf{I}^a_i - \mathbf{U}_i\mathbf{D}_i ^{-1}\mathbf{U}_i ^T$
-                \STATE $\mathbf{p}^a = \mathbf{p}^a_i + \mathbf{I}^a\mathbf{C}_i + \mathbf{U}_i\mathbf{D}^{-1}\mathbf{u}_i$
-                \STATE $\mathbf{I}^A_{\lambda(i)} = \mathbf{I}^A_{\lambda(i)} + {}^{\lambda(i)}\mathbf{X}_i^* \mathbf{I}^a {}^i\mathbf{X}_{\lambda(i)}$
-                \STATE $\mathbf{p}^A_{\lambda(i)} = \mathbf{p}^A_{\lambda(i)} + {}^{\lambda(i)}\mathbf{X}_i^*\mathbf{p}^a$
-            \ENDIF
-    \ENDFOR
-    
-    % Pass 3
-    \FOR{$i = 1 \text{ to } N_B$}
-        \IF{$\lambda_i = 0$}
-            \STATE $\mathbf{a}' = -\mathbf{a}_g$
-        \ELSE
-            \STATE $\mathbf{a}' = {}^{\lambda(i)}\mathbf{X}_i \mathbf{a}_{\lambda(i)} + \mathbf{c}_i$
-            \STATE $\ddot{\mathbf{q}}_i = \mathbf{D}^{-1} (\mathbf{u}_i - \mathbf{U}_i^T\mathbf{a}')$
-            \STATE $\mathbf{a}_i = \mathbf{a}' + \mathbf{S}_i\mathbf{\ddot{q}}_i$
+        \IF{$\lambda_i \neq 0$}
+        \STATE $\mathbf{I}^a = \mathbf{I}^a_i - \mathbf{U}_i\mathbf{D}_i ^{-1}\mathbf{U}_i ^T$
+        \STATE $\mathbf{p}^a = \mathbf{p}^a_i + \mathbf{I}^a\mathbf{C}_i + \mathbf{U}_i\mathbf{D}^{-1}\mathbf{u}_i$
+        \STATE $\mathbf{I}^A_{\lambda(i)} = \mathbf{I}^A_{\lambda(i)} + {}^{\lambda(i)}\mathbf{X}_i^* \mathbf{I}^a {}^i\mathbf{X}_{\lambda(i)}$
+        \STATE $\mathbf{p}^A_{\lambda(i)} = \mathbf{p}^A_{\lambda(i)} + {}^{\lambda(i)}\mathbf{X}_i^*\mathbf{p}^a$
         \ENDIF
-    \ENDFOR
+        \ENDFOR
+
+        % Pass 3
+        \FOR{$i = 1 \text{ to } N_B$}
+        \IF{$\lambda_i = 0$}
+        \STATE $\mathbf{a}' = -\mathbf{a}_g$
+        \ELSE
+        \STATE $\mathbf{a}' = {}^{\lambda(i)}\mathbf{X}_i \mathbf{a}_{\lambda(i)} + \mathbf{c}_i$
+        \STATE $\ddot{\mathbf{q}}_i = \mathbf{D}^{-1} (\mathbf{u}_i - \mathbf{U}_i^T\mathbf{a}')$
+        \STATE $\mathbf{a}_i = \mathbf{a}' + \mathbf{S}_i\mathbf{\ddot{q}}_i$
+        \ENDIF
+        \ENDFOR
     \end{algorithmic}
-\end{algorithm} 
+\end{algorithm}

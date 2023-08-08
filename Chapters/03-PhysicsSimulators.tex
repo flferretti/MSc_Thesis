@@ -1,12 +1,12 @@
 \chapter{Physics Simulation Frameworks}
 \label{chp:03-PhysicsSimulators}
 
-Training a physical \ac{RL} agent often involves prohibitive costs and potential safety issues, that is why simulators play a major role in most training scenario. As a matter of fact, the trail-and-error process needed for the agent to gain experience regarding the world may involve damaging complex and expensive hardware, limiting the possibility for the agent to explore and learn more efficiently. 
+Training a physical \ac{RL} agent often involves prohibitive costs and potential safety issues, that is why simulators play a major role in most training scenario. As a matter of fact, the trail-and-error process needed for the agent to gain experience regarding the world may involve damaging complex and expensive hardware, limiting the possibility for the agent to explore and learn more efficiently.
 With the use of scalable physics simulator, there is the possibility of creating highly complex, customized environments to a reproduce multiple scenarios.
 
-At time, the most common physic simulation framework used at this purpose are PyBullet \cite{coumans_pybullet_2016}, MuJoCo \cite{todorov_mujoco_2012}, 
+At time, the most common physic simulation framework used at this purpose are PyBullet \cite{coumans_pybullet_2016}, MuJoCo \cite{todorov_mujoco_2012},
 
-The most common way to speed up computations is to use hardware accelerators, in fact the natural efficiency of \ac{GPU}s in solving parallel calculations can be exploited to cut down simulation times \cite{liang_gpu-accelerated_2018}.  
+The most common way to speed up computations is to use hardware accelerators, in fact the natural efficiency of \ac{GPU}s in solving parallel calculations can be exploited to cut down simulation times \cite{liang_gpu-accelerated_2018}.
 
 \section{Nvidia ISAAC Gym}
 
@@ -17,4 +17,4 @@ In this framework, the dynamics is simulated using NVIDIA PhysX CITE reduced coo
 
 
 JAXsim \cite{ferigo_jaxsim_2022} as it is \ac{JIT} and leverages JAX \cite{bradbury_jax_2018}
-It provides an end-to-end GPU-accelerated simulation that allows strong parallelization on multiple environments, whose only limit is the number of \ac{CUDA} cores present in the GPU unit. 
+It provides an end-to-end GPU-accelerated simulation that allows strong parallelization on multiple environments, whose only limit is the number of \ac{CUDA} cores present in the GPU unit.
