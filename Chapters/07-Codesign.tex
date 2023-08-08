@@ -1,21 +1,80 @@
 \chapter{Humanoid Robots Codesign}
+
 \label{chp:07-Codesign}
 
+The problem of humanoid robot codesign can be formalized as a reinforcement learning problem, where the agent is the robot, together with a nonlinear optimization of some hardware parameters, in the case discussed in this work this role is played by a evolutionary algorithm.
 
 
 \section{Reinforcement Learning Problem Definition}
 
-\lipsum[1]
+In the reinforcement learning loop of the codesign process of the humanoid robot, the aim is to find a policy $\pi$ that maximizes the expected return $J(\pi)$, where the return is defined as:
+
+\begin{equation}
+    J(\pi) = \mathbb{E} \left[ \sum_{t=0}^{\infty} \gamma ^t r_t \right]
+\end{equation}
+
+For this particular task the reward function is defined as:
+
+\begin{equation}
+    r_t = \gamma_{vel} \dot{s}_x - \gamma_{ctrl}\sum _{j \in \mu} \mathbf{a}_j(t) ^2 + \gamma_{dist} \frac{x}{x_{max}} + \gamma_{balance} \boldsymbol{\varphi}_g + \gamma_{placement} \boldsymbol{\varphi}_{feet} + \gamma_{force} \mathbf{\dot{a}}
+\end{equation}
+
+where:
+
+\begin{itemize}
+    \item $\gamma_{vel}$ is the weight of the forward velocity
+    \item $\gamma_{ctrl}$ is the weight of the control penalty
+    \item $\gamma_{dist}$ is the weight of the distance between the robot and the target
+    \item $\gamma_{balance}$ is the weight of the angle of the gravity projection on the ground
+    \item $\gamma_{placement}$ is the weight of the angle of the feet with respect to the terrain
+    \item $\gamma_{force}$ is the weight of the change in the contact forces
+    \item $\dot{s}_x$ is the forward velocity of the robot
+    \item $a_t$ is the action at time $t$
+    \item $x$ is the distance between the robot and the target
+    \item $x_{max}$ is the maximum distance between the robot and the target
+    \item $\Delta \varphi_g$ is the angle of the gravity projection on the ground
+    \item $\Delta \varphi_{feet - terrain}$ is the angle of the feet with respect to the terrain
+    \item $\mathbf{\dot{a}}$ is the change in the contact forces
+    \item $\mu$ is the set of the joints that are being controlled
+\end{itemize}
+
+The action space is defined as:
+
+\begin{equation}
+    \mathcal{A} = \left\{ a \in \mathbb{R} ^{23} \mid -1 \leq a_i \leq 1 \right\}
+\end{equation}
+
+where $a_i$ is the $i$-th joint desidered position, which is then converted to a torque via a PD controller and then clipped to the maximum torque of the joint.
+
+The observation space is defined as:
+
+\begin{equation}
+    \mathcal{S} = \left\{ s \in \mathbb{R} ^{80} \mid -\infty \leq s_i \leq \infty \right\}
+\end{equation}
+
+and it is composed of the following elements:
+
+\begin{itemize}
+    \item Base position $\in \mathbb{R} ^{3}$
+    \item Joints positions $\in \mathbb{R} ^{23}$
+    \item Joints velocities $\in \mathbb{R} ^{23}$
+    \item Actuation torques $\in \mathbb{R} ^{23}$
+    \item Gravity projection $\in \mathbb{R} ^{3}$
+    \item Number of contact points $\in \mathbb{R}$
+    \item Target position $\in \mathbb{R} ^{3}$
+\end{itemize}
+
+Rewards, actions and observations are then normalized to the range $[0,1]$ in order to make the learning process more stable and to avoid the need of tuning the reward function for different robots. The \cref{tab:rlspacedef} summarizes the definition of the spaces used in the \ac{RL} framework.
 
 \begin{table}[]
     \centering
     \begin{tabular}{l c}
         \toprule
-        Space & Projection Space \\
+        Space                           & Projection Space   \\
         \midrule
-        Action Space $\mathcal{A}$ & $\mathbb{R} ^{23}$\\
+        Action Space $\mathcal{A}$      & $\mathbb{R} ^{23}$ \\
         Observation Space $\mathcal{S}$ & $\mathbb{R} ^{80}$ \\
-        Reward Space $\mathcal{R}$ & $[0,1]$ \\
+        Reward Space $\mathcal{R}$      & $[0,1]$            \\
         \bottomrule
     \end{tabular}
     \caption{RL Framework Space Definition}
@@ -24,36 +83,69 @@
 
 
 \begin{table}[h]
-\centering
-\begin{tabular}{ll}
-\toprule
-\textbf{Parameter} & \textbf{Value} \\
-\midrule
-\multicolumn{2}{c}{\textbf{Training Parameters}} \\
-Time Horizon & $2048$ \\
-Minibatch size & $4096$ \\
-Num Minibatch & $32$ \\
-Number of Epochs & $10$ \\
-\midrule
-\multicolumn{2}{c}{\textbf{PPO Algorithm Parameters}} \\
-Clipping & $0.3$ \\
-KL Target & Not Implemented \\
-KL Initialization & Not Implemented \\
-Discount Factor $\gamma$ & $0.99$ \\
-GAE Parameter $\lambda$ & $0.95$ \\
-\midrule
-\multicolumn{2}{c}{\textbf{Coefficients}} \\
-Value Function Coefficient & $1.0$ \\
-Entropy Coefficient $\beta$ & $0.01$ \\
-\midrule
-\multicolumn{2}{c}{\textbf{Optimization Parameters}} \\
-Learning Rate & $0.0003$ \\
-Maximum Gradient Norm & $0.5$ \\
-\bottomrule
-\end{tabular}
-\caption{PPO Hyperparameters}
+    \centering
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Parameter}          & \textbf{Value}          \\
+        \midrule
+        \multicolumn{2}{c}{\textbf{Training Parameters}}      \\
+        Time Horizon                & $2048$                  \\
+        Minibatch size              & $4096$                  \\
+        Num Minibatch               & $32$                    \\
+        Number of Epochs            & $10$                    \\
+        \midrule
+        \multicolumn{2}{c}{\textbf{PPO Algorithm Parameters}} \\
+        Clipping                    & $0.3$                   \\
+        KL Target                   & Not Implemented         \\
+        KL Initialization           & Not Implemented         \\
+        Discount Factor $\gamma$    & $0.99$                  \\
+        GAE Parameter $\lambda$     & $0.95$                  \\
+        \midrule
+        \multicolumn{2}{c}{\textbf{Coefficients}}             \\
+        Value Function Coefficient  & $1.0$                   \\
+        Entropy Coefficient $\beta$ & $0.01$                  \\
+        \midrule
+        \multicolumn{2}{c}{\textbf{Optimization Parameters}}  \\
+        Learning Rate               & $0.0003$                \\
+        Maximum Gradient Norm       & $0.5$                   \\
+        \bottomrule
+    \end{tabular}
+    \caption{PPO Hyperparameters}
 \end{table}
+
+Given the high complexity of the problem, the network architecture composed of two separate networks, one for the policy and one for the value function, has been enlarged in order to increase the capacity of the network to learn the task and to avoid the need of a large number of training iterations.
+
+The policy network is composed of two hidden layers of size $64$ and $64$ respectively, with a \ac{ReLU} activation function. The value function network is composed of two hidden layers of size $64$ and $64$ respectively, with a \ac{ReLU} activation function. The output of the policy network is a vector of size $23$. The output of the value function network is a scalar, which is then used to compute the advantage function. The \cref{fig:rlarchitecture} shows the architecture of the \ac{RL} framework.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/rl_architecture.png}
+    \caption{TOBE CHANGED RL Framework Architecture: Actor-Critic Network}
+    \label{fig:rlarchitecture}
+\end{figure}
+
+The \ac{RL} framework has been implemented using the \textit{Stable Baselines 3} library \cite{raffin_stable-baselines3_2021}. The \ac{RL} framework has been trained for $10$M steps, which corresponds to $10$ epochs. The INSERT FIGURE below represents the main metrics collected in the training process. In particular the figure shows the mean reward, the mean episode length, the mean value loss and the mean policy loss. The mean reward is computed as the mean of the last $100$ rewards. The mean episode length is computed as the mean of the last $100$ episode lengths. The mean value loss is computed as the mean of the last $100$ value losses. The mean policy loss is computed as the mean of the last $100$ policy losses. The mean reward and the mean episode length are computed at the end of each epoch. The mean value loss and the mean policy loss are computed at the end of each minibatch.
 
 
 \section{Evolutionary Algorithm Problem Definition}
 
+The evolutionary algorithm has been used in the codesign loop to select motor parameters from a set of possible values. The evolutionary algorithm has been implemented using the \textit{DEAP} library CITE.
+
+After a preliminary analysis of the problem, the following parameters have been selected:
+
+\begin{table}
+    \centering
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Parameter}    & \textbf{Value} \\
+        \midrule
+        Population Size       & $100$          \\
+        Number of Generations & $100$          \\
+        Crossover Probability & $0.5$          \\
+        Mutation Probability  & $0.2$          \\
+        \bottomrule
+    \end{tabular}
+    \caption{Evolutionary Algorithm Hyperparameters}
+\end{table}
+
+Given the single objective of the optimization problem, the \ac{NSGA}-III algorithm has been selected as the evolutionary algorithm, as it allows to find a set of solutions that are all Pareto optimal.
