@@ -1,16 +1,14 @@
-# Deep RL for Advanced Codesign of High Performance Humanoid Robots
+# Differentiable Simulators Empowered Codesign of Humanoid Robots via Deep Reinforcement Learning
 
-This repository contains the LaTeX source files for my thesis titled "Deep Reinforcement Learning for Advanced Codesign of High Performance Humanoid Robots." 
+This repository contains the LaTeX source files for my thesis titled "**Differentiable Simulators Empowered Codesign of Humanoid Robots via Deep Reinforcement Learning**." 
 The thesis explores the application of deep reinforcement learning (RL) techniques in the collaborative optimization of humanoid robots' hardware, software, and control algorithms.
 
 ## Overview
 
-- **Thesis Title**: Deep RL for Humanoid Robot Codesign
+- **Thesis Title**: Differentiable Simulators Empowered Codesign of Humanoid Robots via Deep Reinforcement Learning
 - **Author**: Filippo Luca Ferretti
 - **University**: Politecnico di Milano
 - **Program**: Mechanical Engineering
-- **Advisor**: TBD
-- **Co-Advisor(s)**: TBD
 
 ## Overleaf Integration
 
