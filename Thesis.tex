@@ -191,17 +191,6 @@ Qui va l'Abstract in lingua italiana della tesi seguito dalla lista di parole ch
 %-------------------------------------------------------------------------
 %	THESIS MAIN TEXT
 %-------------------------------------------------------------------------
-% In the main text of your thesis you can write the chapters in two different ways:
-%
-%(1) As presented in this template you can write:
-%    \chapter{Title of the chapter}
-%    *body of the chapter*
-%
-%(2) You can write your chapter in a separated .tex file and then include it in the main file with the following command:
-%    \chapter{Title of the chapter}
-%    \input{chapter_file.tex}
-%
-% Especially for long thesis, we recommend you the second option.
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
 \mainmatter % Begin numeric (1,2,3...) page numbering
@@ -211,14 +200,14 @@ Qui va l'Abstract in lingua italiana della tesi seguito dalla lista di parole ch
 % --------------------------------------------------------------------------
 % \include{00-Chapter}
 
-\include{Chapters/00-Prologue}
-\include{Chapters/01-}
-\include{Chapters/03-PhysicsSimulators}
-\include{Chapters/04-DeepRL}
-\include{Chapters/05-GA}
-\include{Chapters/06-MotorDynamics}
-\include{Chapters/07-Codesign}
+\include{Chapters/000-Prologue}
+\include{Chapters/001-Introduction}
 
+\include{Chapters/01-MotorDynamics}
+\include{Chapters/02-PhysicsSimulators}
+\include{Chapters/03-CodesignRL}
+\include{Chapters/04-ResultsDiscussion}
+\include{Chapters/05-Conclusions}
 \include{Chapters/99-Epilogue}
 
 \include{Front_Back_Matter/Acronym}

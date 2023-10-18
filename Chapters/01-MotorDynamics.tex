@@ -1,5 +1,5 @@
 \chapter{Implementing Motors in Rigid Multibody Algorithms}
-\label{chp:06-MotDyn}
+\label{chp:MotorDynamics}
 
 This chapter describes the formalism and the algorithms involved in the conditioning of multibody systems behavior, taking into account motor dynamics in the framework of recursive computation methods. First, a mathematical groundwork for characterizing the dynamics of a floating-base multibody system is presented, setting a convention that is used throughout this work. Then, the problem of injecting motor parameters in the \ac{EoM} is discussed and finally the core implementation in recursive algorithms is argued.
 
@@ -18,10 +18,15 @@ In the case of a rigid body, the velocity of a point $P$ attached to the body re
 where $\bar{OP}$ is the position vector of $P$ with respect to $O$. This holds for any point $P$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
 
 \begin{equation}
-    \mathcal{D} _O = \left{ \mathbf{d} _{O _x}, \mathbf{d} _{O _y}, \mathbf{d} _{O _z}, \mathbf{d} _x, \mathbf{d} _y, \mathbf{d} _z \right} \in \mathcal{M} ^6
+    \mathcal{D} _O = \{ \mathbf{d} _{O _x}, \mathbf{d} _{O _y}, \mathbf{d} _{O _z}, \mathbf{d} _x, \mathbf{d} _y, \mathbf{d} _z \} \subset \mathcal{M} ^6
 \end{equation}
 
 where $\mathcal{M} ^6$ is the space of 6D vectors, defining a Pl\"ucker coordinate system on $\mathcal{M} ^6$.
+
+
+\dots
+
+\paragraph{Spatial Velocity} \dots The spatial velocity of a rigid body is defined as:
 
 \begin{equation}
     \mathbf{v} _P = \begin{bmatrix}
@@ -32,7 +37,14 @@ where $\mathcal{M} ^6$ is the space of 6D vectors, defining a Pl\"ucker coordina
 
 where $\mathbf{v} _P$ is the linear velocity of the point $P$ and $\boldsymbol{\omega} _P$ is the angular velocity of the body.
 
+\paragraph{Spatial Forces} \dots The spatial force acting on a rigid body is defined as:
 
+\begin{equation}
+    \mathbf{f} = \begin{bmatrix}
+        \mathbf{f} \\
+        \boldsymbol{\tau}
+    \end{bmatrix}
+\end{equation}
 
 \section{Problem Formalization}
 
