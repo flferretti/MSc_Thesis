@@ -1,0 +1,59 @@
+\label{chp:001-Introduction}
+
+\chapter{Introduction}
+
+\section{Motivation and Objectives}
+
+Robots are often associated with their capacity to move and interact with the environment, known as motion intelligence. We picture robots navigating through complex spaces, picking up objects, and performing various tasks. However, a critical aspect that is sometimes overlooked is the physical design of the robot's body.
+
+The two fundamental objectives in the framework of robotics are achieving energy efficiency and high performance. Energy efficiency involves a robot's ability to carry out tasks using minimal energy, which is crucial for battery-powered mobile robots. Performance, on the other hand, pertains to how effectively the robot can accomplish its intended tasks, exploting it's morphology and the environment to its advantage.
+
+Thinking of a robot's hardware as its body, this dictates its ability to perform tasks and its energy efficiently, just as in car's design the materials used, the physical shape and size, impacts its speed, fuel efficiency, and maneuverability,.
+
+The morphological and physical properties of a robot's hardware are often neglected, as mainly provided by the manufacturer, and the research is focused on the development of the robot's motion intelligence. However, the robot's hardware plays a pivotal role in achieving energy efficiency and high performance.
+Sometimes, during the development of robots, particularly regarding their control systems, the physical aspects of the robot's body are treated as unalterable components. In such cases, the design of the robot's software and algorithms may not consider how the body can be optimized for specific tasks, potentially leading to inefficiencies and limitations in the robot's performance.
+
+Conversely, when engineers design the physical structure of the robot, they may not always take into account the specific tasks the robot is meant to perform. The lack of alignment between the robot's hardware and its intended functions can result in suboptimal designs that hinder the robot's efficiency and effectiveness in real-world applications.
+
+In essence, achieving optimal performance and energy efficiency in robotics requires a holistic approach. It's not just about making a robot smart but also crafting a body that aligns with its intended tasks. By considering both the robot's motion intelligence and hardware together, we can create robots that are not only intelligent but also proficient and economical in their actions.
+
+When dealing with humanoid robotics, the intricacy of feature engineering it is often time-consuming, hardly flexible and might bring to sub-optimal assets. Furthermore, the complexity given by the realistic multibody dynamics involving friction, contacts, elasticity and gravity might be restricting when there is the need for the robot to adapt to new scenarios.
+
+\dots
+
+In recent years, the field of robotics has been propelled by the combination of artificial intelligence and mechanical design. Such fusion pushed the frontiers of applications that brought to an inexorable increase of the need to face progressively harder challenges and tasks. However, it is the application of deep reinforcement learning that has truly unlocked their potential, propelling them into realms of unprecedented intelligence, adaptability and interaction.
+
+Picture a robot capable of physically interacting with objects, learning complex manipulation skills that mimic human dexterity, walking robustly and effortlessly adapting to novel scenarios without explicit programming. These visions are rapidly becoming a reality, thanks to the convergence of deep \ac{RL} and humanoid robot codesign.
+
+Furthermore, ...
+
+\dots
+
+The work aims to provide a comprehensive understanding of the state of the art in this rapidly evolving field, identify potential avenues for future research and contribute to the innovation by exploring a new path of embodied intelligence and reinforcement learning applied to humanoid robots codesign.
+
+\section{Contributions}
+
+The main contributions of this work can be summarized as follows:
+
+\begin{enumerate}
+    \item A comprehensive review of the state of the art in the field of humanoid robot codesign and reinforcement learning.
+    \item An in-depth analysis and revamping of a differentiable physics simulator, with a focus on contact dynamics and forward dynamics computation.
+    \item A novel formulation for the computation of forward dynamics in fast and effective recursive rigid body dynamics algorithms that includes the contributions of motor dynamics.
+    \item A novel framework for the codesign of humanoid robots, that exploits the potential of deep reinforcement learning and genetic algorithms.
+    \item A set of experiments that demonstrate the effectiveness of the proposed framework.
+\end{enumerate}
+
+
+\subsection*{Outline}
+
+The present work is organized as follows:
+
+\begin{description}
+
+    \item[{\hyperref[chp:MotorDynamics]{In the first chapter}}] The implementation of a recursive rigid body dynamics algorithm is presented, along with the derivation of the equations of motion for a generic multibody system.
+    \item[{\hyperref[chp:PhysicsSimulators]{In the second chapter}}] The current panorama of physics simulators is presented, with the focus on the differentiable simulators and in particular on the one exploited and modified for the purpose of this work.
+    \item[{\hyperref[chp:CodesignRL]{In the third chapter}}] The current state of the art in the field of codesign and reinforcement learning is presented, furthermore the methods and the main challenges of the implementation of a complete codesign framework that exploits the potential of reinforcement learning and genetic algorithms are discussed.
+    \item[{\hyperref[chp:ResultsDiscussion]{In the fourth chapter}}] The results of the experiments are presented and discussed, with a focus on the analysis of the performance of the different algorithms and the comparison between the different approaches.
+    \item[{\hyperref[chp:Conclusions]{In the fifth chapter}}] The conclusions of the present work are drawn, with an eye on the future developments and the potential applications of the proposed framework.
+
+\end{description}
