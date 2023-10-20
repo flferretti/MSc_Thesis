@@ -33,6 +33,12 @@
 % New font size
 \newcommand\numfontsize{\@setfontsize\Huge{200}{60}}
 
+% Title format: part 
+\titleformat{\part}[hang]
+{\centering\fontsize{50}{20}\selectfont\bfseries}{\textcolor{bluepoli}{Part
+        \thepart\hsp\hspace{8mm}}\textcolor{bluepoli}{| }\hsp}{1pt}{\Huge\bfseries
+    \textcolor{bluepoli} }
+
 % Title format: chapter
 \titleformat{\chapter}[hang]{
 \fontsize{50}{20}\selectfont\bfseries\filright}{\textcolor{bluepoli} \thechapter\hsp\hspace{2mm}\textcolor{bluepoli}{|   }\hsp}{0pt}{\huge\bfseries \textcolor{bluepoli}
