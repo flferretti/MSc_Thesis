@@ -83,6 +83,17 @@
 			\vfill
 }}}
 
+\newcommand\BackgroundPicTL{
+    \put(-150,330){%
+        \parbox[b][\paperheight]{\paperwidth}{%
+            \vfill
+            \centering
+            \transparent{0.4}
+            \includegraphics[width=0.70\paperwidth]{./raggiera_polimi.eps}
+            \vfill
+        }}
+}
+
 \RequirePackage{xkeyval} % Handling keyword options.
 
 % Define keys for title pages

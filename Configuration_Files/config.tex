@@ -34,10 +34,13 @@
 \newcommand\numfontsize{\@setfontsize\Huge{200}{60}}
 
 % Title format: part 
-\titleformat{\part}[hang]
-{\centering\fontsize{50}{20}\selectfont\bfseries}{\textcolor{bluepoli}{Part
-        \thepart\hsp\hspace{8mm}}\textcolor{bluepoli}{| }\hsp}{1pt}{\Huge\bfseries
-    \textcolor{bluepoli} }
+\titleformat{\part}[block]{
+    \thispagestyle{empty}
+    \AddToShipoutPicture*{\BackgroundPicTR} % TODO: remove?
+    \centering\fontsize{40}{20}\selectfont\bfseries}{\textcolor{bluepoli}
+    {Part   \thepart\hsp\hspace{5mm}}\textcolor{bluepoli}{| }\hsp}{1pt}
+{\Huge\bfseries\textcolor{bluepoli}
+}
 
 % Title format: chapter
 \titleformat{\chapter}[hang]{
