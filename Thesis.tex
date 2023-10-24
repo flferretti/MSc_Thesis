@@ -69,9 +69,9 @@
 \usepackage{algorithmic}
 
 % PACKAGES FOR REFERENCES & BIBLIOGRAPHY
-\usepackage[colorlinks=true,linkcolor=black,anchorcolor=black,citecolor=black,filecolor=black,menucolor=black,runcolor=black,urlcolor=black]{hyperref} % Adds clickable links at references
+\usepackage[colorlinks=true,linkcolor=black,anchorcolor=black,citecolor=black,filecolor=black,menucolor=black,runcolor=black,urlcolor=webbrown]{hyperref} % Adds clickable links at references
 \usepackage{cleveref}
-\usepackage[square, numbers, sort&compress]{natbib} % Square brackets, citing references with numbers, citations sorted by appearance in the text and compressed
+\usepackage[authoryear, square]{natbib} % Square brackets, citing references with numbers, citations sorted by appearance in the text and compressed
 \bibliographystyle{abbrvnat} % You may use a different style adapted to your field
 
 % OTHER PACKAGES
@@ -92,7 +92,8 @@
 \newcommand{\bea}{\begin{eqnarray}} % Shortcut for equation arrays
 \newcommand{\eea}{\end{eqnarray}}
 \newcommand{\e}[1]{\times 10^{#1}}  % Powers of 10 notation
-
+% \def\bflabel#1{{\acsfont{#1}\hfill}}
+%   \def\aclabelfont#1{\acsfont{#1}}
 %----------------------------------------------------------------------------
 %	ADD YOUR PACKAGES (be careful of package interaction)
 %----------------------------------------------------------------------------
@@ -108,13 +109,10 @@
 \usepackage[bb=boondox]{mathalfa}
 \usepackage{booktabs}
 \usepackage{amsmath}
-\usepackage{subcaption}
-\usepackage{subfig}
 
 \definecolor{webgreen}{rgb}{0,.5,0}
 \definecolor{webbrown}{rgb}{.6,0,0}
 
-\usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usetikzlibrary{positioning}
 
@@ -194,6 +192,9 @@ Qui va l'Abstract in lingua italiana della tesi seguito dalla lista di parole ch
 \thispagestyle{empty}
 \cleardoublepage
 
+\include{Front_Back_Matter/Acronym}
+\include{Front_Back_Matter/Symbols}
+
 %-------------------------------------------------------------------------
 %	THESIS MAIN TEXT
 %-------------------------------------------------------------------------
@@ -204,19 +205,22 @@ Qui va l'Abstract in lingua italiana della tesi seguito dalla lista di parole ch
 % --------------------------------------------------------------------------
 % NUMBERED CHAPTERS % Regular chapters following
 % --------------------------------------------------------------------------
-% \include{00-Chapter}
 
-\include{Chapters/000-Prologue}
-\include{Chapters/001-Introduction}
+\include{Chapters/00-Prologue}
 
-\include{Chapters/01-MotorDynamics}
-\include{Chapters/02-PhysicsSimulators}
-\include{Chapters/03-CodesignRL}
-\include{Chapters/04-ResultsDiscussion}
-\include{Chapters/05-Conclusions}
+\part{Background}
+\include{Chapters/Background/01-MotorDynamics}
+\include{Chapters/Background/02-PhysicsSimulators}
+\include{Chapters/Background/03-RLGA}
 
-\include{Front_Back_Matter/Acronym}
-\include{Front_Back_Matter/Symbols}
+\part{Contributions}
+\include{Chapters/Contributions/04-ABA}
+\include{Chapters/Contributions/05-JaxSim}
+\include{Chapters/Contributions/06-CodesignRL}
+\include{Chapters/Contributions/97-ResultsDiscussion}
+\include{Chapters/Contributions/98-Conclusions}
+
+\include{Chapters/99-Epilogue}
 %-------------------------------------------------------------------------
 %	BIBLIOGRAPHY
 %-------------------------------------------------------------------------
