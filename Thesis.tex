@@ -70,8 +70,8 @@
 
 % PACKAGES FOR REFERENCES & BIBLIOGRAPHY
 \usepackage[colorlinks=true,linkcolor=black,anchorcolor=black,citecolor=black,filecolor=black,menucolor=black,runcolor=black,urlcolor=webbrown]{hyperref} % Adds clickable links at references
-\usepackage{cleveref}
-\usepackage[authoryear, square]{natbib} % Square brackets, citing references with numbers, citations sorted by appearance in the text and compressed
+\usepackage[capitalise,noabbrev]{cleveref}
+\usepackage[authoryear,square]{natbib} % Square brackets, citing references with numbers, citations sorted by appearance in the text and compressed
 \bibliographystyle{abbrvnat} % You may use a different style adapted to your field
 
 % OTHER PACKAGES
@@ -110,7 +110,6 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 
-
 \usepackage{tikz-3dplot}
 \usetikzlibrary{positioning}
 
@@ -140,7 +139,7 @@
 \frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the preamble pages
 
 \puttitle{
-    title=Differentiable Simulators Empowered Codesign of Humanoid Robots via Deep Reinforcement Learning, % Title of the thesis
+    title=Hardware Accelerated Simulators Empowered Codesign of Humanoid Robots via Deep Reinforcement Learning, % Title of the thesis
     name=Filippo Luca Ferretti, % Author Name and Surname
     course=Mechanical Engineering - Ingegneria Meccanica, % Study Programme (in Italian)
     ID  = 994428,  % Student ID number (numero di matricola)
@@ -208,12 +207,12 @@ Qui va l'Abstract in lingua italiana della tesi seguito dalla lista di parole ch
 
 \include{Chapters/00-Prologue}
 
-\part{Background}
-\include{Chapters/Background/01-MotorDynamics}
+\part{Background}\label{part:background}
+\include{Chapters/Background/01-RBDynamics}
 \include{Chapters/Background/02-PhysicsSimulators}
 \include{Chapters/Background/03-RLGA}
 
-\part{Contributions}
+\part{Contributions}\label{part:contributions}
 \include{Chapters/Contributions/04-ABA}
 \include{Chapters/Contributions/05-JaxSim}
 \include{Chapters/Contributions/06-CodesignRL}
