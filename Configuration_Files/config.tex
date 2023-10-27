@@ -3,8 +3,8 @@
 
 % Custom theorem environments
 \declaretheoremstyle[
-  headfont=\color{bluepoli}\normalfont\bfseries,
-  bodyfont=\color{black}\normalfont\itshape,
+    headfont=\color{bluepoli}\normalfont\bfseries,
+    bodyfont=\color{black}\normalfont\itshape,
 ]{colored}
 
 % Set-up caption colors
@@ -24,11 +24,11 @@
 \newcounter{algsubstate}
 \renewcommand{\thealgsubstate}{\alph{algsubstate}}
 \newenvironment{algsubstates}
-  {\setcounter{algsubstate}{0}%
-   \renewcommand{\STATE}{%
-     \stepcounter{algsubstate}%
-     \Statex {\small\thealgsubstate:}\space}}
-  {}
+{\setcounter{algsubstate}{0}%
+    \renewcommand{\STATE}{%
+        \stepcounter{algsubstate}%
+        \Statex {\small\thealgsubstate:}\space}}
+{}
 
 % New font size
 \newcommand\numfontsize{\@setfontsize\Huge{200}{60}}
@@ -44,7 +44,7 @@
 
 % Title format: chapter
 \titleformat{\chapter}[hang]{
-\fontsize{50}{20}\selectfont\bfseries\filright}{\textcolor{bluepoli} \thechapter\hsp\hspace{2mm}\textcolor{bluepoli}{|   }\hsp}{0pt}{\huge\bfseries \textcolor{bluepoli}
+    \fontsize{50}{20}\selectfont\bfseries\filright}{\textcolor{bluepoli} \thechapter\hsp\hspace{2mm}\textcolor{bluepoli}{|   }\hsp}{0pt}{\huge\bfseries \textcolor{bluepoli}
 }
 
 % Title format: section
@@ -68,12 +68,12 @@
 \makeatletter
 % Renewcommand: cleardoublepage including the background pic
 \renewcommand*\cleardoublepage{%
-  \clearpage\if@twoside\ifodd\c@page\else
-  \null
-  \AddToShipoutPicture*{\BackgroundPic}
-  \thispagestyle{empty}%
-  \newpage
-  \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+    \clearpage\if@twoside\ifodd\c@page\else
+            \null
+            \AddToShipoutPicture*{\BackgroundPic}
+            \thispagestyle{empty}%
+            \newpage
+            \if@twocolumn\hbox{}\newpage\fi\fi\fi}
 \makeatother
 
 %For correctly numbering algorithms

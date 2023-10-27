@@ -72,6 +72,7 @@
 \usepackage[colorlinks=true,linkcolor=black,anchorcolor=black,citecolor=black,filecolor=black,menucolor=black,runcolor=black,urlcolor=webbrown]{hyperref} % Adds clickable links at references
 \usepackage[capitalise,noabbrev]{cleveref}
 \usepackage[authoryear,square]{natbib} % Square brackets, citing references with numbers, citations sorted by appearance in the text and compressed
+\setcitestyle{aysep={,},citesep={,},yysep={,}}
 \bibliographystyle{abbrvnat} % You may use a different style adapted to your field
 
 % OTHER PACKAGES
@@ -108,11 +109,11 @@
 % ]}
 \usepackage[bb=boondox]{mathalfa}
 \usepackage{booktabs}
-\usepackage{amsmath}
 
 \usepackage{tikz-3dplot}
 \usetikzlibrary{positioning}
 
+\usepackage{xspace}
 %----------------------------------------------------------------------------
 %	ADD YOUR DEFINITIONS AND COMMANDS (be careful of existing commands)
 %----------------------------------------------------------------------------
@@ -121,6 +122,8 @@
 \newcommand{\CarlottaSays}[1]{\textcolor{green}{\textbf{Carlotta:} #1}}
 \newcommand{\StefanoSays}[1]{\textcolor{orange}{\textbf{Stefano:} #1}}
 \newcommand{\DanieleSays}[1]{\textcolor{red}{\textbf{Daniele:} #1}}
+
+\newcommand{\cpp}{C\texttt{++}\xspace}
 %----------------------------------------------------------------------------
 %	BEGIN OF YOUR DOCUMENT
 %----------------------------------------------------------------------------
@@ -146,7 +149,7 @@
     course=Mechanical Engineering - Ingegneria Meccanica, % Study Programme (in Italian)
     ID  = 994428,  % Student ID number (numero di matricola)
     advisor= {Prof. Francesco Braghin, Dr. Daniele Pucci},% Supervisor name
-    coadvisor={Dr. Carlotta Sartore, Dr. Stefano Dafarra}, % Co-Supervisor name, remove this line if there is none
+    coadvisor={Carlotta Sartore, Dr. Stefano Dafarra}, % Co-Supervisor name, remove this line if there is none
     academicyear={2022-23},  % Academic Year
 } % These info will be put into your Title page 
 
