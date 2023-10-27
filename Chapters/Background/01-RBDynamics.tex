@@ -81,9 +81,17 @@ where $\mathbf{v} _P$ is the linear velocity of the point $P$ and $\boldsymbol{\
     \end{bmatrix}
 \end{equation}
 
+\subsection{Kinematics}
 
+\subsubsection{Joints and Links}
 
-\section{Problem Formalization}
+A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links correspond to the rigid bodies composing the inertial properties of the system, while the joints are usually modelled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
+
+For the sake of simplicity and without loss of generality, in this work only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases.
+
+The most convenient way to describe motion space of a joint is by defining a joint axis $\mathbf{a} _j \in \mathbb{R} ^3$ and a joint position $s \in \mathbb{R}$
+
+\section{Equation of Motion}
 
 Starting from the equation of motion of a robot manipulator:
 
@@ -203,3 +211,99 @@ or, in a more compact form that will be used for computation as:
     \mathbf{\bar{M}}(q)\dot{\boldsymbol{\nu}} + \mathbf{h}(q,\boldsymbol{\nu}) = \mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^T \mathbf{f} - \bar{\mathbf{K _v}}\boldsymbol{\nu}
 \end{equation}
 
+
+
+\section{Impacts and Contacts}
+
+\subsection{Smooth Impacts}
+
+In a high incident velocity impact between two solids, some of the kinetic energy is transferred to vibrational model. This is due to the fact that the contact in smooth impacts is not perfectly anelastic, hence the partial elasticities of the materials involved in the collision induces vibrational modes in the system.
+
+Considering a point particle with mass $m$ and position $\mathbf{q} : \mathbb{R} \rightarrow \mathbb{R}$ in a one-dimensional space, compliant with a spring with stiffness $k$ and a damper with damping coefficient $c$, the resulting force generated can be defined as:
+
+\begin{equation}
+    F = \begin{cases}
+        -k\mathbf{q} - c\dot{\mathbf{q}} & \text{if } \mathbf{q} > 0    \\
+        0                                & \text{if } \mathbf{q} \leq 0
+    \end{cases}
+\end{equation}
+
+Considering an initial condition $\mathbf{q}(t=0) = 0$ and $\dot{\mathbf{q}}(t=0) = v_0 > 0$, i.e. the particle starts at the origin but moves towards the penetration region, will result in an active force $F(t) = -k\mathbf{q}(t) - c\dot{\mathbf{q}}(t)$ that will be applied to the particle until it reaches the equilibrium position $\mathbf{q} = 0$. The resulting motion will be a damped oscillation that can be derived from the Lagrange equation of motion:
+
+\begin{equation}
+    \frac{\partial}{\partial t} \left( \frac{\partial \mathcal{L}}{\partial \dot{\mathbf{q}}} \right) - \frac{\partial \mathcal{L}}{\partial \mathbf{q}} = 0
+\end{equation}
+
+where $L$ is the Lagrangian of the system defined as:
+
+\begin{equation}
+    \mathcal{L} = \mathcal{T} - \mathcal{V} = \frac{1}{2}m\dot{\mathbf{q}}^2 - \frac{1}{2}k\mathbf{q}^2
+\end{equation}
+
+which yields the following equation of motion:
+
+\begin{equation}
+    \ddot{\mathbf{q}} + \underbrace{\frac{c}{m}} _{\omega ^2} \dot{\mathbf{q}} + \underbrace{\frac{k}{m}} _\gamma \mathbf{q} = 0
+\end{equation}
+
+where $\omega$ is the natural frequency of the system and $\gamma$ can be used to declare the damping ratio $\zeta = \frac{\gamma}{2\omega}$.
+
+The solution of the resulting equation is the one of a first order linear \ac{ODE}:
+
+\begin{equation}
+    \mathbf{q}(t) = \mathbf{q}_0 e^{-\zeta \omega t} \cos(\omega \sqrt{1 - \zeta ^2} t)
+\end{equation}
+
+which implies an oscillatory regime for $\zeta < 1$ and an exponential decay for $\zeta > 1$, also called damped regime.
+
+\subsection{Non-smooth Impacts}
+
+Considering two bodies and given points $p ^{(0)}$ fixed on body 0 and $p ^{(1)}$ fixed on body 1, the \textit{signed} distance between the two should be non-negative i.e. $c(p ^{(0)}, p ^{(1)}) \geq 0$.
+
+The impact involves forces that changes to rapidly to cause jump discontinuities in the velocities $\dot{q}$. Therefore it is possible to state that the velocity before and after the impact at time $t_i$ differ:
+
+\begin{equation}
+    \lim _{t \uparrow t _i} \dot{q} = \dot{q} _{-} \neq \dot{q} _{+} = \lim _{t \downarrow t _i} \dot{q}
+\end{equation}
+
+Mathematically, the trajectories $q(t)$ remain continuous while the velocities $\dot{q}(t)$ exhibit jump discontinuities, hence accelerations $\ddot{q}(t)$ are not defined at impact times.
+
+Considering the case of a spherical rigid body impacting an infinite plane, the convexity of the two objects implies that the closest point between the two can be identified uniquely.
+Writing the signed distance function respect to the rigid body center of mass position $x(t)$, we get that $c(q(t)) = \tilde{c}(x(t)) \geq 0$.
+
+With this approach we can define two configuration manifold: $Q _1 \in \mathbb{R} ^2 \times \mathrm{SO}3$ for the planar motion and $Q _1 \in \mathbb{R} ^3 \times \mathrm{SO}3$ for the spatial motion, where $\mathrm{SO}3$ is the group of rigid rotations in three dimensions. We define a Lagrangian mulitplier $\nu \in \mathbb{R}$ corresponding to the magnitude of the force acting in the normal direction at the contact.
+
+In a discrete mechanics framework, defining $h$ the fixed time step for all steps, if the violation in the impact point at step $i$ called $q _i$ is not too big, a good approximation of the incident velocity is:
+
+\begin{equation}
+    v _{-} = \frac{q _i - q _{i-1}}{h}
+\end{equation}
+
+To estimate the outbound velocity $v _{+}$ instead, we impose the discrete impulsive Newton impact law in one spatial dimension as:
+
+\begin{equation}
+    v _{+} = -\psi v _{-}
+\end{equation}
+
+where $\psi \in [0,1]$ is the \textit{restitution coefficient}.
+
+A perfectly elastic collision corresponds to $\psi = 1$ in which the outbound velocity is the reflection of the incoming one. Now, given that the impulse occur at fixed location $q$, the only change in energy is a kinetic energy change, hence for the Newton-Poisson impact law for a point particle of mass $m$, the change in energy is:
+
+\begin{equation}
+    E _{+} - E _{-} = T(q, v _{+}) - T(q, v _{-}) = (\psi ^2 - 1) T(q, v _{-}) \leq 0
+\end{equation}
+
+where $T(q, v)$ is the kinetic energy.
+
+To generalize in three dimensions, we define an estimate of the normal component of the incident velocity respect to the contact manifold as $C _k v _{-}$ where $C _k$ is the $n _c \times n$ Jacobian matrix of the $n _c$ contact surface evaluated at the discrete time $k$. Using the complementarity formulation, assuming the presence of other inequality constraints with the agglomerated Jacobian $G$, adding regularization parameters with diagonal non-negative matrices $\Sigma$ and $\Xi$, and considering the diagonal matrix for of restitution coefficients $\Psi = \text{diag}(\psi _1, \psi _2, \dots, \psi _{n _c}),  \psi _i \in [0, 1]$, we get the following linear complementarity problem (LCP):
+
+\begin{equation}
+    \begin{rcases}
+        Mv _{+} - G ^T _k \lambda - C ^T _k v & = M v _{-}    \\
+        G _k v _{+} + \Sigma \lambda          & = G _k v _{-} \\
+        C _k v _{+} + \Psi C v _{-} + \Xi v   & = w           \\
+    \end{rcases} \quad \text{subject to
+        :  } \quad v \geq 0 \perp w \geq 0
+\end{equation}
+
+By solving the optimization above, it can be shown that this leads to $T _{+} \leq T _{-}$, therefore the impulsive stage can only decrease the kinetic energy.
