@@ -1,4 +1,4 @@
-\chapter{Deep Reinforcement Learning}
+\chapter{Reinforcement Learning and Genetic Algorithms}
 \label{chp:back_RLGA}
 
 \section{Formalism for Reinforcement Learning}
@@ -76,6 +76,14 @@ A potentially good solution might be to take the exponential average as input to
 
 where $\lambda$ is the exponential weight discount. If this is set to $0$, then we have exactly the \ac{TD} advantage estimate (high bias, low variance) and if we set it to $1$, this is equivalent of choosing $i=n$ for the extended advantage estimate (low bias, high variance).
 
+\paragraph{Kullback-Leibler Divergence} The \ac{KL} divergence is a measure of how one probability distribution is different from a second, reference probability distribution. In other words, the \ac{KL} divergence measures the expected number of extra bits required to code samples from one distribution, given that we are using a code based on the reference distribution. The \ac{KL} divergence is defined as:
+
+\begin{equation}
+    \mathrm{KL}(P||Q) = \mathbb{E} _{x \sim P} \left[ \log \frac{P(x)}{Q(x)} \right] \qquad \in \left[0, \infty \right]
+\end{equation}
+
+where $P$ and $Q$ are two probability distributions. The \ac{KL} divergence is not symmetric, i.e. $\mathrm{KL}(P||Q) \neq \mathrm{KL}(Q||P)$. In the framework of reinforcement learning, it is commonly used to have a measure of how much the policy has changed from the previous iteration, in order to avoid too large policy updates, therefore what is actually seeked is the minimization of the \textit{reverse} \ac{KL} divergence $\mathrm{KL}(Q||P)$. In fact, in this mode-seeking behavior, the convergence will be achieved when the policy is close enough to the optimal policy, which is the one that maximizes the expected reward, i.e. when the \ac{KL} divergence is zero.
+
 \subsubsection{Policy Gradient Methods}
 
 The most common optimizer for \ac{NN} parameters is the first-order gradient-based optimization of stochastic objective function update ADAM \cite{kingma_adam_2017}. The \cref{alg:adam}
@@ -130,3 +138,9 @@ updates exponential moving averages of the two gradients, where $\beta_1$ and $\
         \ENDFOR
     \end{algorithmic}
 \end{algorithm}
+
+\section{Evolutionary Algorithms}
+
+Evolutionary algorithm is a family of algorithms that are inspired by the natural selection
+process, in which the fittest individuals are selected to reproduce and pass their genetic
+material to the next generation.
