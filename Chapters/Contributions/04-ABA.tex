@@ -752,3 +752,10 @@ we get to:
         \ENDFOR
     \end{algorithmic}
 \end{algorithm}
+
+\section{Comparison with RNEA}
+
+The main difference between the \ac{ABA} approach and the approach adopted in \ac{RNEA} regards the concretization of the rotors. In fact, the former the former considers the rotors as extra links in the kinematic chain, with their own spatial inertia and dynamic, conditioned by the presence of a viscous friction and subject to a torque proportionally greater respect to the torque perceived by the parent link as show in \ref{fig:ABA_comparison}.
+
+
+\ac{RNEA} instead, considers the rotor inertias as lumped to the parent link, considering that the torque perceived by the parent link is also proportionally greater than the one in output from the motors. The first approach allows therefore to consider a much greater variety of kinematic chains and also it is more computationally efficient.

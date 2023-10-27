@@ -1,7 +1,9 @@
 \chapter{Codesigning Humanoid Robots with Deep Reinforcement Learning}
 \label{chp:contrib_CodesignRL}
 
-\subsection{Reinforcement Learning Problem Definition}
+This chapter will describe the process of designing the codesign loop, exploiting the theoretical foundation regarding deep reinforcement learning and evolutionary algorithms presented in \cref{chp:back_RLGA} and the conditioning of \ac{RBDA}s presented in \cref{chp:contrib_ABA} via a hardware accelerated physics simulator.
+
+\section{Reinforcement Learning Problem Definition}
 
 In the reinforcement learning loop of the codesign process of the humanoid robot, the aim is to find a policy $\pi$ that maximizes the expected return $J(\pi)$, where the return is defined as:
 
@@ -145,9 +147,6 @@ The \ac{RL} framework has been implemented using the \textit{Stable Baselines 3}
 \section{Evolutionary Algorithm Core}
 \label{sec:EvolutionAlgo}
 
-Evolutionary algorithm is a family of algorithms that are inspired by the natural selection
-process, in which the fittest individuals are selected to reproduce and pass their genetic
-material to the next generation.
 
 The evolutionary algorithm has been used in the codesign loop to select motor parameters from a set of possible values. The evolutionary algorithm has been implemented using the \textit{DEAP} library CITE.
 
