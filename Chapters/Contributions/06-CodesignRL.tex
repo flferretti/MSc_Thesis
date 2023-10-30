@@ -5,36 +5,29 @@ This chapter will describe the process of designing the codesign loop, exploitin
 
 \section{Reinforcement Learning Problem Definition}
 
-In the reinforcement learning loop of the codesign process of the humanoid robot, the aim is to find a policy $\pi$ that maximizes the expected return $J(\pi)$, where the return is defined as:
+In the reinforcement learning loop of the codesign process, the aim is to find a policy $\pi$ that maximizes the expected return $J(\pi)$, which is defined as the expected sum of rewards over an infinite horizon:
 
 \begin{equation}
     J(\pi) = \mathbb{E} \left[ \sum_{t=0}^{\infty} \gamma ^t r_t \right]
 \end{equation}
 
-For this particular task the reward function is defined as:
+
+
+\subsection{Cartpole swingup task}
+For the cartpole swingup task, the aim is to find a policy $\pi$ that is able to balance the pole on the cart, which is moving on a rail, and then swingup the pole to the upright position. The reward function is defined as a function of the state of the system, which is composed of the position of the cart $x$, the velocity of the cart $\dot{x}$, the angle of the pole $\theta$ and the angular velocity of the pole $\dot{\theta}$:
 
 \begin{equation}
-    r_t = \gamma_{vel} \dot{s}_x - \gamma_{ctrl}\sum _{j \in \mu} \mathbf{a}_j(t) ^2 + \gamma_{dist} \frac{x}{x_{max}} + \gamma_{balance} \boldsymbol{\varphi}_g + \gamma_{placement} \boldsymbol{\varphi}_{feet} + \gamma_{force} \mathbf{\dot{a}}
+    r = \begin{cases}
+        1 & \text{if } \left| \theta \right| < \theta_{\text{max}} \\
+        0 & \text{otherwise}
+    \end{cases}
 \end{equation}
 
-where:
+where $\theta_{\text{max}}$ is the maximum angle of the pole from the vertical position.
 
-\begin{itemize}
-    \item $\gamma_{vel}$ is the weight of the forward velocity
-    \item $\gamma_{ctrl}$ is the weight of the control penalty
-    \item $\gamma_{dist}$ is the weight of the distance between the robot and the target
-    \item $\gamma_{balance}$ is the weight of the angle of the gravity projection on the ground
-    \item $\gamma_{placement}$ is the weight of the angle of the feet with respect to the terrain
-    \item $\gamma_{force}$ is the weight of the change in the contact forces
-    \item $\dot{s}_x$ is the forward velocity of the robot
-    \item $a_t$ is the action at time $t$
-    \item $x$ is the distance between the robot and the target
-    \item $x_{max}$ is the maximum distance between the robot and the target
-    \item $\Delta \varphi_g$ is the angle of the gravity projection on the ground
-    \item $\Delta \varphi_{feet - terrain}$ is the angle of the feet with respect to the terrain
-    \item $\mathbf{\dot{a}}$ is the change in the contact forces
-    \item $\mu$ is the set of the joints that are being controlled
-\end{itemize}
+
+\subsection{Humanoid locomotion task}
+The humanoid walking task is with no doubt one of the most challenging tasks in the field of robotics. The aim of the task is to find a policy $\pi$ that is able to make the robot walk forward in a possibly \textit{human-like} motion. Given its high complexity, constitued by the necessity of controlling a large number of joints, which drastically increase the dimensionality of the problem and the need of design a contact model that is able to simulate the interaction between the robot and the environment, yet allowing the algorithm to be able to predict the agent's behaviour (as described in \cref{sec:back_contacts}),
 
 The action space is defined as:
 
