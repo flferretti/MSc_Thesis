@@ -7,16 +7,16 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
 
 \paragraph{Spatial Vectors} A spatial vector is a 6D vector that describes the motion of a rigid body in space.
 
-In the case of a rigid body, the velocity of a point $P$ attached to the body respect to a reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\mathbf{\omega}$ about an axis passing through $O$ and its linear component $\mathbf{v} _P$, for which the following relation holds:
+In the case of a rigid body, the velocity of a point $O$ attached to the body respect to a reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\mathbf{\omega}$ about an axis passing through $O$ and its linear component $\mathbf{v} _A$, for which the following relation holds:
 
 \begin{equation}
-    v _P = \mathbf{\omega} \times \bar{OP}
+    v _A = \mathbf{\omega} \times \bar{OP}
 \end{equation}
 
-where $\bar{OP}$ is the position vector of $P$ with respect to $O$. This holds for any point $P$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
+where $\bar{OP}$ is the position vector of $P$ with respect to $O$. This holds for any point $O$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
 
 \begin{equation}
-    \mathcal{D} _O = \{ \mathbf{d} _{O _x}, \mathbf{d} _{O _y}, \mathbf{d} _{O _z}, \mathbf{d} _x, \mathbf{d} _y, \mathbf{d} _z \} \subset \mathcal{M} ^6
+    \mathcal{D} _O = \{\mathbf{d} _x, \mathbf{d} _y, \mathbf{d} _z, \mathbf{d} _{O _x}, \mathbf{d} _{O _y}, \mathbf{d} _{O _z} \} \subset \mathcal{M} ^6
 \end{equation}
 
 where $\mathcal{M} ^6$ is the space of 6D vectors, defining a Pl\"ucker coordinate system on $\mathcal{M} ^6$ as shown in \cref{fig:pluecker}.
@@ -75,46 +75,58 @@ we can define the subspace $\mathrm{S}$ as:
 
 This defines a motion subspace for a system, e.g. defines the directions in which the system is free to move.
 
-\paragraph{Spatial Velocity} \dots The spatial velocity of a rigid body is defined as:
+\paragraph{Spatial Velocity} The spatial velocity of a rigid body is defined as a serialization of the linear and angular velocity of a point $A$ attached to the body. In particular, let $\mathbf{p} _A \in \mathcal{D}_O$ be the position vector of $A$ with respect to $O$, then the spatial velocity of the body is defined as the comoponent-wise derivative of the position vector respect to time:
 
 \begin{equation}
-    \boldsymbol{\nu} _P = \begin{bmatrix}
-        \mathbf{v} _P \\
-        \boldsymbol{\omega} _P
+    \boldsymbol{\nu} _A = \frac{d}{dt} {}^O\mathbf{p} _A =
+    \lim _{\delta t \to 0} \frac{1}{\delta t}
+    \begin{bmatrix}
+        p _{A _x} (t + \delta t)     & - & p _{A _x} (t) \\
+        p _{A _y} (t + \delta t)     & - & p _{A _y} (t) \\
+        p _{A _z} (t + \delta t)     & - & p _{A _z} (t) \\
+        p _{A _{O_x}} (t + \delta t) & - & p _{A _x} (t) \\
+        p _{A _{O_y}} (t + \delta t) & - & p _{A _y} (t) \\
+        p _{A _{O_z}} (t + \delta t) & - & p _{A _z} (t) \\
+    \end{bmatrix}
+    = \begin{bmatrix}
+        \mathbf{v} _A \\
+        \boldsymbol{\omega} _A
     \end{bmatrix}
 \end{equation}
 
-where $\mathbf{v} _P$ is the linear velocity of the point $P$ and $\boldsymbol{\omega} _P$ is the angular velocity of the body.
+where $\mathbf{v} _A$ is the linear velocity of the point $O$ and $\boldsymbol{\omega} _A$ is the angular velocity of the body.
 
 \paragraph{Spatial Acceleration} Given that the spatial velocity decouples the linear and angular components of the motion, defining a property of the body as a whole and not of a single body-fixed point, the spatial acceleration of a rigid body is defined as simply as just the time derivative of its spatial velocity:
 
 \begin{equation}
-    \dot{\boldsymbol{\nu} _P} = \frac{\partial}{\partial t} \begin{bmatrix}
-        \mathbf{v} _P (t) \\
-        \boldsymbol{\omega} _P (t)
+    \dot{\boldsymbol{\nu} _A} = \frac{\partial}{\partial t} \begin{bmatrix}
+        \mathbf{v} _A (t) \\
+        \boldsymbol{\omega} _A (t)
     \end{bmatrix} = \frac{d}{dt} \begin{bmatrix}
-        \mathbf{v} _P (t) \\
-        \boldsymbol{\omega} _P (t)
+        \mathbf{v} _A (t) \\
+        \boldsymbol{\omega} _A (t)
     \end{bmatrix}
     =
     \begin{bmatrix}
-        \dot{\mathbf{v}} _P \\
-        \dot{\boldsymbol{\omega}} _P
+        \dot{\mathbf{v}} _A \\
+        \dot{\boldsymbol{\omega}} _A
     \end{bmatrix}
 \end{equation}
 
-\paragraph{Spatial Forces} The spatial force acting on a rigid body is defined as:
+\paragraph{Spatial Forces} The spatial force acting on a rigid body is defined, in a similar manner as the spatial velocity as a serialization of the linear and the angular components of the wrench acting on the body, in particular it is related to its motion as:
 
 \begin{equation}
     \mathbf{f} = \begin{bmatrix}
         \mathbf{f} \\
         \boldsymbol{\tau}
-    \end{bmatrix}
+    \end{bmatrix} = \mathbf{M}_i \dot{\boldsymbol{\nu}} _i + \boldsymbol{\nu}_i \times ^* \mathbf{M}_i \boldsymbol{\nu}_i
 \end{equation}
 
-\subsection{Kinematics}
+where $\dot{\boldsymbol{\nu}} \in \mathbb{R}^6$ is the spatial acceleration of the body, $\mathbf{M}_i \in \mathbb{R}^{6 \times 6}$ is the spatial inertia matrix of the body and $\boldsymbol{\nu}_i \in \mathbb{R}^6$ is its spatial velocity.
 
-\subsubsection{Joints and Links}
+\section{Kinematics}
+
+\subsection{Joints and Links}
 
 A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links correspond to the rigid bodies composing the inertial properties of the system, while the joints are usually modelled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
 
@@ -153,12 +165,14 @@ The first variation of the action functional can be written as:
 where $\delta \mathbf{q}$ and $\delta \mathbf{\dot{q}}$ are the variations of the generalized coordinates and velocities, respectively. The first variation of the action functional is zero if and only if the integrand is zero, yield the Euler-Lagrange equation:
 
 \begin{equation}
+    \label{eqn:lagrangian}
     \frac{d}{dt} \frac{\partial \mathcal{L}}{\partial \mathbf{\dot{q}}} - \frac{\partial \mathcal{L}}{\partial \mathbf{q}} = 0
 \end{equation}
 
 In the case of a multibody system, once defined a map $\mathbf{M}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$ and a map $\mathbf{C}$ as the generalized Coriolis and centrifugal forces, the equation of motion can be finally obtained \citep{SicilianoKhatib2008}:
 
 \begin{equation}
+    \label{eqn:equation_of_motion}
     \mathbf{M} \mathbf{\ddot{q}} + \mathbf{C} (\mathbf{q}, \mathbf{\dot{q}}) + \mathbf{G} (\mathbf{q}) = \boldsymbol{\tau}
 \end{equation}
 
@@ -176,6 +190,7 @@ The forward dynamics problem consists in computing the joint accelerations of a 
 \subsection{Articulated-Body Algorithm}
 \label{subsec:back_aba}
 
+As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multibody system with a high number of links is computationally expensive, in fact, even using \citet{coppersmith_matrix_1990} algorithm or its optimized version by \citet{vassilevska-williams2012breaking}, which reached a complexity of $\mathcal{O}(n^{2.373})$, the computation of the inverse of the mass matrix is still too expensive for real-time scenarios. That is why recursive methods result to be more suitable for applications where a fast computation of the dynamics is required.
 
 % === FIG: Kynematic Chain === %
 \begin{figure}[h]
@@ -248,7 +263,7 @@ The forward dynamics problem consists in computing the joint accelerations of a 
             rgb(57.64583042689732bp)=(0.88,0.88,0.88);
             rgb(61.33184160505022bp)=(0.96,0.96,0.96);
             rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_pm47npqyx/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
+        \tikzset {_Am47npqyx/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
         \pgfdeclarehorizontalshading{_hbtcw454n}{150bp}{rgb(0bp)=(1,1,1);
             rgb(37.5bp)=(1,1,1);
             rgb(50.08184160505022bp)=(0.95,0.95,0.95);
@@ -282,7 +297,7 @@ The forward dynamics problem consists in computing the joint accelerations of a 
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (159.33,130.95) .. controls (163.31,123.58) and (187.53,128.94) .. (213.43,142.93) .. controls (239.32,156.91) and (257.09,174.22) .. (253.11,181.59) .. controls (249.13,188.96) and (224.91,183.6) .. (199.01,169.62) .. controls (173.12,155.63) and (155.35,138.32) .. (159.33,130.95) -- cycle ;
             \path  [shading=_hjawm1m3k,_3ytgx3jcr] (154.79,133.61) .. controls (151.92,133.71) and (149.51,131.45) .. (149.42,128.58) .. controls (149.32,125.7) and (151.58,123.3) .. (154.45,123.2) .. controls (157.33,123.11) and (159.73,125.36) .. (159.83,128.24) .. controls (159.92,131.11) and (157.67,133.52) .. (154.79,133.61) -- cycle ;
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (154.79,133.61) .. controls (151.92,133.71) and (149.51,131.45) .. (149.42,128.58) .. controls (149.32,125.7) and (151.58,123.3) .. (154.45,123.2) .. controls (157.33,123.11) and (159.73,125.36) .. (159.83,128.24) .. controls (159.92,131.11) and (157.67,133.52) .. (154.79,133.61) -- cycle ;
-            \path  [shading=_hbtcw454n,_pm47npqyx] (520.88,186.7) .. controls (514.23,191.8) and (494.33,176.98) .. (476.44,153.61) .. controls (458.55,130.24) and (449.43,107.17) .. (456.09,102.08) .. controls (462.74,96.98) and (482.63,111.8) .. (500.53,135.17) .. controls (518.42,158.54) and (527.53,181.61) .. (520.88,186.7) -- cycle ;
+            \path  [shading=_hbtcw454n,_Am47npqyx] (520.88,186.7) .. controls (514.23,191.8) and (494.33,176.98) .. (476.44,153.61) .. controls (458.55,130.24) and (449.43,107.17) .. (456.09,102.08) .. controls (462.74,96.98) and (482.63,111.8) .. (500.53,135.17) .. controls (518.42,158.54) and (527.53,181.61) .. (520.88,186.7) -- cycle ;
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (520.88,186.7) .. controls (514.23,191.8) and (494.33,176.98) .. (476.44,153.61) .. controls (458.55,130.24) and (449.43,107.17) .. (456.09,102.08) .. controls (462.74,96.98) and (482.63,111.8) .. (500.53,135.17) .. controls (518.42,158.54) and (527.53,181.61) .. (520.88,186.7) -- cycle ;
             \path  [shading=_4ks716t6n,_igkxxgbt5] (225.88,232.5) .. controls (224.09,228.89) and (223.1,224.93) .. (223.1,220.77) .. controls (223.1,204.2) and (238.77,190.77) .. (258.1,190.77) .. controls (277.43,190.77) and (293.1,204.2) .. (293.1,220.77) .. controls (293.1,224.93) and (292.11,228.89) .. (290.32,232.5) -- cycle ;
             \draw   (225.88,232.5) .. controls (224.09,228.89) and (223.1,224.93) .. (223.1,220.77) .. controls (223.1,204.2) and (238.77,190.77) .. (258.1,190.77) .. controls (277.43,190.77) and (293.1,204.2) .. (293.1,220.77) .. controls (293.1,224.93) and (292.11,228.89) .. (290.32,232.5) -- cycle ;
@@ -360,7 +375,7 @@ The forward dynamics problem consists in computing the joint accelerations of a 
             rgb(61.33184160505022bp)=(0.96,0.96,0.96);
             rgb(100bp)=(0.96,0.96,0.96)}
         \tikzset {_3yz7x95el/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_pe1dgwonr}{150bp}{rgb(0bp)=(1,1,1);
+        \pgfdeclarehorizontalshading{_Ae1dgwonr}{150bp}{rgb(0bp)=(1,1,1);
             rgb(37.5bp)=(1,1,1);
             rgb(50.08184160505022bp)=(0.95,0.95,0.95);
             rgb(57.64583042689732bp)=(0.88,0.88,0.88);
@@ -391,7 +406,7 @@ The forward dynamics problem consists in computing the joint accelerations of a 
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (120.33,220.95) .. controls (124.31,213.58) and (148.53,218.94) .. (174.43,232.93) .. controls (200.32,246.91) and (218.09,264.22) .. (214.11,271.59) .. controls (210.13,278.96) and (185.91,273.6) .. (160.01,259.62) .. controls (134.12,245.63) and (116.35,228.32) .. (120.33,220.95) -- cycle ;
             \path  [shading=_h3pg9rf15,_27lop19l0] (115.79,223.61) .. controls (112.92,223.71) and (110.51,221.45) .. (110.42,218.58) .. controls (110.32,215.7) and (112.58,213.3) .. (115.45,213.2) .. controls (118.33,213.11) and (120.73,215.36) .. (120.83,218.24) .. controls (120.92,221.11) and (118.67,223.52) .. (115.79,223.61) -- cycle ;
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (115.79,223.61) .. controls (112.92,223.71) and (110.51,221.45) .. (110.42,218.58) .. controls (110.32,215.7) and (112.58,213.3) .. (115.45,213.2) .. controls (118.33,213.11) and (120.73,215.36) .. (120.83,218.24) .. controls (120.92,221.11) and (118.67,223.52) .. (115.79,223.61) -- cycle ;
-            \path  [shading=_pe1dgwonr,_3yz7x95el] (561.88,238.7) .. controls (555.23,243.8) and (535.33,228.98) .. (517.44,205.61) .. controls (499.55,182.24) and (490.43,159.17) .. (497.09,154.08) .. controls (503.74,148.98) and (523.63,163.8) .. (541.53,187.17) .. controls (559.42,210.54) and (568.53,233.61) .. (561.88,238.7) -- cycle ;
+            \path  [shading=_Ae1dgwonr,_3yz7x95el] (561.88,238.7) .. controls (555.23,243.8) and (535.33,228.98) .. (517.44,205.61) .. controls (499.55,182.24) and (490.43,159.17) .. (497.09,154.08) .. controls (503.74,148.98) and (523.63,163.8) .. (541.53,187.17) .. controls (559.42,210.54) and (568.53,233.61) .. (561.88,238.7) -- cycle ;
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (561.88,238.7) .. controls (555.23,243.8) and (535.33,228.98) .. (517.44,205.61) .. controls (499.55,182.24) and (490.43,159.17) .. (497.09,154.08) .. controls (503.74,148.98) and (523.63,163.8) .. (541.53,187.17) .. controls (559.42,210.54) and (568.53,233.61) .. (561.88,238.7) -- cycle ;
             \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]    (289.92,196.67) -- (384.71,151.46) ;
             \draw [shift={(387.42,150.17)}, rotate = 154.5] [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]    (17.05,-5.13) .. controls (10.84,-2.18) and (5.16,-0.47) .. (0,0) .. controls (5.16,0.47) and (10.84,2.18) .. (17.05,5.13)   ;
@@ -418,9 +433,7 @@ The forward dynamics problem consists in computing the joint accelerations of a 
         \end{tikzpicture}}}
 \end{figure}
 
-As explained in \cref{sec:back_fd},
-
-the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going up to the root, by considering a joint $i$ interacting with the rest of the kinematic chain through an unknown force $\mathbf{f} _i$ defined as:
+The Articulated-Body Algorithm finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going up to the root, by considering a joint $i$ interacting with the rest of the kinematic chain through an unknown force $\mathbf{f} _i$ defined as:
 
 \begin{equation}
     \mathbf{f} _i = \mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
@@ -439,13 +452,7 @@ where $\mathbf{S} _i$ is the motion subspace of the $i$-th link, $\mathbf{a} _i$
 This yields that once the articulated body inertia and the bais force are know, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints. This is the main advantage of the articulated-body algorithm.
 
 In ABA, first a forward pass is performed to compute the initial articulated body inertia, the initial bias forces and the link velocities, then a backward pass is performed to compute the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain.
-Starting from the Gaussian principle of least constraint, the problem of finding the joint accelerations $\ddot{\mathbf{q}}$ that satisfy the equation of motion:
-
-\begin{equation}
-    \mathbf{M} (\mathbf{q}) \ddot{\mathbf{q}} + \mathbf{C} (\mathbf{q}, \dot{\mathbf{q}}) + \mathbf{G} (\mathbf{q}) = \boldsymbol{\tau}
-\end{equation}
-
-can be formulated as a constrained optimization problem:
+Starting from the Gaussian principle of least constraint, the problem of finding the joint accelerations $\ddot{\mathbf{q}}$ that satisfy the equation of motion already seen in \cref{eqn:equation_of_motion}, which can be formulated as a constrained optimization problem:
 
 \begin{equation}
     \begin{aligned}
@@ -616,7 +623,7 @@ we can identify the following quantities starting from the equations of motion o
             rgb(61.33184160505022bp)=(0.96,0.96,0.96);
             rgb(100bp)=(0.96,0.96,0.96)}
         \tikzset {_gxyzl2ql8/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_pokbkkxvx}{150bp}{rgb(0bp)=(1,1,1);
+        \pgfdeclarehorizontalshading{_Aokbkkxvx}{150bp}{rgb(0bp)=(1,1,1);
             rgb(37.5bp)=(1,1,1);
             rgb(50.08184160505022bp)=(0.95,0.95,0.95);
             rgb(57.64583042689732bp)=(0.88,0.88,0.88);
@@ -649,7 +656,7 @@ we can identify the following quantities starting from the equations of motion o
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (324.59,122.77) .. controls (324.59,114.69) and (345.08,108.14) .. (370.37,108.14) .. controls (395.65,108.14) and (416.14,114.69) .. (416.14,122.77) .. controls (416.14,130.85) and (395.65,137.4) .. (370.37,137.4) .. controls (345.08,137.4) and (324.59,130.85) .. (324.59,122.77) -- cycle ;
             \path  [shading=_xx64avkmf,_d6bvf3ads] (485.49,42.5) .. controls (490.83,47.9) and (481.46,69.38) .. (464.54,90.48) .. controls (447.63,111.58) and (429.58,124.31) .. (424.23,118.9) .. controls (418.88,113.5) and (428.26,92.02) .. (445.18,70.92) .. controls (462.09,49.82) and (480.14,37.09) .. (485.49,42.5) -- cycle ;
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (485.49,42.5) .. controls (490.83,47.9) and (481.46,69.38) .. (464.54,90.48) .. controls (447.63,111.58) and (429.58,124.31) .. (424.23,118.9) .. controls (418.88,113.5) and (428.26,92.02) .. (445.18,70.92) .. controls (462.09,49.82) and (480.14,37.09) .. (485.49,42.5) -- cycle ;
-            \path  [shading=_pokbkkxvx,_gxyzl2ql8] (317.12,126.9) .. controls (322.47,132.3) and (313.09,153.79) .. (296.17,174.89) .. controls (279.26,195.98) and (261.21,208.71) .. (255.86,203.31) .. controls (250.52,197.9) and (259.89,176.42) .. (276.81,155.32) .. controls (293.72,134.22) and (311.77,121.5) .. (317.12,126.9) -- cycle ;
+            \path  [shading=_Aokbkkxvx,_gxyzl2ql8] (317.12,126.9) .. controls (322.47,132.3) and (313.09,153.79) .. (296.17,174.89) .. controls (279.26,195.98) and (261.21,208.71) .. (255.86,203.31) .. controls (250.52,197.9) and (259.89,176.42) .. (276.81,155.32) .. controls (293.72,134.22) and (311.77,121.5) .. (317.12,126.9) -- cycle ;
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (317.12,126.9) .. controls (322.47,132.3) and (313.09,153.79) .. (296.17,174.89) .. controls (279.26,195.98) and (261.21,208.71) .. (255.86,203.31) .. controls (250.52,197.9) and (259.89,176.42) .. (276.81,155.32) .. controls (293.72,134.22) and (311.77,121.5) .. (317.12,126.9) -- cycle ;
             \path  [shading=_i8uv4t2gq,_m8uplal2o] (160.4,145.75) .. controls (154.11,149.69) and (139.04,132.78) .. (126.72,107.99) .. controls (114.4,83.2) and (109.51,59.91) .. (115.79,55.97) .. controls (122.07,52.03) and (137.15,68.94) .. (149.47,93.73) .. controls (161.79,118.53) and (166.68,141.82) .. (160.4,145.75) -- cycle ;
             \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (160.4,145.75) .. controls (154.11,149.69) and (139.04,132.78) .. (126.72,107.99) .. controls (114.4,83.2) and (109.51,59.91) .. (115.79,55.97) .. controls (122.07,52.03) and (137.15,68.94) .. (149.47,93.73) .. controls (161.79,118.53) and (166.68,141.82) .. (160.4,145.75) -- cycle ;
@@ -781,13 +788,8 @@ from which we can derive the recursive relations for the accelerations:
     \end{algorithmic}
 \end{algorithm}
 
-\section{Inverse Dynamics}
-
-\label{sec:back_id}
-
-
 \section{Impacts and Contacts}
-
+\label{sec:back_contacts}
 \subsection{Smooth Impacts}
 
 In a high incident velocity impact between two solids, some of the kinetic energy is transferred to vibrational model. This is due to the fact that the contact in smooth impacts is not perfectly anelastic, hence the partial elasticities of the materials involved in the collision induces vibrational modes in the system.
@@ -801,13 +803,7 @@ Considering a point particle with mass $m$ and position $\mathbf{q} : \mathbb{R}
     \end{cases}
 \end{equation}
 
-Considering an initial condition $\mathbf{q}(t=0) = 0$ and $\dot{\mathbf{q}}(t=0) = v_0 > 0$, i.e. the particle starts at the origin but moves towards the penetration region, will result in an active force $F(t) = -k\mathbf{q}(t) - c\dot{\mathbf{q}}(t)$ that will be applied to the particle until it reaches the equilibrium position $\mathbf{q} = 0$. The resulting motion will be a damped oscillation that can be derived from the Lagrange equation of motion:
-
-\begin{equation}
-    \frac{\partial}{\partial t} \left( \frac{\partial \mathcal{L}}{\partial \dot{\mathbf{q}}} \right) - \frac{\partial \mathcal{L}}{\partial \mathbf{q}} = 0
-\end{equation}
-
-where $L$ is the Lagrangian of the system defined as:
+Considering an initial condition $\mathbf{q}(t=0) = 0$ and $\dot{\mathbf{q}}(t=0) = v_0 > 0$, i.e. the particle starts at the origin but moves towards the penetration region, will result in an active force $F(t) = -k\mathbf{q}(t) - c\dot{\mathbf{q}}(t)$ that will be applied to the particle until it reaches the equilibrium position $\mathbf{q} = 0$. The resulting motion will be a damped oscillation that can be derived from the Lagrangian mechanics as seen in \cref{eqn:lagrangian}, where the Lagrangian $\mathcal{L}$ of the system defined as:
 
 \begin{equation}
     \mathcal{L} = \mathcal{T} - \mathcal{V} = \frac{1}{2}m\dot{\mathbf{q}}^2 - \frac{1}{2}k\mathbf{q}^2
