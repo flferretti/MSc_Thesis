@@ -11,7 +11,26 @@ In the reinforcement learning loop of the codesign process, the aim is to find a
     J(\pi) = \mathbb{E} \left[ \sum_{t=0}^{\infty} \gamma ^t r_t \right]
 \end{equation}
 
+\dots
 
+All the \ac{RL} trainings in this work have been performed on the \texttt{IITBMP014SRV001} machine whose specifications are reported in \cref{tab:rl_machine}.
+
+\begin{table}[h]
+    \centering
+    \label{tab:rl_machine}
+    \caption{\texttt{IITBMP014SRV001} Server Specifications}
+    \begin{tabular}[h]{l c}
+        \toprule
+        \textsc{Component} & \textsc{Specification}                                            \\
+        \midrule
+        \textbf{CPU}       & \begin{small}AMD EPYC 7513 32-Core Processor @ 2.60GHz\end{small} \\
+        \textbf{GPU}       & \begin{small}NVIDIA A100 80GB PCIe                   \end{small}  \\
+        \textbf{RAM}       & \begin{small}1024GB DDR4-3200                        \end{small}  \\
+        \textbf{OS}        & \begin{small}Ubuntu 20.04.3 LTS                      \end{small}  \\
+        \textbf{Kernel}    & \begin{small}5.15.0-86-generic                       \end{small}  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \subsection{Cartpole swingup task}
 For the cartpole swingup task, the aim is to find a policy $\pi$ that is able to balance the pole on the cart, which is moving on a rail, and then swingup the pole to the upright position. The reward function is defined as a function of the state of the system, which is composed of the position of the cart $x$, the velocity of the cart $\dot{x}$, the angle of the pole $\theta$ and the angular velocity of the pole $\dot{\theta}$:
@@ -25,9 +44,24 @@ For the cartpole swingup task, the aim is to find a policy $\pi$ that is able to
 
 where $\theta_{\text{max}}$ is the maximum angle of the pole from the vertical position.
 
+\begin{table}
+    \centering
+    \label{tab:cartpoleswinguptaskspacedef}
+    \begin{tabular}{l c}
+        \toprule
+        \textsc{Space}                  & \textsc{Projection Space} \\
+        \midrule
+        Action Space $\mathcal{A}$      & $\mathbb{R}$              \\
+        Observation Space $\mathcal{S}$ & $\mathbb{R} ^{4}$         \\
+        Reward Space $\mathcal{R}$      & $[0,1]$                   \\
+        \bottomrule
+    \end{tabular}
+    \caption{Cartpole Swingup Task -- Space Definition}
+\end{table}
+
 
 \subsection{Humanoid locomotion task}
-The humanoid walking task is with no doubt one of the most challenging tasks in the field of robotics. The aim of the task is to find a policy $\pi$ that is able to make the robot walk forward in a possibly \textit{human-like} motion. Given its high complexity, constitued by the necessity of controlling a large number of joints, which drastically increase the dimensionality of the problem and the need of design a contact model that is able to simulate the interaction between the robot and the environment, yet allowing the algorithm to be able to predict the agent's behaviour (as described in \cref{sec:back_contacts}),
+The humanoid walking task is with no doubt one of the most challenging tasks in the field of robotics. The aim of the task is to find a policy $\pi$ that is able to make the robot walk forward in a possibly \textit{human-like} motion. Given its high complexity, constitued by the necessity of controlling a large number of joints, which drastically increase the dimensionality of the problem and the need of design a contact model that is able to simulate the interaction between the robot and the environment, yet allowing the algorithm to be able to predict the agent's behaviour as described in \cref{sec:back_contacts},
 
 The action space is defined as:
 
@@ -43,34 +77,43 @@ The observation space is defined as:
     \mathcal{S} = \left\{ s \in \mathbb{R} ^{80} \mid -\infty \leq s_i \leq \infty \right\}
 \end{equation}
 
-and it is composed of the following elements:
+and it is composed of the elements listed in \cref{tab:walkingobs}.
 
-\begin{itemize}
-    \item Base position $\in \mathbb{R} ^{3}$
-    \item Joints positions $\in \mathbb{R} ^{23}$
-    \item Joints velocities $\in \mathbb{R} ^{23}$
-    \item Actuation torques $\in \mathbb{R} ^{23}$
-    \item Gravity projection $\in \mathbb{R} ^{3}$
-    \item Number of contact points $\in \mathbb{R}$
-    \item Target position $\in \mathbb{R} ^{3}$
-\end{itemize}
+\begin{table}
+    \centering
+    \label{tab:walkingobs}
+    \begin{tabular}{l c}
+        \toprule
+        \textsc{Observation} & \textsc{Dimension} \\
+        \midrule
+        Base Position        & $\mathbb{R} ^{3}$  \\
+        Joints Positions     & $\mathbb{R} ^{23}$ \\
+        Joints Velocities    & $\mathbb{R} ^{23}$ \\
+        Actuation Torques    & $\mathbb{R} ^{23}$ \\
+        Contact Points       & $\mathbb{R} ^{1}$  \\
+        Target Position      & $\mathbb{R} ^{3}$  \\
+        \bottomrule
+    \end{tabular}
+    \caption{Humanoid Walking Task -- Observation Space}
+\end{table}
 
-Rewards, actions and observations are then normalized to the range $[0,1]$ in order to make the learning process more stable and to avoid the need of tuning the reward function for different robots. The \cref{tab:rlspacedef} summarizes the definition of the spaces used in the \ac{RL} framework.
+Rewards, actions and observations are then normalized to the range $[0,1]$ in order to make the learning process more stable and to avoid the need of tuning the reward function for different robots. The \cref{tab:walkingtaskspacedef} summarizes the definition of the spaces used in the \ac{RL} framework.
 
 \begin{table}
     \centering
     \begin{tabular}{l c}
         \toprule
-        Space                           & Projection Space   \\
+        \textsc{Space}                  & \textsc{Projection Space} \\
         \midrule
-        Action Space $\mathcal{A}$      & $\mathbb{R} ^{23}$ \\
-        Observation Space $\mathcal{S}$ & $\mathbb{R} ^{80}$ \\
-        Reward Space $\mathcal{R}$      & $[0,1]$            \\
+        Action Space $\mathcal{A}$      & $\mathbb{R} ^{23}$        \\
+        Observation Space $\mathcal{S}$ & $\mathbb{R} ^{75}$        \\
+        Reward Space $\mathcal{R}$      & $[0,1]$                   \\
         \bottomrule
     \end{tabular}
-    \caption{RL Framework Space Definition}
-    \label{tab:rlspacedef}
+    \caption{Humanoid Walking Task -- Space Definition}
+    \label{tab:walkingtaskspacedef}
 \end{table}
+
 
 Hyperparameters tuning is a crucial part of the \ac{RL} framework, and it is often the most time consuming part of the process. In this work the hyperparameters were tuned using \textit{Optuna} \cite{akiba_optuna_2019}, a hyperparameter optimization framework, which uses Tree-structured Parzen Estimator (\ac{TPE}) sampler with a median pruner, that models the objective function and suggests the next set of hyperparameters to evaluate. The hyperparameters that were tuned are the following:
 
@@ -159,9 +202,9 @@ The evolutionary algorithm has been used to select the motor parameters from the
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{l c c c}
+    \begin{tabular}{c c c c}
         \toprule
-        \textbf{Motor} & \textsc{Inertia} $[k\mathrm{gm}^2]$ & \textsc{Gear Ratio} & \textsc{Viscous Friction} $[\mathrm{N}s\mathrm{rad}^{-1}]$ \\
+        \textsc{Motor} & \textsc{Inertia} $[k\mathrm{gm}^2]$ & \textsc{Gear Ratio} & \textsc{Viscous Friction} $[\mathrm{N}s\mathrm{rad}^{-1}]$ \\
         \midrule
         \textbf{S}     & $0.0001$                            & $1/100.0$           & $0.1$                                                      \\
         \textbf{M}     & $0.001$                             & $1/100.0$           & $0.15$                                                     \\
@@ -179,7 +222,7 @@ After a preliminary analysis of the problem, the following parameters have been 
     \centering
     \begin{tabular}{ll}
         \toprule
-        \textbf{Parameter}    & \textbf{Value} \\
+        \textsc{Parameter}    & \textsc{Value} \\
         \midrule
         Population Size       & $100$          \\
         Number of Generations & $100$          \\

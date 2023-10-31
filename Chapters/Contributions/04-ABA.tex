@@ -1,9 +1,9 @@
 \chapter{Implementing Motors in Rigid Multibody Algorithms}
 \label{chp:contrib_ABA}
 
-This chapter describes the formalism and the algorithms involved in the conditioning of multibody systems behavior, taking into account motor dynamics in the framework of recursive computation methods. In particular, in the first part the problem of considering rotor dynamics in the context of the Recursive Newton-Euler Algorithm (\ac{RNEA}) is addressed, then process of injecting the motor parameters in the Articulated Body Algorithm (\ac{ABA}) is described, and finally a comparison between the two approaches is presented, in order to highlight the potentialities and the drawbacks of each method.
+This chapter describes the formalism and the algorithms involved in the conditioning of multibody systems behavior, taking into account motor dynamics in the framework of recursive computation methods. In particular, in the first part the problem of considering rotor dynamics in the context of inertia-matrix based method is addressed, then process of injecting the motor parameters in the Articulated Body Algorithm (\ac{ABA}) is described, and finally a comparison between the two approaches is presented, in order to highlight the potentialities and the drawbacks of each method.
 
-\section{RNEA with Motor Dynamics}
+\section{Rotor-conditioned Forward Dynamics with Inertia-Matrix Method}
 
 Starting from the equation of motion of a robot manipulator, as expressed in \cref{sec:back_eom}:
 
@@ -370,14 +370,14 @@ we get to:
 
 
 
-\section{Comparison between ABA and RNEA with injected rotor dynamics}
+\section{Comparison between ABA and CRBA with injected rotor dynamics}
 
-The main difference between the \ac{ABA} approach and the approach adopted in \ac{RNEA} regards the concretization of the rotors. In fact, the former the former considers the rotors as extra links in the kinematic chain, with their own spatial inertia and dynamic, conditioned by the presence of a viscous friction and subject to a torque proportionally greater respect to the torque perceived by the parent link as show in \cref{fig:ABA_comparison}.
+The main difference between the \ac{ABA} approach and the approach adopted in the Inertia-Based method regards the concretization of the rotors. In fact, the former the former considers the rotors as extra links in the kinematic chain, with their own spatial inertia and dynamic, conditioned by the presence of a viscous friction and subject to a torque proportionally greater respect to the torque perceived by the parent link as show in \cref{fig:ABA_comparison}.
 
-% === FIG: ABA vs RNEA rotors === %
+% === FIG: ABA vs IBM rotors === %
 \begin{figure}
     \centering
-    \caption{Comparison between the ABA and RNEA approaches for rotor dynamics.}
+    \caption{Comparison between the ABA and CRBA approaches for rotor dynamics.}
     \label{fig:ABA_comparison}
     \subfloat[ABA]{
         \resizebox{0.5\textwidth}{!}{
@@ -502,7 +502,7 @@ The main difference between the \ac{ABA} approach and the approach adopted in \a
         \end{tikzpicture}
 
     }}
-    \subfloat[RNEA]{
+    \subfloat[CRBA]{
         \resizebox{0.5\textwidth}{!}{
             \tikzset {_dao9utne7/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
         \pgfdeclarehorizontalshading{_nakw2h43n}{150bp}{rgb(0bp)=(1,1,1);
@@ -609,4 +609,4 @@ The main difference between the \ac{ABA} approach and the approach adopted in \a
     }}
 \end{figure}
 
-\ac{RNEA} instead, considers the rotor inertias as lumped to the parent link, considering that the torque perceived by the parent link is also proportionally greater than the one in output from the motors. The first approach allows therefore to consider a much greater variety of kinematic chains and also it is more computationally efficient.
+The Inertia-Based method instead, considers the rotor inertias as lumped to the parent link, considering that the torque perceived by the parent link is also proportionally greater than the one in output from the motors. The first approach allows therefore to consider a much greater variety of kinematic chains and also it is more computationally efficient.
