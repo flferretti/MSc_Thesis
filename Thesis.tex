@@ -21,6 +21,8 @@
 \usepackage{multicol} % To write in multiple columns (executive summary)
 \setlength\columnsep{15pt} % Column separation in executive summary
 \setlength\parindent{0pt} % Indentation
+\addtolength{\skip\footins}{5pt} % Footnote separation from text
+\setlength{\footnotesep}{2ex} % Footnote separation
 \raggedbottom  
 
 % PACKAGES FOR TITLES
@@ -114,6 +116,7 @@
 \usetikzlibrary{positioning}
 
 \usepackage{xspace}
+\usepackage[babel=true,tracking=true]{microtype}
 %----------------------------------------------------------------------------
 %	ADD YOUR DEFINITIONS AND COMMANDS (be careful of existing commands)
 %----------------------------------------------------------------------------
@@ -124,6 +127,8 @@
 \newcommand{\DanieleSays}[1]{\textcolor{red}{\textbf{Daniele:} #1}}
 
 \newcommand{\cpp}{C\texttt{++}\xspace}
+\newcommand{\jax}{\textsc{JAX}~}
+\newcommand{\jaxsim}{\textsc{JAX}sim~}
 %----------------------------------------------------------------------------
 %	BEGIN OF YOUR DOCUMENT
 %----------------------------------------------------------------------------
