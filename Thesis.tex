@@ -57,6 +57,7 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{amsfonts}
+\usepackage{mathtools}
 \usepackage{bm}
 \usepackage[overload]{empheq} % For braced-style systems of equations.
 \usepackage{fix-cm} % To override original LaTeX restrictions on sizes
@@ -90,26 +91,20 @@
 %----------------------------------------------------------------------------
 %	NEW COMMANDS DEFINED
 %----------------------------------------------------------------------------
-
-% EXAMPLES OF NEW COMMANDS
-\newcommand{\bea}{\begin{eqnarray}} % Shortcut for equation arrays
-\newcommand{\eea}{\end{eqnarray}}
-\newcommand{\e}[1]{\times 10^{#1}}  % Powers of 10 notation
-% \def\bflabel#1{{\acsfont{#1}\hfill}}
-%   \def\aclabelfont#1{\acsfont{#1}}
+\DeclareMathAlphabet{\mathbbm}{U}{BOONDOX-ds}{m}{n}
 %----------------------------------------------------------------------------
 %	ADD YOUR PACKAGES (be careful of package interaction)
 %----------------------------------------------------------------------------
 \usepackage[footnote, smaller]{acronym}
 \usepackage{nomencl}
-\makenomenclature 
+\makenomenclature
 % \renewcommand\nomgroup[1]{%
 %   \item[\bfseries
 %   \ifstrequal{#1}{D}{Dynamics}{%
 %   \ifstrequal{#1}{N}{Number sets}{%
 %   \ifstrequal{#1}{O}{Other symbols}{}}}%
 % ]}
-\usepackage[bb=boondox]{mathalfa}
+\usepackage[bb=ams]{mathalfa}
 \usepackage{booktabs}
 
 \usepackage{tikz-3dplot}
