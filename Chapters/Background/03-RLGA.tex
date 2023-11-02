@@ -17,7 +17,7 @@ In \ac{DRL} the policy is described by a Neural Network (\ac{NN}), therefore it 
     a _t \sim \pi _{\boldsymbol{\theta}}(\cdot | s_t): \mathcal{S} \rightarrow \mathrm{Pr}(\mathcal{A})
 \end{equation}
 
-\paragraph{State Dependent Exploration} In the treated example, given the high complexity of the task, the policy is chosen through \textit{State-Dependent Exploration} \cite{daelemans_state-dependent_2008} \cite{raffin_smooth_2021}, which outputs the same action for any given state. In gradient base methods like Multivariate Diagonal Gaussian, the perturbed action leads to a stochastic policy which in general is not differentiable due to the high variance in the gradient estimation:
+\paragraph{State Dependent Exploration} In the treated example, given the high complexity of the task, the policy is chosen through \textit{State-Dependent Exploration} \citep{daelemans_state-dependent_2008, raffin_smooth_2021}, which outputs the same action for any given state. In gradient base methods like Multivariate Diagonal Gaussian, the perturbed action leads to a stochastic policy which in general is not differentiable due to the high variance in the gradient estimation:
 
 \begin{equation}
     \theta _{t+1} = \theta _t + \alpha \nabla _{\theta} J(\pi)
@@ -86,7 +86,7 @@ where $P$ and $Q$ are two probability distributions. The \ac{KL} divergence is n
 
 \subsubsection{Policy Gradient Methods}
 
-The most common optimizer for \ac{NN} parameters is the first-order gradient-based optimization of stochastic objective function update ADAM \cite{kingma_adam_2017}. The \cref{alg:adam}
+The most common optimizer for \ac{NN} parameters is the first-order gradient-based optimization of stochastic objective function update ADAM \citep{kingma_adam_2017}. The \cref{alg:adam}
 updates exponential moving averages of the two gradients, where $\beta_1$ and $\beta_2$ control the decay rates of the moving averages, which are then estimates of the first and second raw moment, corresponding respectively to the mean and uncentered variance.
 
 \begin{algorithm}[H]

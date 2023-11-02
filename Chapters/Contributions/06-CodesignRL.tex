@@ -24,10 +24,10 @@ All the \ac{RL} trainings in this work have been performed on the \texttt{IITBMP
         \textsc{Component} & \textsc{Specification}                                            \\
         \midrule
         \textbf{CPU}       & \begin{small}AMD EPYC 7513 32-Core Processor @ 2.60GHz\end{small} \\
-        \textbf{GPU}       & \begin{small}NVIDIA A100 80GB PCIe                   \end{small}  \\
-        \textbf{RAM}       & \begin{small}1024GB DDR4-3200                        \end{small}  \\
-        \textbf{OS}        & \begin{small}Ubuntu 20.04.3 LTS                      \end{small}  \\
-        \textbf{Kernel}    & \begin{small}5.15.0-86-generic                       \end{small}  \\
+        \textbf{GPU}       & \begin{small}NVIDIA A100 80GB PCIe                    \end{small} \\
+        \textbf{RAM}       & \begin{small}1024GB DDR4-3200                         \end{small} \\
+        \textbf{OS}        & \begin{small}Ubuntu 20.04.3 LTS                       \end{small} \\
+        \textbf{Kernel}    & \begin{small}5.15.0-86-generic                        \end{small} \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -115,7 +115,7 @@ Rewards, actions, and observations are then normalized to the range $[0,1]$ in o
 \end{table}
 
 
-Hyperparameter tuning is a crucial part of the \ac{RL} framework, and it is often the most time-consuming part of the process. In this work, the hyperparameters were tuned using \textit{Optuna} \cite{akiba_optuna_2019}, a hyperparameter optimization framework, which uses Tree-structured Parzen Estimator (\ac{TPE}) sampler with a median pruner, that models the objective function and suggests the next set of hyperparameters to evaluate. The hyperparameters that were tuned are the following:
+Hyperparameter tuning is a crucial part of the \ac{RL} framework, and it is often the most time-consuming part of the process. In this work, the hyperparameters were tuned using \texttt{optuna} \citep{akiba_optuna_2019}, a hyperparameter optimization framework, which uses \textit{Tree-structured Parzen Estimator} (\ac{TPE}) sampler with a median pruner, that models the objective function and suggests the next set of hyperparameters to evaluate. The hyperparameters that were tuned are the following:
 
 \begin{itemize}
     \item Time Horizon
@@ -136,7 +136,6 @@ which resulted in in values reported in \cref{tab:ppohyperparameters}.
 
 \begin{table}[h]
     \centering
-    \label{tab:ppohyperparameters}
     \begin{tabular}{ll}
         \toprule
         \textsc{Parameter}          & \textsc{Value}          \\
@@ -164,6 +163,7 @@ which resulted in in values reported in \cref{tab:ppohyperparameters}.
         \bottomrule
     \end{tabular}
     \caption{Proximal Policy Optimization Hyperparameters}
+    \label{tab:ppohyperparameters}
 \end{table}
 
 Given the high complexity of the problem, the network architecture composed of two separate networks, one for the policy and one for the value function, has been enlarged in order to increase the capacity of the network to learn the task and to avoid the need of a large number of training iterations.
@@ -177,14 +177,14 @@ The policy network is composed of two hidden layers of size $64$ and $64$ respec
     \label{fig:rlarchitecture}
 \end{figure}
 
-The \ac{RL} framework has been implemented using the \textit{Stable Baselines 3} library \cite{raffin_stable-baselines3_2021}. The \ac{RL} framework has been trained for $10$M steps, which given the episodic length, corresponds to $10$ epochs. The INSERT FIGURE below represents the main metrics collected in the training process. In particular, the figure shows the mean reward, the mean episode length, the mean episodic reward, the approximated KL divergence, and the explained variance.
+The \ac{RL} framework has been implemented using the \texttt{Stable Baselines 3} library \citep{raffin_stable-baselines3_2021}. The \ac{RL} framework has been trained for $10$M steps, which given the episodic length, corresponds to $10$ epochs. The INSERT FIGURE below represents the main metrics collected in the training process. In particular, the figure shows the mean reward, the mean episode length, the mean episodic reward, the approximated KL divergence, and the explained variance.
 
 
 \section{Evolutionary Algorithm Core}
 \label{sec:EvolutionAlgo}
 
 
-The evolutionary algorithm has been used in the codesign loop to select motor parameters from a set of possible values. The evolutionary algorithm has been implemented using the \textit{DEAP} library CITE.
+The evolutionary algorithm has been used in the codesign loop to select motor parameters from a set of possible values. The evolutionary algorithm has been implemented using the \texttt{deap} library CITE.
 
 The motor set of parameters is composed of three main components: motor inertia, motor viscous friction, and gear ratio. This choice has been made in order to keep the number of parameters low, in order to reduce the computational cost of the optimization process. The decision process is then repeated for each motor of the robot, which means that the total number of combination are:
 

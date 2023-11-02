@@ -1,7 +1,7 @@
 \chapter{Rigid Multibody Dynamics}
 \label{chp:back_RBDynamics}
 
-In this chapter, a mathematical groundwork for characterizing the dynamics of a floating-base multibody system is presented, setting a convention that is used throughout this work. Then, a first introduction to recursive algorithm for the computation of the dynamics of a multibody system is presented, to give a comprehensive understanding of the state of the art in the field of rigid multibody dynamics algorithms. In the forthcoming discussion, a 6D \textit{spatial vectors} notation firstly introduced by \citet{featherstone_rigid_2008} and successively integrated and adapted by \citet{traversaro_multibody_2019} is presented. As a matter of fact, this notation allows to describe the motion of a rigid body without excessive use of indices, which can be confusing and error-prone when dealing with complex recursive algorithms that will be further discussed. This convention will be used to describe the kinematics and dynamics of a floating-base multibody system in a unified manner throughout this work.
+In this chapter, a mathematical groundwork for characterizing the dynamics of a floating-base multibody system is presented, setting a convention that is used throughout this work. Then, a first introduction to recursive algorithms for the computation of the dynamics of a multibody system is presented, to give a comprehensive understanding of the state of the art in the field of rigid multibody dynamics algorithms. In the forthcoming discussion, a 6D \textit{spatial vectors} notation firstly introduced by \citet{featherstone_rigid_2008} and successively integrated and adapted by \citet{traversaro_multibody_2019} is presented. As a matter of fact, this notation allows us to describe the motion of a rigid body without excessive use of indices, which can be confusing and error-prone when dealing with complex recursive algorithms that will be further discussed. This convention will be used to describe the kinematics and dynamics of a floating-base multibody system in a unified manner throughout this work.
 
 \section{Formalisms and Notation}
 
@@ -127,7 +127,8 @@ where $\dot{\boldsymbol{\nu}} \in \mathbb{R}^6$ is the spatial acceleration of t
 
 A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links correspond to the rigid bodies composing the inertial properties of the system, while the joints are usually modeled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
 
-For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases. In this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\mathrm{S} _j \in \mathcal{M} ^6$ as:
+For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases. Furthermore, the system will be considered \textit{acyclic}, i.e. it will not contain any closed loop, as the presence of loops would make the system kinematically redundant,
+In this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\mathrm{S} _j \in \mathcal{M} ^6$ as:
 
 \begin{equation}
     \mathrm{S} _j =
@@ -153,13 +154,14 @@ where $\mathcal{L}$ is the Lagrangian of the system, which is a mapping from the
     \mathcal{L} = \mathcal{T} - \mathcal{V} = \mathcal{L} (\mathbf{q}(t), \mathbf{\dot{q}}(t))
 \end{equation}
 
+Respect to the point mass case, when dealing with a multibody system, the configuration is described by an element of $\mathrm{SE}(3)$
 The first variation of the action functional can be written as:
 
 \begin{equation}
     \delta \mathcal{A} = \int _{t _0} ^{t _1} \delta \mathcal{L} (\mathbf{q}(t), \mathbf{\dot{q}}(t))dt = \int _{t _0} ^{t _1} \left( \frac{\partial \mathcal{L}}{\partial \mathbf{q}} \delta \mathbf{q} + \frac{\partial \mathcal{L}}{\partial \mathbf{\dot{q}}} \delta \mathbf{\dot{q}} \right) dt
 \end{equation}
 
-where $\delta \mathbf{q}$ and $\delta \mathbf{\dot{q}}$ are the variations of the generalized coordinates and velocities, respectively. The first variation of the action functional is zero if and only if the integrand is zero, yielding the Euler-Lagrange equation:
+where $\delta \mathbf{q}$ and $\delta \mathbf{\dot{q}}$ are the variations of the generalized coordinates and velocities, respectively. The first variation of the action functional is zero if and only if the integrand is zero, yielding the Euler-Poincar\`e equation:
 
 \begin{equation}
     \label{eqn:lagrangian}
@@ -170,7 +172,7 @@ In the case of a multibody system, once defined a map $\mathbf{M}$ as the genera
 
 \begin{equation}
     \label{eqn:equation_of_motion}
-    \mathbf{M} \mathbf{\ddot{q}} + \mathbf{C} (\mathbf{q}, \mathbf{\dot{q}}) + \mathbf{G} (\mathbf{q}) = \boldsymbol{\tau}
+    \mathbf{M} \mathbf{\ddot{q}} + \mathbf{C} (\mathbf{q}) + \mathbf{G} (\mathbf{q}) = \boldsymbol{\tau}
 \end{equation}
 
 in which we identify $\mathbf{G}$ as the gravitational forces and $\boldsymbol{\tau}$ as the generalized applied torques.
