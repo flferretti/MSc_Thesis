@@ -1,13 +1,13 @@
 \chapter{Rigid Multibody Dynamics}
 \label{chp:back_RBDynamics}
 
-In this chapter, a mathematical groundwork for characterizing the dynamics of a floating-base multibody system is presented, setting a convention that is used throughout this work. Then, a first introduction to recursive algorithm for the computation of the dynamics of a multibody system is presented, in order to give a comprehensive understanding of the state of the art in the field of rigid multibody dynamics algorithms. In the forthcoming discussion, a 6D \textit{spatial vectors} notation firstly introduced by \citet{featherstone_rigid_2008} and successively integrated and adapted by \citet{traversaro_multibody_2019} is presented. This convention is adopted and will be used to describe the kinematics and dynamics of a floating-base multibody system in a unified manner.
+In this chapter, a mathematical groundwork for characterizing the dynamics of a floating-base multibody system is presented, setting a convention that is used throughout this work. Then, a first introduction to recursive algorithm for the computation of the dynamics of a multibody system is presented, to give a comprehensive understanding of the state of the art in the field of rigid multibody dynamics algorithms. In the forthcoming discussion, a 6D \textit{spatial vectors} notation firstly introduced by \citet{featherstone_rigid_2008} and successively integrated and adapted by \citet{traversaro_multibody_2019} is presented. As a matter of fact, this notation allows to describe the motion of a rigid body without excessive use of indices, which can be confusing and error-prone when dealing with complex recursive algorithms that will be further discussed. This convention will be used to describe the kinematics and dynamics of a floating-base multibody system in a unified manner throughout this work.
 
 \section{Formalisms and Notation}
 
 \paragraph{Spatial Vectors} A spatial vector is a 6D vector that describes the motion of a rigid body in space.
 
-In the case of a rigid body, the velocity of a point $O$ attached to the body respect to a reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\mathbf{\omega}$ about an axis passing through $O$ and its linear component $\mathbf{v} _A$, for which the following relation holds:
+In the case of a rigid body, the velocity of a point $O$ attached to the body with respect to a reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\mathbf{\omega}$ about an axis passing through $O$ and its linear component $\mathbf{v} _A$, for which the following relation holds:
 
 \begin{equation}
     v _A = \mathbf{\omega} \times \bar{OP}
@@ -75,7 +75,7 @@ we can define the subspace $\mathrm{S}$ as:
 
 This defines a motion subspace for a system, e.g. defines the directions in which the system is free to move.
 
-\paragraph{Spatial Velocity} The spatial velocity of a rigid body is defined as a serialization of the linear and angular velocity of a point $A$ attached to the body. In particular, let $\mathbf{p} _A \in \mathcal{D}_O$ be the position vector of $A$ with respect to $O$, then the spatial velocity of the body is defined as the comoponent-wise derivative of the position vector respect to time:
+\paragraph{Spatial Velocity} The spatial velocity of a rigid body is defined as a serialization of the linear and angular velocity of a point $A$ attached to the body. In particular, let $\mathbf{p} _A \in \mathcal{D}_O$ be the position vector of $A$ with respect to $O$, then the spatial velocity of the body is defined as the component-wise derivative of the position vector respect to time:
 
 \begin{equation}
     \boldsymbol{\nu} _A = \frac{d}{dt} {}^O\mathbf{p} _A =
@@ -99,10 +99,7 @@ where $\mathbf{v} _A$ is the linear velocity of the point $O$ and $\boldsymbol{\
 \paragraph{Spatial Acceleration} Given that the spatial velocity decouples the linear and angular components of the motion, defining a property of the body as a whole and not of a single body-fixed point, the spatial acceleration of a rigid body is defined as simply as just the time derivative of its spatial velocity:
 
 \begin{equation}
-    \dot{\boldsymbol{\nu} _A} = \frac{\partial}{\partial t} \begin{bmatrix}
-        \mathbf{v} _A (t) \\
-        \boldsymbol{\omega} _A (t)
-    \end{bmatrix} = \frac{d}{dt} \begin{bmatrix}
+    \dot{\boldsymbol{\nu} _A} = \frac{\mathrm{d}}{\mathrm{d}t} \begin{bmatrix}
         \mathbf{v} _A (t) \\
         \boldsymbol{\omega} _A (t)
     \end{bmatrix}
@@ -113,7 +110,7 @@ where $\mathbf{v} _A$ is the linear velocity of the point $O$ and $\boldsymbol{\
     \end{bmatrix}
 \end{equation}
 
-\paragraph{Spatial Forces} The spatial force acting on a rigid body is defined, in a similar manner as the spatial velocity as a serialization of the linear and the angular components of the wrench acting on the body, in particular it is related to its motion as:
+\paragraph{Spatial Forces} The spatial force acting on a rigid body is defined, in a similar manner as the spatial velocity as a serialization of the linear and the angular components of the wrench acting on the body, in particular, it is related to its motion as:
 
 \begin{equation}
     \mathbf{f} = \begin{bmatrix}
@@ -128,9 +125,9 @@ where $\dot{\boldsymbol{\nu}} \in \mathbb{R}^6$ is the spatial acceleration of t
 
 \subsection{Joints and Links}
 
-A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links correspond to the rigid bodies composing the inertial properties of the system, while the joints are usually modelled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
+A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links correspond to the rigid bodies composing the inertial properties of the system, while the joints are usually modeled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
 
-For the sake of simplicity and without loss of generality, in this work only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases. In this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\mathrm{S} _j \in \mathcal{M} ^6$ as:
+For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases. In this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\mathrm{S} _j \in \mathcal{M} ^6$ as:
 
 \begin{equation}
     \mathrm{S} _j =
@@ -162,7 +159,7 @@ The first variation of the action functional can be written as:
     \delta \mathcal{A} = \int _{t _0} ^{t _1} \delta \mathcal{L} (\mathbf{q}(t), \mathbf{\dot{q}}(t))dt = \int _{t _0} ^{t _1} \left( \frac{\partial \mathcal{L}}{\partial \mathbf{q}} \delta \mathbf{q} + \frac{\partial \mathcal{L}}{\partial \mathbf{\dot{q}}} \delta \mathbf{\dot{q}} \right) dt
 \end{equation}
 
-where $\delta \mathbf{q}$ and $\delta \mathbf{\dot{q}}$ are the variations of the generalized coordinates and velocities, respectively. The first variation of the action functional is zero if and only if the integrand is zero, yield the Euler-Lagrange equation:
+where $\delta \mathbf{q}$ and $\delta \mathbf{\dot{q}}$ are the variations of the generalized coordinates and velocities, respectively. The first variation of the action functional is zero if and only if the integrand is zero, yielding the Euler-Lagrange equation:
 
 \begin{equation}
     \label{eqn:lagrangian}
@@ -181,7 +178,7 @@ in which we identify $\mathbf{G}$ as the gravitational forces and $\boldsymbol{\
 \section{Forward Dynamics}
 \label{sec:back_fd}
 
-The forward dynamics problem consists in computing the joint accelerations of a multibody system given the joint positions, velocities and applied forces. As the problem is unsolvable for a single body of the system, the usual approach is to define the constraints that the links must satisfy, write the equation for each link calculating the local coefficient and then propagating them in the kinematic tree until a a point in which the problem becomes solvable, usually the base of the tree in backpropagation or the end-effector in forward propagation. Although being inertia-matrix algorithms much simpler to implement, propagation algorithm involving recursive backsubstition are more efficient in terms of computational cost, as they can reach the theoretical minimal complexity of $\mathcal{O}(n)$. In this work, the notation $\mathrm{FD}(\cdot)$ will be used to indicate the forward dynamics computation.
+The forward dynamics problem consists of computing the joint accelerations of a multibody system given the joint positions, velocities, and applied forces. As the problem is unsolvable for a single body of the system, the usual approach is to define the constraints that the links must satisfy, write the equation for each link, calculate the local coefficient, and then propagate them in the kinematic tree until a point in which the problem becomes solvable, usually the base of the tree in backpropagation or the end-effector in forward propagation. Although being inertia-matrix algorithms much simpler to implement, propagation algorithms involving recursive backsubstition are more efficient in terms of computational cost, as they can reach the theoretical minimal complexity of $\mathcal{O}(n)$. In this work, the notation $\mathrm{FD}(\cdot)$ will be used to indicate the forward dynamics computation.
 
 \begin{equation}
     \ddot{\mathbf{q}} = \mathrm{FD} (\mathcal{M}, \mathbf{q}, \dot{\mathbf{q}}, \boldsymbol{\tau}, \mathbf{F} ^{\text{ext}})
@@ -190,9 +187,9 @@ The forward dynamics problem consists in computing the joint accelerations of a 
 \subsection{Articulated-Body Algorithm}
 \label{subsec:back_aba}
 
-As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multibody system with a high number of links is computationally expensive, in fact, even using \citet{coppersmith_matrix_1990} algorithm or its optimized version by \citet{vassilevska-williams2012breaking}, which reached a complexity of $\mathcal{O}(n^{2.373})$, the computation of the inverse of the mass matrix is still too expensive for real-time scenarios. That is why recursive methods result to be more suitable for applications where a fast computation of the dynamics is required.
+As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multi-body system with a high number of links is computationally expensive, in fact, even using \citet{coppersmith_matrix_1990} algorithm or its optimized version by \citet{vassilevska-williams2012breaking}, which reached a complexity of $\mathcal{O}(n^{2.373})$, the computation of the inverse of the mass matrix is still too expensive for real-time scenarios. That is why recursive methods results are more suitable for applications where a fast computation of the dynamics is required.
 
-% === FIG: Kynematic Chain === %
+% === FIG: Kinematic Chain === %
 \begin{figure}[h]
     \centering
     \caption{Kinematic subtree visualization.}
@@ -449,9 +446,9 @@ The spatial force acting at joint $i$ and the acceleration of body $i$ are relat
 
 where $\mathbf{S} _i$ is the motion subspace of the $i$-th link, $\mathbf{a} _i$ is the acceleration of the $i$-th link, $\mathbf{a} _{\lambda(i)}$ is the acceleration of the parent link, $\ddot{\mathbf{q}} _i$ is the acceleration of the $i$-th joint, and $\dot{\mathbf{S}} _i$ is the derivative of the motion subspace of the $i$-th link with respect to the joint coordinates.
 
-This yields that once the articulated body inertia and the bais force are know, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints. This is the main advantage of the articulated-body algorithm.
+This yields that once the articulated body inertia and the bias force are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints. This is the main advantage of the articulated-body algorithm.
 
-In ABA, first a forward pass is performed to compute the initial articulated body inertia, the initial bias forces and the link velocities, then a backward pass is performed to compute the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain.
+In ABA, first, a forward pass is performed to compute the initial articulated body inertia, the initial bias forces, and the link velocities, then a backward pass is performed to compute the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain.
 Starting from the Gaussian principle of least constraint, the problem of finding the joint accelerations $\ddot{\mathbf{q}}$ that satisfy the equation of motion already seen in \cref{eqn:equation_of_motion}, which can be formulated as a constrained optimization problem:
 
 \begin{equation}
@@ -492,10 +489,10 @@ The constraint matrix $\mathbf{A} (\mathbf{q})$ is a symmetric matrix, and it is
 
 we can identify the following quantities starting from the equations of motion of the robot:
 
-% === FIG: Uncostrained Tree === %
+% === FIG: Unconstrained Tree === %
 \begin{figure}
     \centering
-    \caption{Visual comparison between the uncostrained and constrained kinematic tree.}
+    \caption{Visual comparison between the unconstrained and constrained kinematic tree.}
     \subfloat[Constrained System]{
         \resizebox{0.5\textwidth}{!}{
             \tikzset {_djnj2rsc4/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
@@ -698,7 +695,7 @@ where $\mathbf{c} _i$ is the Coriolis acceleration. The equation for the rotor i
     {} ^M \mathbf{a} ^{constrained} _i = {} ^M \mathbf{S} _i \ddot{\mathbf{q}} _i + \underbrace{{} ^M \mathbf{v} _i \times ^* {} ^M\mathbf{S} _i \dot{\mathbf{q}}} _{{} ^M \mathbf{c} _i}
 \end{equation}
 
-This yields, in term of the Gauss principle of least constraint:
+This yields, in terms of the Gauss principle of least constraint:
 
 \begin{align}
     \underset{\ddot{\mathbf{q}}}{\arg \min} & \qquad (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbf{I} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbf{I} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \nonumber           \\
@@ -723,7 +720,7 @@ and
     J _2 = {} ^M \mathbf{a} ^T _i \mathbf{I} ^M _i {} ^M \mathbf{a} _i - 2 {} ^M \mathbf{a} ^T _i \mathbf{I} ^M _i {} ^M \mathbf{a} ^{uc} _i
 \end{equation}
 
-substituting the constrainst in the objective function, removing terms not depending on $\ddot{\mathbf{q}}$ and taking the gradient, the following equation is obtained:
+substituting the constraints in the objective function, removing terms not depending on $\ddot{\mathbf{q}}$ and taking the gradient, the following equation is obtained:
 
 \begin{align}
     \frac{\partial J _1}{\partial \ddot{\mathbf{q}} _i} & = 2 \mathbf{S} ^T _i \mathbf{I} ^A _i \mathbf{S} _i \ddot{\mathbf{q}} _i + 2 \mathbf{S} ^T _i \mathbf{I} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i) - 2 \mathbf{S} ^T _i \mathbf{I} ^A _i \mathbf{a} ^{uc} _i \nonumber                                        \\
@@ -792,9 +789,9 @@ from which we can derive the recursive relations for the accelerations:
 \label{sec:back_contacts}
 \subsection{Smooth Impacts}
 
-In a high incident velocity impact between two solids, some of the kinetic energy is transferred to vibrational model. This is due to the fact that the contact in smooth impacts is not perfectly anelastic, hence the partial elasticities of the materials involved in the collision induces vibrational modes in the system.
+In a high incident velocity impact between two solids, some of the kinetic energy is transferred to the vibrational model. This is due to the fact that the contact in smooth impacts is not perfectly inelastic, hence the partial elasticities of the materials involved in the collision induce vibrational modes in the system.
 
-Considering a point particle with mass $m$ and position $\mathbf{q} : \mathbb{R} \rightarrow \mathbb{R}$ in a one-dimensional space, compliant with a spring with stiffness $k$ and a damper with damping coefficient $c$, the resulting force generated can be defined as:
+Considering a point particle with mass $m$ and position $\mathbf{q}: \mathbb{R} \rightarrow \mathbb{R}$ in a one-dimensional space, compliant with a spring with stiffness $k$ and a damper with damping coefficient $c$, the resulting force generated can be defined as:
 
 \begin{equation}
     F = \begin{cases}
@@ -803,7 +800,7 @@ Considering a point particle with mass $m$ and position $\mathbf{q} : \mathbb{R}
     \end{cases}
 \end{equation}
 
-Considering an initial condition $\mathbf{q}(t=0) = 0$ and $\dot{\mathbf{q}}(t=0) = v_0 > 0$, i.e. the particle starts at the origin but moves towards the penetration region, will result in an active force $F(t) = -k\mathbf{q}(t) - c\dot{\mathbf{q}}(t)$ that will be applied to the particle until it reaches the equilibrium position $\mathbf{q} = 0$. The resulting motion will be a damped oscillation that can be derived from the Lagrangian mechanics as seen in \cref{eqn:lagrangian}, where the Lagrangian $\mathcal{L}$ of the system defined as:
+Considering an initial condition $\mathbf{q}(t=0) = 0$ and $\dot{\mathbf{q}}(t=0) = v_0 > 0$, i.e. the particle starts at the origin but moves towards the penetration region, will result in an active force $F(t) = -k\mathbf{q}(t) - c\dot{\mathbf{q}}(t)$ that will be applied to the particle until it reaches the equilibrium position $\mathbf{q} = 0$. The resulting motion will be a damped oscillation that can be derived from the Lagrangian mechanics as seen in \cref{eqn:lagrangian}, where the Lagrangian $\mathcal{L}$ of the system is defined as:
 
 \begin{equation}
     \mathcal{L} = \mathcal{T} - \mathcal{V} = \frac{1}{2}m\dot{\mathbf{q}}^2 - \frac{1}{2}k\mathbf{q}^2
@@ -817,7 +814,7 @@ which yields the following equation of motion:
 
 where $\omega$ is the natural frequency of the system and $\gamma$ can be used to declare the damping ratio $\zeta = \frac{\gamma}{2\omega}$.
 
-The solution of the resulting equation is the one of a first order linear \ac{ODE}:
+The solution of the resulting equation is the one of a first-order linear \ac{ODE}:
 
 \begin{equation}
     \mathbf{q}(t) = \mathbf{q}_0 e^{-\zeta \omega t} \cos(\omega \sqrt{1 - \zeta ^2} t)
@@ -829,7 +826,7 @@ which implies an oscillatory regime for $\zeta < 1$ and an exponential decay for
 
 Considering two bodies and given points $p ^{(0)}$ fixed on body 0 and $p ^{(1)}$ fixed on body 1, the \textit{signed} distance between the two should be non-negative i.e. $c(p ^{(0)}, p ^{(1)}) \geq 0$.
 
-The impact involves forces that changes to rapidly to cause jump discontinuities in the velocities $\dot{q}$. Therefore it is possible to state that the velocity before and after the impact at time $t_i$ differ:
+The impact involves forces that change rapidly to cause jump discontinuities in the velocities $\dot{q}$. Therefore it is possible to state that the velocity before and after the impact at time $t_i$ differ:
 
 \begin{equation}
     \lim _{t \uparrow t _i} \dot{q} = \dot{q} _{-} \neq \dot{q} _{+} = \lim _{t \downarrow t _i} \dot{q}
@@ -840,7 +837,7 @@ Mathematically, the trajectories $q(t)$ remain continuous while the velocities $
 Considering the case of a spherical rigid body impacting an infinite plane, the convexity of the two objects implies that the closest point between the two can be identified uniquely.
 Writing the signed distance function respect to the rigid body center of mass position $x(t)$, we get that $c(q(t)) = \tilde{c}(x(t)) \geq 0$.
 
-With this approach we can define two configuration manifold: $Q _1 \in \mathbb{R} ^2 \times \mathrm{SO}3$ for the planar motion and $Q _1 \in \mathbb{R} ^3 \times \mathrm{SO}3$ for the spatial motion, where $\mathrm{SO}3$ is the group of rigid rotations in three dimensions. We define a Lagrangian mulitplier $\nu \in \mathbb{R}$ corresponding to the magnitude of the force acting in the normal direction at the contact.
+With this approach, we can define two configuration manifolds: $Q _1 \in \mathbb{R} ^2 \times \mathrm{SO}3$ for the planar motion and $Q _1 \in \mathbb{R} ^3 \times \mathrm{SO}3$ for the spatial motion, where $\mathrm{SO}3$ is the group of rigid rotations in three dimensions. We define a Lagrangian multiplier $\nu \in \mathbb{R}$ corresponding to the magnitude of the force acting in the normal direction at the contact.
 
 In a discrete mechanics framework, defining $h$ the fixed time step for all steps, if the violation in the impact point at step $i$ called $q _i$ is not too big, a good approximation of the incident velocity is:
 
@@ -856,7 +853,7 @@ To estimate the outbound velocity $v _{+}$ instead, we impose the discrete impul
 
 where $\psi \in [0,1]$ is the \textit{restitution coefficient}.
 
-A perfectly elastic collision corresponds to $\psi = 1$ in which the outbound velocity is the reflection of the incoming one. Now, given that the impulse occur at fixed location $q$, the only change in energy is a kinetic energy change, hence for the Newton-Poisson impact law for a point particle of mass $m$, the change in energy is:
+A perfectly elastic collision corresponds to $\psi = 1$ in which the outbound velocity is the reflection of the incoming one. Now, given that the impulse occurs at a fixed location $q$, the only change in energy is a kinetic energy change, hence for the Newton-Poisson impact law for a point particle of mass $m$, the change in energy is:
 
 \begin{equation}
     E _{+} - E _{-} = T(q, v _{+}) - T(q, v _{-}) = (\psi ^2 - 1) T(q, v _{-}) \leq 0
@@ -864,7 +861,7 @@ A perfectly elastic collision corresponds to $\psi = 1$ in which the outbound ve
 
 where $T(q, v)$ is the kinetic energy.
 
-To generalize in three dimensions, we define an estimate of the normal component of the incident velocity respect to the contact manifold as $C _k v _{-}$ where $C _k$ is the $n _c \times n$ Jacobian matrix of the $n _c$ contact surface evaluated at the discrete time $k$. Using the complementarity formulation, assuming the presence of other inequality constraints with the agglomerated Jacobian $G$, adding regularization parameters with diagonal non-negative matrices $\Sigma$ and $\Xi$, and considering the diagonal matrix for of restitution coefficients $\Psi = \text{diag}(\psi _1, \psi _2, \dots, \psi _{n _c}),  \psi _i \in [0, 1]$, we get the following linear complementarity problem (LCP):
+To generalize in three dimensions, we define an estimate of the normal component of the incident velocity with respect to the contact manifold as $C _k v _{-}$ where $C _k$ is the $n _c \times n$ Jacobian matrix of the $n _c$ contact surface evaluated at the discrete time $k$. Using the complementarity formulation, assuming the presence of other inequality constraints with the agglomerated Jacobian $G$, adding regularization parameters with diagonal non-negative matrices $\Sigma$ and $\Xi$, and considering the diagonal matrix for restitution coefficients $\Psi = \text{diag}(\psi _1, \psi _2, \dots, \psi _{n _c}),  \psi _i \in [0, 1]$, we get the following linear complementarity problem (LCP):
 
 \begin{equation}
     \begin{rcases}

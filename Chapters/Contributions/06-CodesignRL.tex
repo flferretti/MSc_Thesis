@@ -33,7 +33,7 @@ All the \ac{RL} trainings in this work have been performed on the \texttt{IITBMP
 \end{table}
 
 \subsection{Cartpole swingup task}
-For the cartpole swingup task, the aim is to find a policy $\pi$ that is able to balance the pole on the cart, which is moving on a rail, and then swingup the pole to the upright position. The reward function is defined as a function of the state of the system, which is composed of the position of the cart $x$, the velocity of the cart $\dot{x}$, the angle of the pole $\theta$ and the angular velocity of the pole $\dot{\theta}$:
+For the cartpole swing-up task, the aim is to find a policy $\pi$ that is able to balance the pole on the cart, which is moving on a rail, and then swing-up the pole to the upright position. The reward function is defined as a function of the state of the system, which is composed of the position of the cart $x$, the velocity of the cart $\dot{x}$, the angle of the pole $\theta$ and the angular velocity of the pole $\dot{\theta}$:
 
 \begin{equation}
     r = \begin{cases}
@@ -61,7 +61,7 @@ where $\theta_{\text{max}}$ is the maximum angle of the pole from the vertical p
 
 
 \subsection{Humanoid locomotion task}
-The humanoid walking task is with no doubt one of the most challenging tasks in the field of robotics. The aim of the task is to find a policy $\pi$ that is able to make the robot walk forward in a possibly \textit{human-like} motion. Given its high complexity, constitued by the necessity of controlling a large number of joints, which drastically increase the dimensionality of the problem and the need of design a contact model that is able to simulate the interaction between the robot and the environment, yet allowing the algorithm to be able to predict the agent's behaviour as described in \cref{sec:back_contacts},
+The humanoid walking task is without a doubt one of the most challenging tasks in the field of robotics. The task aims to find a policy $\pi$ that is able to make the robot walk forward in a possibly \textit{human-like} motion. Given its high complexity, constituted by the necessity of controlling a large number of joints, which drastically increases the dimensionality of the problem and the need to design a contact model that can simulate the interaction between the robot and the environment, yet allowing the algorithm to be able to predict the agent's behavior as described in \cref{sec:back_contacts},
 
 The action space is defined as:
 
@@ -69,7 +69,7 @@ The action space is defined as:
     \mathcal{A} = \left\{ a \in \mathbb{R} ^{23} \mid -1 \leq a_i \leq 1 \right\}
 \end{equation}
 
-where $a_i$ is the $i$-th joint desidered position, which is then converted to a torque via a PD controller and then clipped to the maximum torque of the joint.
+where $a_i$ is the $i$-th joint desired position, which is then converted to a torque via a PD controller and then clipped to the maximum torque of the joint.
 
 The observation space is defined as:
 
@@ -97,7 +97,7 @@ and it is composed of the elements listed in \cref{tab:walkingobs}.
     \caption{Humanoid Walking Task -- Observation Space}
 \end{table}
 
-Rewards, actions and observations are then normalized to the range $[0,1]$ in order to make the learning process more stable and to avoid the need of tuning the reward function for different robots. The \cref{tab:walkingtaskspacedef} summarizes the definition of the spaces used in the \ac{RL} framework.
+Rewards, actions, and observations are then normalized to the range $[0,1]$ in order to make the learning process more stable and to avoid the need to tune the reward function for different robots. The \cref{tab:walkingtaskspacedef} summarizes the definition of the spaces used in the \ac{RL} framework.
 
 \begin{table}
     \centering
@@ -115,7 +115,7 @@ Rewards, actions and observations are then normalized to the range $[0,1]$ in or
 \end{table}
 
 
-Hyperparameters tuning is a crucial part of the \ac{RL} framework, and it is often the most time consuming part of the process. In this work the hyperparameters were tuned using \textit{Optuna} \cite{akiba_optuna_2019}, a hyperparameter optimization framework, which uses Tree-structured Parzen Estimator (\ac{TPE}) sampler with a median pruner, that models the objective function and suggests the next set of hyperparameters to evaluate. The hyperparameters that were tuned are the following:
+Hyperparameter tuning is a crucial part of the \ac{RL} framework, and it is often the most time-consuming part of the process. In this work, the hyperparameters were tuned using \textit{Optuna} \cite{akiba_optuna_2019}, a hyperparameter optimization framework, which uses Tree-structured Parzen Estimator (\ac{TPE}) sampler with a median pruner, that models the objective function and suggests the next set of hyperparameters to evaluate. The hyperparameters that were tuned are the following:
 
 \begin{itemize}
     \item Time Horizon
@@ -177,7 +177,7 @@ The policy network is composed of two hidden layers of size $64$ and $64$ respec
     \label{fig:rlarchitecture}
 \end{figure}
 
-The \ac{RL} framework has been implemented using the \textit{Stable Baselines 3} library \cite{raffin_stable-baselines3_2021}. The \ac{RL} framework has been trained for $10$M steps, which given the episodic length, corresponds to $10$ epochs. The INSERT FIGURE below represents the main metrics collected in the training process. In particular the figure shows the mean reward, the mean episode length, the mean episodic reward, the approximated KL divergence and the explained variance.
+The \ac{RL} framework has been implemented using the \textit{Stable Baselines 3} library \cite{raffin_stable-baselines3_2021}. The \ac{RL} framework has been trained for $10$M steps, which given the episodic length, corresponds to $10$ epochs. The INSERT FIGURE below represents the main metrics collected in the training process. In particular, the figure shows the mean reward, the mean episode length, the mean episodic reward, the approximated KL divergence, and the explained variance.
 
 
 \section{Evolutionary Algorithm Core}
@@ -186,7 +186,7 @@ The \ac{RL} framework has been implemented using the \textit{Stable Baselines 3}
 
 The evolutionary algorithm has been used in the codesign loop to select motor parameters from a set of possible values. The evolutionary algorithm has been implemented using the \textit{DEAP} library CITE.
 
-The motor set of parameters is composed of three main components: motor inertia, motor viscous friction and gear ratio. This choice has been made in order to keep the number of parameters low, in order to reduce the computational cost of the optimization process. The decision process is then repeated for each motor of the robot, which means that the total number of combination are:
+The motor set of parameters is composed of three main components: motor inertia, motor viscous friction, and gear ratio. This choice has been made in order to keep the number of parameters low, in order to reduce the computational cost of the optimization process. The decision process is then repeated for each motor of the robot, which means that the total number of combination are:
 
 \begin{equation}
     H = \binom{n + k - 1}{k} = \binom{23 + 3 - 1}{3} = \frac{25!}{3! 22!} = 2300
@@ -233,14 +233,14 @@ After a preliminary analysis of the problem, the following parameters have been 
     \caption{Evolutionary Algorithm Hyperparameters}
 \end{table}
 
-Given the single objective of the optimization problem, the \ac{NSGA}-III algorithm has been selected as the evolutionary algorithm, as it allows to find a set of solutions that are all Pareto optimal.
+Given the single objective of the optimization problem, the \ac{NSGA}-III algorithm has been selected as the evolutionary algorithm, as it allows us to find a set of solutions that are all Pareto optimal.
 
 
 \section{Humanoid Robots Codesign Loop}
 \label{sec:Codesign}
 
-The problem of humanoid robot codesign can be formalized as a reinforcement learning problem, where the agent is the robot, together with a nonlinear optimization of some hardware parameters, in the case discussed in this work this role is played by a evolutionary algorithm.
+The problem of humanoid robot codesign can be formalized as a reinforcement learning problem, where the agent is the robot, together with a nonlinear optimization of some hardware parameters, in the case discussed in this work this role is played by an evolutionary algorithm.
 
-The first step of the codesign loop involves some inital design choices, which are then used to create the initial population of the evolutionary algorithm. Then the population gets evaluated running in parallel the \ac{RL} framework for each individual of the population. The evaluation process is repeated for a number of generations, after which the best individual is selected and its parameters are used to update the robot design. The process is then repeated until the robot reaches the desired target fitness or when it reaches the maximum number of generations.
+The first step of the codesign loop involves some initial design choices, which are then used to create the initial population of the evolutionary algorithm. Then the population gets evaluated running in parallel the \ac{RL} framework for each individual of the population. The evaluation process is repeated for several generations, after which the best individual is selected and its parameters are used to update the robot design. The process is then repeated until the robot reaches the desired target fitness or when it reaches the maximum number of generations.
 
 For the evaluation, the reward coming from the \ac{RL} training process is used as the fitness function of the evolutionary algorithm. The fitness function is then normalized to the range $[0,1]$ in order to make the optimization more stable.
