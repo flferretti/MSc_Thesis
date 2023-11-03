@@ -68,6 +68,12 @@
 \usepackage{colortbl}
 
 % PACKAGES FOR ALGORITHMS (PSEUDO-CODE)
+\usepackage[
+  noEnd=true,
+  indLines=true,
+  italicComments=true,
+  rightComments=true,
+]{algpseudocodex}
 \usepackage{algorithm}
 \usepackage{algorithmic}
 
@@ -112,6 +118,7 @@
 
 \usepackage{xspace}
 \usepackage[babel=true,tracking=true]{microtype}
+
 %----------------------------------------------------------------------------
 %	ADD YOUR DEFINITIONS AND COMMANDS (be careful of existing commands)
 %----------------------------------------------------------------------------
@@ -122,8 +129,8 @@
 \newcommand{\DanieleSays}[1]{\textcolor{red}{\textbf{Daniele:} #1}}
 
 \newcommand{\cpp}{C\texttt{++}\xspace}
-\newcommand{\jax}{\textsc{JAX}~}
-\newcommand{\jaxsim}{\textsc{JAX}sim~}
+\newcommand{\jax}{\textsc{jax}~}
+\newcommand{\jaxsim}{\textsc{jax}sim~}
 %----------------------------------------------------------------------------
 %	BEGIN OF YOUR DOCUMENT
 %----------------------------------------------------------------------------

@@ -3,13 +3,13 @@
 
 Training a physical \ac{RL} agent often involves prohibitive costs and potential safety issues, that is why simulators play a major role in most training scenarios. As a matter of fact, the trial-and-error process needed for the agent to gain experience regarding the world may involve damaging complex and expensive hardware, limiting the possibility for the agent to explore and learn more efficiently. With the use of scalable physics simulators, there is the possibility of creating highly complex, customized environments to reproduce multiple scenarios, allowing also to have a testing environment that is as close as possible to the real world. Nevertheless, with the increase of the environment and agent complexity,
 
-At time, the most common physic simulation framework used for this purpose are PyBullet \citep{coumans_pybullet_2016}, MuJoCo \citep{todorov_mujoco_2012},
+At time, the most common physic simulation frameworks used for this purpose are PyBullet \citep{coumans_pybullet_2016}, MuJoCo \citep{todorov_mujoco_2012},
 
 The most common way to speed up computations is to use hardware accelerators, in fact, the natural efficiency of \ac{GPU}s in solving parallel calculations can be exploited to cut down simulation times \citep{liang_gpu-accelerated_2018}.
 
 \section{Nvidia ISAAC Gym}
 
-In recent times, the use of \textit{Advesarial Motion Priors} \citep{peng_amp_2021} for reinforcement learning, which will be further discussed in \cref{chp:back_RLGA} has brought to the development of a new framework for physics simulation, called \textsc{ISAAC Gym} \citep{makoviychuk_isaac_2021} which allows to simulate complex environments basing on the \textsc{ISAAC SIM} \citep{zhou_towards_2023}, a cyber-physical simulator that exploits NVIDIA PhysX and Omniverse, which offer a high-performance, cross-platform, real-time physics engine that allows to simulate rigid bodies in reduced coordinate articulations, soft bodies, fluids, cloth and particles. Isaac Gym then leverages the power of \textit{RL Games} \citep{rl-games2021} to completely work with \textit{PyTorch} \citep{paszke_pytorch_2019} tensors on \ac{GPU}s to accelerate the simulation process, allowing to train complex environments with multiple agents and objects.
+In recent times, the use of \textit{Adversarial Motion Priors} \citep{peng_amp_2021} for reinforcement learning, which will be further discussed in \cref{chp:back_RLGA} has brought to the development of a new framework for physics simulation, called \textsc{isaac gym} \citep{makoviychuk_isaac_2021} which allows to simulate complex environments basing on the \textsc{isaac sim} \citep{zhou_towards_2023}, a cyber-physical simulator that exploits NVIDIA PhysX and Omniverse, which offer a high-performance, cross-platform, real-time physics engine that allows to simulate rigid bodies in reduced coordinate articulations, soft bodies, fluids, cloth and particles. \textsc{Isaac gym} then leverages the power of \texttt{rl\_games} \citep{rl-games2021} to completely work with \texttt{pytorch} \citep{paszke_pytorch_2019} tensors on \ac{GPU}s to accelerate the simulation process, allowing to train complex environments with multiple agents and objects.
 
 The backend implementation of the simulator is written in \cpp, while offering a frontend interface in Python, which allows to easily build complex environments and agents, as well as to visualize the simulation process. Nevertheless, being the framework completely closed-source, it is not possible to extend the functionalities of the simulator, which is limited to the ones provided by the original developers.
 
@@ -23,3 +23,92 @@ Moreover, \jax supports back and forward \textit{Automatic Differentiation} (\ac
 
 \jaxsim \citep{ferigo_jaxsim_2022} as it is \ac{JIT} and leverages \jax
 It provides an end-to-end GPU-accelerated simulation that allows strong parallelization on multiple environments, whose only limit is the number of \ac{CUDA} cores present in the GPU unit.
+
+\section{Impacts and Contacts}
+\label{sec:back_contacts}
+\subsection{Smooth Impacts}
+
+In a high incident velocity impact between two solids, some of the kinetic energy is transferred to the vibrational model. This is due to the fact that the contact in smooth impacts is not perfectly inelastic, hence the partial elasticities of the materials involved in the collision induce vibrational modes in the system.
+
+Considering a point particle with mass $m$ and position $\mathbf{q}: \mathbb{R} \rightarrow \mathbb{R}$ in a one-dimensional space, compliant with a spring with stiffness $k$ and a damper with damping coefficient $c$, the resulting force generated can be defined as:
+
+\begin{equation}
+    F = \begin{cases}
+        -k\mathbf{q} - c\dot{\mathbf{q}} & \text{if } \mathbf{q} > 0    \\
+        0                                & \text{if } \mathbf{q} \leq 0
+    \end{cases}
+\end{equation}
+
+Considering an initial condition $\mathbf{q}(t=0) = 0$ and $\dot{\mathbf{q}}(t=0) = v_0 > 0$, i.e. the particle starts at the origin but moves towards the penetration region, will result in an active force $F(t) = -k\mathbf{q}(t) - c\dot{\mathbf{q}}(t)$ that will be applied to the particle until it reaches the equilibrium position $\mathbf{q} = 0$. The resulting motion will be a damped oscillation that can be derived from the Lagrangian mechanics as seen in \cref{eqn:lagrangian}, where the Lagrangian $\mathcal{L}$ of the system is defined as:
+
+\begin{equation}
+    \mathcal{L} = \mathcal{T} - \mathcal{V} = \frac{1}{2}m\dot{\mathbf{q}}^2 - \frac{1}{2}k\mathbf{q}^2
+\end{equation}
+
+which yields the following equation of motion:
+
+\begin{equation}
+    \ddot{\mathbf{q}} + \underbrace{\frac{c}{m}} _{\omega ^2} \dot{\mathbf{q}} + \underbrace{\frac{k}{m}} _\gamma \mathbf{q} = 0
+\end{equation}
+
+where $\omega$ is the natural frequency of the system and $\gamma$ can be used to declare the damping ratio $\zeta = \frac{\gamma}{2\omega}$.
+
+The solution of the resulting equation is the one of a first-order linear \ac{ODE}:
+
+\begin{equation}
+    \mathbf{q}(t) = \mathbf{q}_0 e^{-\zeta \omega t} \cos(\omega \sqrt{1 - \zeta ^2} t)
+\end{equation}
+
+which implies an oscillatory regime for $\zeta < 1$ and an exponential decay for $\zeta > 1$, also called damped regime.
+
+\subsection{Non-smooth Impacts}
+
+Considering two bodies and given points $p ^{(0)}$ fixed on body 0 and $p ^{(1)}$ fixed on body 1, the \textit{signed} distance between the two should be non-negative i.e. $c(p ^{(0)}, p ^{(1)}) \geq 0$.
+
+The impact involves forces that change rapidly to cause jump discontinuities in the velocities $\dot{q}$. Therefore it is possible to state that the velocity before and after the impact at time $t_i$ differ:
+
+\begin{equation}
+    \lim _{t \uparrow t _i} \dot{q} = \dot{q} _{-} \neq \dot{q} _{+} = \lim _{t \downarrow t _i} \dot{q}
+\end{equation}
+
+Mathematically, the trajectories $q(t)$ remain continuous while the velocities $\dot{q}(t)$ exhibit jump discontinuities, hence accelerations $\ddot{q}(t)$ are not defined at impact times.
+
+Considering the case of a spherical rigid body impacting an infinite plane, the convexity of the two objects implies that the closest point between the two can be identified uniquely.
+Writing the signed distance function respect to the rigid body center of mass position $x(t)$, we get that $c(q(t)) = \tilde{c}(x(t)) \geq 0$.
+
+With this approach, we can define two configuration manifolds: $Q _1 \in \mathbb{R} ^2 \times \mathrm{SO}3$ for the planar motion and $Q _1 \in \mathbb{R} ^3 \times \mathrm{SO}3$ for the spatial motion, where $\mathrm{SO}3$ is the group of rigid rotations in three dimensions. We define a Lagrangian multiplier $\nu \in \mathbb{R}$ corresponding to the magnitude of the force acting in the normal direction at the contact.
+
+In a discrete mechanics framework, defining $h$ the fixed time step for all steps, if the violation in the impact point at step $i$ called $q _i$ is not too big, a good approximation of the incident velocity is:
+
+\begin{equation}
+    v _{-} = \frac{q _i - q _{i-1}}{h}
+\end{equation}
+
+To estimate the outbound velocity $v _{+}$ instead, we impose the discrete impulsive Newton impact law in one spatial dimension as:
+
+\begin{equation}
+    v _{+} = -\psi v _{-}
+\end{equation}
+
+where $\psi \in [0,1]$ is the \textit{restitution coefficient}.
+
+A perfectly elastic collision corresponds to $\psi = 1$ in which the outbound velocity is the reflection of the incoming one. Now, given that the impulse occurs at a fixed location $q$, the only change in energy is a kinetic energy change, hence for the Newton-Poisson impact law for a point particle of mass $m$, the change in energy is:
+
+\begin{equation}
+    E _{+} - E _{-} = T(q, v _{+}) - T(q, v _{-}) = (\psi ^2 - 1) T(q, v _{-}) \leq 0
+\end{equation}
+
+where $T(q, v)$ is the kinetic energy.
+
+To generalize in three dimensions, we define an estimate of the normal component of the incident velocity with respect to the contact manifold as $C _k v _{-}$ where $C _k$ is the $n _c \times n$ Jacobian matrix of the $n _c$ contact surface evaluated at the discrete time $k$. Using the complementarity formulation, assuming the presence of other inequality constraints with the agglomerated Jacobian $G$, adding regularization parameters with diagonal non-negative matrices $\Sigma$ and $\Xi$, and considering the diagonal matrix for restitution coefficients $\Psi = \text{diag}(\psi _1, \psi _2, \dots, \psi _{n _c}),  \psi _i \in [0, 1]$, we get the following linear complementarity problem (LCP):
+
+\begin{equation}
+    \begin{rcases}
+        Mv _{+} - G ^T _k \lambda - C ^T _k v & = M v _{-}    \\
+        G _k v _{+} + \Sigma \lambda          & = G _k v _{-} \\
+        C _k v _{+} + \Psi C v _{-} + \Xi v   & = w           \\
+    \end{rcases} \quad \text{subject to
+        :  } \quad v \geq 0 \perp w \geq 0
+\end{equation}
+
+By solving the optimization above, it can be shown that this leads to $T _{+} \leq T _{-}$, therefore the impulsive stage can only decrease the kinetic energy.

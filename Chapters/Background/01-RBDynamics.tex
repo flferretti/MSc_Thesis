@@ -7,10 +7,10 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
 
 \paragraph{Spatial Vectors} A spatial vector is a 6D vector that describes the motion of a rigid body in space.
 
-In the case of a rigid body, the velocity of a point $O$ attached to the body with respect to a reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\mathbf{\omega}$ about an axis passing through $O$ and its linear component $\mathbf{v} _A$, for which the following relation holds:
+In the case of a rigid body, the velocity of a point $O$ attached to the body with respect to a reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\dot{\mathbf{s}}$ about an axis passing through $O$ and its linear component $\mathbf{v} _A$, for which the following relation holds:
 
 \begin{equation}
-    v _A = \mathbf{\omega} \times \bar{OP}
+    v _A = \dot{\mathbf{s}} \times \bar{OP}
 \end{equation}
 
 where $\bar{OP}$ is the position vector of $P$ with respect to $O$. This holds for any point $O$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
@@ -60,17 +60,17 @@ where $\mathcal{M} ^6$ is the space of 6D vectors, defining a Pl\"ucker coordina
     \end{tikzpicture}
 \end{figure}
 
-\paragraph{Spatial Subspace} Once defined $\mathcal{M} ^n$ as a vector space, we can define a subset $\mathrm{S} \subset \mathcal{M} ^n$, which is also a vector space. It can be defined as
+\paragraph{Spatial Subspace} Once defined $\mathcal{M} ^n$ as a vector space, we can define a subset $\boldsymbol{\Phi} \subset \mathcal{M} ^n$, which is also a vector space. It can be defined as
 the null space of a constraint matrix $\mathbf{K}$, e.g. let $\mathbf{K} \in \mathbb{R} ^{m \times n}$ be a constraint matrix as:
 
 \begin{equation}
     \mathbf{K} = \{ [\mathbf{k} _1, \dots, \mathbf{k} _n]  \subset \mathcal{M} ^m \mid \mathbf{K} \boldsymbol{\nu} = 0 \} \quad \text{with } \mathbf{k} _i \in \mathcal{M} ^m
 \end{equation}
 
-we can define the subspace $\mathrm{S}$ as:
+we can define the subspace $\boldsymbol{\Phi}$ as:
 
 \begin{equation}
-    \mathrm{S} = \ker (\mathbf{K})
+    \boldsymbol{\Phi} = \ker (\mathbf{K})
 \end{equation}
 
 This defines a motion subspace for a system, e.g. defines the directions in which the system is free to move.
@@ -90,23 +90,23 @@ This defines a motion subspace for a system, e.g. defines the directions in whic
     \end{bmatrix}
     = \begin{bmatrix}
         \mathbf{v} _A \\
-        \boldsymbol{\omega} _A
+        \dot{\mathbf{s}} _A
     \end{bmatrix}
 \end{equation}
 
-where $\mathbf{v} _A$ is the linear velocity of the point $O$ and $\boldsymbol{\omega} _A$ is the angular velocity of the body.
+where $\mathbf{v} _A$ is the linear velocity of the point $O$ and $\dot{\mathbf{s}} _A$ is the angular velocity of the body.
 
 \paragraph{Spatial Acceleration} Given that the spatial velocity decouples the linear and angular components of the motion, defining a property of the body as a whole and not of a single body-fixed point, the spatial acceleration of a rigid body is defined as simply as just the time derivative of its spatial velocity:
 
 \begin{equation}
     \dot{\boldsymbol{\nu} _A} = \frac{\mathrm{d}}{\mathrm{d}t} \begin{bmatrix}
         \mathbf{v} _A (t) \\
-        \boldsymbol{\omega} _A (t)
+        \ddot{\mathbf{s}} _A (t)
     \end{bmatrix}
     =
     \begin{bmatrix}
         \dot{\mathbf{v}} _A \\
-        \dot{\boldsymbol{\omega}} _A
+        \ddot{\mathbf{s}} _A
     \end{bmatrix}
 \end{equation}
 
@@ -128,10 +128,10 @@ where $\dot{\boldsymbol{\nu}} \in \mathbb{R}^6$ is the spatial acceleration of t
 A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links correspond to the rigid bodies composing the inertial properties of the system, while the joints are usually modeled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
 
 For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases. Furthermore, the system will be considered \textit{acyclic}, i.e. it will not contain any closed loop, as the presence of loops would make the system kinematically redundant,
-In this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\mathrm{S} _j \in \mathcal{M} ^6$ as:
+In this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\boldsymbol{\Phi} _j \in \mathcal{M} ^6$ as:
 
 \begin{equation}
-    \mathrm{S} _j =
+    \boldsymbol{\Phi} _j =
     \begin{cases}
         [0, 0, 0, 0, 0, 0] ^\top & \text{if the joint is fixed}     \\
         [0, 0, 1, 0, 0, 0] ^\top & \text{if the joint is prismatic} \\
@@ -477,7 +477,7 @@ As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multi
         \end{tikzpicture}}}
 \end{figure}
 
-The Articulated-Body Algorithm finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going up to the root, by considering a joint $i$ interacting with the rest of the kinematic chain through an unknown force $\mathbf{f} _i$ defined as:
+The Articulated-Body Algorithm (\ac{ABA}) finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going up to the root, by considering a joint $i$ interacting with the rest of the kinematic chain through an unknown force $\mathbf{f} _i$ defined as:
 
 \begin{equation}
     \mathbf{f} _i = \mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
@@ -485,438 +485,69 @@ The Articulated-Body Algorithm finds its roots by initially considering a subdiv
 
 where $\mathbf{I} _i ^A$ is the articulated body inertia, i.e. the inertia felt at the base of the subtree when all its joints are free to move, and $\mathbf{p} ^A _i$ is the associated bias force.
 
+In ABA, first, a forward pass is performed to compute the initial articulated body inertia, the initial bias forces, and the link velocities, then a backward pass is performed to compute the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain.
+
 The spatial force acting at joint $i$ and the acceleration of body $i$ are related by:
 
 \begin{equation}
-    \boldsymbol{\tau} _i = \mathbf{S} ^T _i \mathbf{f} _i = \mathbf{S} ^T _i (\mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i) = \mathbf{S} ^T _i (\mathbf{I} _i ^A (\mathbf{a} _{\lambda(i)} + \mathbf{S} _i \ddot{\mathbf{s}} _i + \dot{\mathbf{S}} _i \dot{\mathbf{s}} _i)+ \mathbf{p} ^A _i)
+    \boldsymbol{\tau} _i = \boldsymbol{\Phi} ^T _i \mathbf{f} _i = \boldsymbol{\Phi} ^T _i (\mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i) = \boldsymbol{\Phi} ^T _i (\mathbf{I} _i ^A (\mathbf{a} _{\lambda(i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \dot{\boldsymbol{\Phi}} _i \dot{\mathbf{s}} _i)+ \mathbf{p} ^A _i)
+    \label{eqn:aba_torque}
 \end{equation}
 
-where $\mathbf{S} _i$ is the motion subspace of the $i$-th link, $\mathbf{a} _i$ is the acceleration of the $i$-th link, $\mathbf{a} _{\lambda(i)}$ is the acceleration of the parent link, $\ddot{\mathbf{s}} _i$ is the acceleration of the $i$-th joint, and $\dot{\mathbf{S}} _i$ is the derivative of the motion subspace of the $i$-th link with respect to the joint coordinates.
-
-This yields that once the articulated body inertia and the bias force are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints. This is the main advantage of the articulated-body algorithm.
-
-In ABA, first, a forward pass is performed to compute the initial articulated body inertia, the initial bias forces, and the link velocities, then a backward pass is performed to compute the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain.
-Starting from the Gaussian principle of least constraint, the problem of finding the joint accelerations $\ddot{\mathbf{s}}$ that satisfy the equation of motion already seen in \cref{eqn:equation_of_motion}, which can be formulated as a constrained optimization problem:
+where $\boldsymbol{\Phi} _i$ is the motion subspace of the $i$-th link, $\mathbf{a} _i$ is the acceleration of the $i$-th link, $\mathbf{a} _{\lambda(i)}$ is the acceleration of the parent link, $\ddot{\mathbf{s}} _i$ is the acceleration of the $i$-th joint, and $\dot{\boldsymbol{\Phi}} _i$ is the derivative of the motion subspace of the $i$-th link with respect to the joint coordinates.
+By solving \cref{eqn:aba_torque} for $\ddot{\mathbf{s}}$ and substituting it in the objective function, the following results is obtained:
 
 \begin{equation}
-    \begin{aligned}
-         & \underset{\ddot{\mathbf{s}}}{\text{minimize}}
-         &                                               & \frac{1}{2} \ddot{\mathbf{s}} ^T \mathbf{M} (\mathbf{s}) \ddot{\mathbf{s}} + \dot{\mathbf{s}} ^T \mathbf{C} (\mathbf{s}, \dot{\mathbf{s}}) + \mathbf{G} (\mathbf{s}) ^T \ddot{\mathbf{s}} \\
-         & \text{subject to}
-         &                                               & \mathbf{A} (\mathbf{s}) \ddot{\mathbf{s}} = \mathbf{b} (\mathbf{s}, \dot{\mathbf{s}})
-    \end{aligned}
+    \ddot{\mathbf{s}} _i = \mathbf{I} _i ^{-1} (\boldsymbol{\tau} _i - \boldsymbol{\Phi} ^T _i \mathbf{p} ^A _i - \boldsymbol{\Phi} ^T _i \mathbf{I} _i ^A \mathbf{a} _{\lambda(i)})
 \end{equation}
 
-where $\mathbf{A} (\mathbf{s})$ is the constraint matrix and $\mathbf{b} (\mathbf{s}, \dot{\mathbf{s}})$ is the constraint vector.
-
-The constraint matrix $\mathbf{A} (\mathbf{s})$ is defined as:
-
-\begin{equation}
-    \mathbf{A} (\mathbf{s}) = \begin{bmatrix}
-        \mathbf{S} _1 ^T \mathbf{M} (\mathbf{s}) \mathbf{S} _1   & \mathbf{S} _1 ^T \mathbf{M} (\mathbf{s}) \mathbf{S} _2   & \dots  & \mathbf{S} _1 ^T \mathbf{M} (\mathbf{s}) \mathbf{S} _{n}   \\
-        \mathbf{S} _2 ^T \mathbf{M} (\mathbf{s}) \mathbf{S} _1   & \mathbf{S} _2 ^T \mathbf{M} (\mathbf{s}) \mathbf{S} _2   & \dots  & \mathbf{S} _2 ^T \mathbf{M} (\mathbf{s}) \mathbf{S} _{n}   \\
-        \vdots                                                   & \vdots                                                   & \ddots & \vdots                                                     \\
-        \mathbf{S} _{n} ^T \mathbf{M} (\mathbf{s}) \mathbf{S} _1 & \mathbf{S} _{n} ^T \mathbf{M} (\mathbf{s}) \mathbf{S} _2 & \dots  & \mathbf{S} _{n} ^T \mathbf{M} (\mathbf{s}) \mathbf{S} _{n} \\
-    \end{bmatrix}
-\end{equation}
-
-where $\mathbf{S} _i$ is the motion subspace of the $i$-th link. And the constraint vector $\mathbf{b} (\mathbf{s}, \dot{\mathbf{s}})$ is defined as:
-
-\begin{equation}
-    \mathbf{b} (\mathbf{s}, \dot{\mathbf{s}}) = \begin{bmatrix}
-        \mathbf{S} _1 ^T \mathbf{C} (\mathbf{s}, \dot{\mathbf{s}}) + \mathbf{G} (\mathbf{s})   \\
-        \mathbf{S} _2 ^T \mathbf{C} (\mathbf{s}, \dot{\mathbf{s}}) + \mathbf{G} (\mathbf{s})   \\
-        \vdots                                                                                 \\
-        \mathbf{S} _{n} ^T \mathbf{C} (\mathbf{s}, \dot{\mathbf{s}}) + \mathbf{G} (\mathbf{s}) \\
-    \end{bmatrix}
-\end{equation}
-
-The constraint matrix $\mathbf{A} (\mathbf{s})$ is a symmetric matrix, and it is positive definite if the robot is fully actuated. The constraint vector $\mathbf{b} (\mathbf{s}, \dot{\mathbf{s}})$ is a vector of dimension $n$.
-
-
-we can identify the following quantities starting from the equations of motion of the robot:
-
-% === FIG: Unconstrained Tree === %
-\begin{figure}
-    \centering
-    \caption{Visual comparison between the unconstrained and constrained kinematic tree.}
-    \subfloat[Constrained System]{
-        \resizebox{0.5\textwidth}{!}{
-            \tikzset {_djnj2rsc4/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_idu07h52c}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_jsyk5ax1n/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_92edxt770}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_b0gplq11g/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_x22po1g8w}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_ivsfd2s3h/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_8u84rjokz}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_5pcd2h8hv/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_lvec74ltu}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_37uba45qs/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_ik4ni4me2}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_z01vd74d5/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_rhf2dk4cx}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_9fj7ssnk1/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_nn6marsz8}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_vxd4nfhmk/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_be3tjpf6d}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_syya3oz6t/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_73496xns5}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset{every picture/.style={line width=0.75pt}}
-        \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
-            \path  [shading=_idu07h52c,_djnj2rsc4] (360.92,117.33) .. controls (360.92,108.96) and (384.78,102.17) .. (414.21,102.17) .. controls (443.64,102.17) and (467.5,108.96) .. (467.5,117.33) .. controls (467.5,125.71) and (443.64,132.5) .. (414.21,132.5) .. controls (384.78,132.5) and (360.92,125.71) .. (360.92,117.33) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (360.92,117.33) .. controls (360.92,108.96) and (384.78,102.17) .. (414.21,102.17) .. controls (443.64,102.17) and (467.5,108.96) .. (467.5,117.33) .. controls (467.5,125.71) and (443.64,132.5) .. (414.21,132.5) .. controls (384.78,132.5) and (360.92,125.71) .. (360.92,117.33) -- cycle ;
-            \path  [shading=_92edxt770,_jsyk5ax1n] (548.22,34.11) .. controls (554.45,39.72) and (543.53,61.99) .. (523.84,83.87) .. controls (504.15,105.75) and (483.14,118.94) .. (476.92,113.33) .. controls (470.69,107.73) and (481.61,85.45) .. (501.3,63.58) .. controls (520.99,41.7) and (542,28.51) .. (548.22,34.11) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (548.22,34.11) .. controls (554.45,39.72) and (543.53,61.99) .. (523.84,83.87) .. controls (504.15,105.75) and (483.14,118.94) .. (476.92,113.33) .. controls (470.69,107.73) and (481.61,85.45) .. (501.3,63.58) .. controls (520.99,41.7) and (542,28.51) .. (548.22,34.11) -- cycle ;
-            \path  [shading=_x22po1g8w,_b0gplq11g] (467.5,117.33) .. controls (467.5,114.46) and (469.83,112.13) .. (472.71,112.13) .. controls (475.58,112.13) and (477.92,114.46) .. (477.92,117.33) .. controls (477.92,120.21) and (475.58,122.54) .. (472.71,122.54) .. controls (469.83,122.54) and (467.5,120.21) .. (467.5,117.33) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (467.5,117.33) .. controls (467.5,114.46) and (469.83,112.13) .. (472.71,112.13) .. controls (475.58,112.13) and (477.92,114.46) .. (477.92,117.33) .. controls (477.92,120.21) and (475.58,122.54) .. (472.71,122.54) .. controls (469.83,122.54) and (467.5,120.21) .. (467.5,117.33) -- cycle ;
-            \path  [shading=_8u84rjokz,_ivsfd2s3h] (352.22,121.61) .. controls (358.45,127.22) and (347.53,149.49) .. (327.84,171.37) .. controls (308.15,193.25) and (287.14,206.44) .. (280.92,200.83) .. controls (274.69,195.23) and (285.61,172.95) .. (305.3,151.08) .. controls (324.99,129.2) and (346,116.01) .. (352.22,121.61) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (352.22,121.61) .. controls (358.45,127.22) and (347.53,149.49) .. (327.84,171.37) .. controls (308.15,193.25) and (287.14,206.44) .. (280.92,200.83) .. controls (274.69,195.23) and (285.61,172.95) .. (305.3,151.08) .. controls (324.99,129.2) and (346,116.01) .. (352.22,121.61) -- cycle ;
-            \path  [shading=_lvec74ltu,_5pcd2h8hv] (350.5,117.33) .. controls (350.5,114.46) and (352.83,112.13) .. (355.71,112.13) .. controls (358.58,112.13) and (360.92,114.46) .. (360.92,117.33) .. controls (360.92,120.21) and (358.58,122.54) .. (355.71,122.54) .. controls (352.83,122.54) and (350.5,120.21) .. (350.5,117.33) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (350.5,117.33) .. controls (350.5,114.46) and (352.83,112.13) .. (355.71,112.13) .. controls (358.58,112.13) and (360.92,114.46) .. (360.92,117.33) .. controls (360.92,120.21) and (358.58,122.54) .. (355.71,122.54) .. controls (352.83,122.54) and (350.5,120.21) .. (350.5,117.33) -- cycle ;
-            \path  [shading=_ik4ni4me2,_37uba45qs] (272.46,204.96) .. controls (272.46,202.08) and (274.79,199.75) .. (277.67,199.75) .. controls (280.54,199.75) and (282.87,202.08) .. (282.87,204.96) .. controls (282.87,207.83) and (280.54,210.17) .. (277.67,210.17) .. controls (274.79,210.17) and (272.46,207.83) .. (272.46,204.96) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (272.46,204.96) .. controls (272.46,202.08) and (274.79,199.75) .. (277.67,199.75) .. controls (280.54,199.75) and (282.87,202.08) .. (282.87,204.96) .. controls (282.87,207.83) and (280.54,210.17) .. (277.67,210.17) .. controls (274.79,210.17) and (272.46,207.83) .. (272.46,204.96) -- cycle ;
-            \path  [shading=_rhf2dk4cx,_z01vd74d5] (170.95,143.93) .. controls (163.63,148.01) and (146.08,130.48) .. (131.74,104.78) .. controls (117.4,79.08) and (111.7,54.93) .. (119.02,50.85) .. controls (126.33,46.77) and (143.89,64.3) .. (158.23,90) .. controls (172.57,115.7) and (178.26,139.85) .. (170.95,143.93) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (170.95,143.93) .. controls (163.63,148.01) and (146.08,130.48) .. (131.74,104.78) .. controls (117.4,79.08) and (111.7,54.93) .. (119.02,50.85) .. controls (126.33,46.77) and (143.89,64.3) .. (158.23,90) .. controls (172.57,115.7) and (178.26,139.85) .. (170.95,143.93) -- cycle ;
-            \path  [shading=_nn6marsz8,_9fj7ssnk1] (179.33,150.95) .. controls (183.31,143.58) and (207.53,148.94) .. (233.43,162.93) .. controls (259.32,176.91) and (277.09,194.22) .. (273.11,201.59) .. controls (269.13,208.96) and (244.91,203.6) .. (219.01,189.62) .. controls (193.12,175.63) and (175.35,158.32) .. (179.33,150.95) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (179.33,150.95) .. controls (183.31,143.58) and (207.53,148.94) .. (233.43,162.93) .. controls (259.32,176.91) and (277.09,194.22) .. (273.11,201.59) .. controls (269.13,208.96) and (244.91,203.6) .. (219.01,189.62) .. controls (193.12,175.63) and (175.35,158.32) .. (179.33,150.95) -- cycle ;
-            \path  [shading=_be3tjpf6d,_vxd4nfhmk] (174.79,153.61) .. controls (171.92,153.71) and (169.51,151.45) .. (169.42,148.58) .. controls (169.32,145.7) and (171.58,143.3) .. (174.45,143.2) .. controls (177.33,143.11) and (179.73,145.36) .. (179.83,148.24) .. controls (179.92,151.11) and (177.67,153.52) .. (174.79,153.61) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (174.79,153.61) .. controls (171.92,153.71) and (169.51,151.45) .. (169.42,148.58) .. controls (169.32,145.7) and (171.58,143.3) .. (174.45,143.2) .. controls (177.33,143.11) and (179.73,145.36) .. (179.83,148.24) .. controls (179.92,151.11) and (177.67,153.52) .. (174.79,153.61) -- cycle ;
-            \path  [shading=_73496xns5,_syya3oz6t] (540.88,206.7) .. controls (534.23,211.8) and (514.33,196.98) .. (496.44,173.61) .. controls (478.55,150.24) and (469.43,127.17) .. (476.09,122.08) .. controls (482.74,116.98) and (502.63,131.8) .. (520.53,155.17) .. controls (538.42,178.54) and (547.53,201.61) .. (540.88,206.7) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (540.88,206.7) .. controls (534.23,211.8) and (514.33,196.98) .. (496.44,173.61) .. controls (478.55,150.24) and (469.43,127.17) .. (476.09,122.08) .. controls (482.74,116.98) and (502.63,131.8) .. (520.53,155.17) .. controls (538.42,178.54) and (547.53,201.61) .. (540.88,206.7) -- cycle ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (103.21,151.6) -- (172.62,148.5) ;
-            \draw [shift={(174.62,148.41)}, rotate = 177.44] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (373.78,57.81) -- (356.29,115.42) ;
-            \draw [shift={(355.71,117.33)}, rotate = 286.89] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (465.03,205.67) -- (534.45,202.56) ;
-            \draw [shift={(536.44,202.47)}, rotate = 177.44] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (492.37,61.67) -- (473.37,115.45) ;
-            \draw [shift={(472.71,117.33)}, rotate = 289.46] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-            \draw  [draw opacity=0] (179.21,161.74) .. controls (177.77,162.22) and (176.23,162.48) .. (174.62,162.48) .. controls (166.68,162.48) and (160.25,156.18) .. (160.25,148.41) .. controls (160.25,140.64) and (166.68,134.34) .. (174.62,134.34) .. controls (182.56,134.34) and (189,140.64) .. (189,148.41) .. controls (189,150) and (188.73,151.53) .. (188.23,152.95) -- (174.62,148.41) -- cycle ; \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (179.21,161.74) .. controls (177.77,162.22) and (176.23,162.48) .. (174.62,162.48) .. controls (166.68,162.48) and (160.25,156.18) .. (160.25,148.41) .. controls (160.25,140.64) and (166.68,134.34) .. (174.62,134.34) .. controls (182.56,134.34) and (189,140.64) .. (189,148.41) .. controls (189,149.31) and (188.91,150.18) .. (188.75,151.04) ; \draw [shift={(188.23,152.95)}, rotate = 276.88] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (7.2,-1.8) -- (0,0) -- (7.2,1.8) -- cycle    ;
-            \draw  [draw opacity=0] (360.3,130.67) .. controls (358.86,131.15) and (357.31,131.4) .. (355.71,131.4) .. controls (347.77,131.4) and (341.33,125.1) .. (341.33,117.33) .. controls (341.33,109.56) and (347.77,103.26) .. (355.71,103.26) .. controls (363.65,103.26) and (370.08,109.56) .. (370.08,117.33) .. controls (370.08,118.92) and (369.81,120.45) .. (369.32,121.88) -- (355.71,117.33) -- cycle ; \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (360.3,130.67) .. controls (358.86,131.15) and (357.31,131.4) .. (355.71,131.4) .. controls (347.77,131.4) and (341.33,125.1) .. (341.33,117.33) .. controls (341.33,109.56) and (347.77,103.26) .. (355.71,103.26) .. controls (363.65,103.26) and (370.08,109.56) .. (370.08,117.33) .. controls (370.08,118.23) and (370,119.11) .. (369.83,119.96) ; \draw [shift={(369.32,121.88)}, rotate = 276.88] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (7.2,-1.8) -- (0,0) -- (7.2,1.8) -- cycle    ;
-            \draw  [draw opacity=0] (477.3,130.67) .. controls (475.86,131.15) and (474.31,131.4) .. (472.71,131.4) .. controls (464.77,131.4) and (458.33,125.1) .. (458.33,117.33) .. controls (458.33,109.56) and (464.77,103.26) .. (472.71,103.26) .. controls (480.65,103.26) and (487.08,109.56) .. (487.08,117.33) .. controls (487.08,118.92) and (486.81,120.45) .. (486.32,121.88) -- (472.71,117.33) -- cycle ; \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (477.3,130.67) .. controls (475.86,131.15) and (474.31,131.4) .. (472.71,131.4) .. controls (464.77,131.4) and (458.33,125.1) .. (458.33,117.33) .. controls (458.33,109.56) and (464.77,103.26) .. (472.71,103.26) .. controls (480.65,103.26) and (487.08,109.56) .. (487.08,117.33) .. controls (487.08,118.23) and (487,119.11) .. (486.83,119.96) ; \draw [shift={(486.32,121.88)}, rotate = 272.62] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (7.2,-1.8) -- (0,0) -- (7.2,1.8) -- cycle    ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (313.33,253) -- (278.86,206.56) ;
-            \draw [shift={(277.67,204.96)}, rotate = 53.41] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-        \end{tikzpicture}
-    }
-    }
-    \subfloat[Uncostrained System]{
-        \resizebox{0.5\textwidth}{!}{
-            \tikzset {_cuejj3ut6/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_5ugpqis72}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_d6bvf3ads/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_xx64avkmf}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_gxyzl2ql8/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_Aokbkkxvx}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_m8uplal2o/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_i8uv4t2gq}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_60x67noot/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_wjk5bthop}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset {_cf91rnvay/.code = {\pgfsetadditionalshadetransform{ \pgftransformshift{\pgfpoint{0 bp } { 0 bp }  }  \pgftransformrotate{-117 }  \pgftransformscale{2 }  }}}
-        \pgfdeclarehorizontalshading{_e8wxk8n2i}{150bp}{rgb(0bp)=(1,1,1);
-            rgb(37.5bp)=(1,1,1);
-            rgb(50.08184160505022bp)=(0.95,0.95,0.95);
-            rgb(57.64583042689732bp)=(0.88,0.88,0.88);
-            rgb(61.33184160505022bp)=(0.96,0.96,0.96);
-            rgb(100bp)=(0.96,0.96,0.96)}
-        \tikzset{every picture/.style={line width=0.75pt}}
-        \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
-            \path  [shading=_5ugpqis72,_cuejj3ut6] (324.59,122.77) .. controls (324.59,114.69) and (345.08,108.14) .. (370.37,108.14) .. controls (395.65,108.14) and (416.14,114.69) .. (416.14,122.77) .. controls (416.14,130.85) and (395.65,137.4) .. (370.37,137.4) .. controls (345.08,137.4) and (324.59,130.85) .. (324.59,122.77) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (324.59,122.77) .. controls (324.59,114.69) and (345.08,108.14) .. (370.37,108.14) .. controls (395.65,108.14) and (416.14,114.69) .. (416.14,122.77) .. controls (416.14,130.85) and (395.65,137.4) .. (370.37,137.4) .. controls (345.08,137.4) and (324.59,130.85) .. (324.59,122.77) -- cycle ;
-            \path  [shading=_xx64avkmf,_d6bvf3ads] (485.49,42.5) .. controls (490.83,47.9) and (481.46,69.38) .. (464.54,90.48) .. controls (447.63,111.58) and (429.58,124.31) .. (424.23,118.9) .. controls (418.88,113.5) and (428.26,92.02) .. (445.18,70.92) .. controls (462.09,49.82) and (480.14,37.09) .. (485.49,42.5) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (485.49,42.5) .. controls (490.83,47.9) and (481.46,69.38) .. (464.54,90.48) .. controls (447.63,111.58) and (429.58,124.31) .. (424.23,118.9) .. controls (418.88,113.5) and (428.26,92.02) .. (445.18,70.92) .. controls (462.09,49.82) and (480.14,37.09) .. (485.49,42.5) -- cycle ;
-            \path  [shading=_Aokbkkxvx,_gxyzl2ql8] (317.12,126.9) .. controls (322.47,132.3) and (313.09,153.79) .. (296.17,174.89) .. controls (279.26,195.98) and (261.21,208.71) .. (255.86,203.31) .. controls (250.52,197.9) and (259.89,176.42) .. (276.81,155.32) .. controls (293.72,134.22) and (311.77,121.5) .. (317.12,126.9) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (317.12,126.9) .. controls (322.47,132.3) and (313.09,153.79) .. (296.17,174.89) .. controls (279.26,195.98) and (261.21,208.71) .. (255.86,203.31) .. controls (250.52,197.9) and (259.89,176.42) .. (276.81,155.32) .. controls (293.72,134.22) and (311.77,121.5) .. (317.12,126.9) -- cycle ;
-            \path  [shading=_i8uv4t2gq,_m8uplal2o] (160.4,145.75) .. controls (154.11,149.69) and (139.04,132.78) .. (126.72,107.99) .. controls (114.4,83.2) and (109.51,59.91) .. (115.79,55.97) .. controls (122.07,52.03) and (137.15,68.94) .. (149.47,93.73) .. controls (161.79,118.53) and (166.68,141.82) .. (160.4,145.75) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (160.4,145.75) .. controls (154.11,149.69) and (139.04,132.78) .. (126.72,107.99) .. controls (114.4,83.2) and (109.51,59.91) .. (115.79,55.97) .. controls (122.07,52.03) and (137.15,68.94) .. (149.47,93.73) .. controls (161.79,118.53) and (166.68,141.82) .. (160.4,145.75) -- cycle ;
-            \path  [shading=_wjk5bthop,_60x67noot] (168.6,155.19) .. controls (172.02,148.08) and (192.82,153.25) .. (215.07,166.74) .. controls (237.32,180.23) and (252.58,196.93) .. (249.16,204.04) .. controls (245.74,211.15) and (224.93,205.98) .. (202.69,192.49) .. controls (180.44,179) and (165.18,162.3) .. (168.6,155.19) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (168.6,155.19) .. controls (172.02,148.08) and (192.82,153.25) .. (215.07,166.74) .. controls (237.32,180.23) and (252.58,196.93) .. (249.16,204.04) .. controls (245.74,211.15) and (224.93,205.98) .. (202.69,192.49) .. controls (180.44,179) and (165.18,162.3) .. (168.6,155.19) -- cycle ;
-            \path  [shading=_e8wxk8n2i,_cf91rnvay] (479.18,208.97) .. controls (473.47,213.88) and (456.38,199.59) .. (441,177.05) .. controls (425.63,154.51) and (417.81,132.26) .. (423.52,127.34) .. controls (429.23,122.43) and (446.32,136.72) .. (461.69,159.26) .. controls (477.07,181.8) and (484.89,204.06) .. (479.18,208.97) -- cycle ;
-            \draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]  (479.18,208.97) .. controls (473.47,213.88) and (456.38,199.59) .. (441,177.05) .. controls (425.63,154.51) and (417.81,132.26) .. (423.52,127.34) .. controls (429.23,122.43) and (446.32,136.72) .. (461.69,159.26) .. controls (477.07,181.8) and (484.89,204.06) .. (479.18,208.97) -- cycle ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (112.21,161.49) -- (171.56,158.51) ;
-            \draw [shift={(173.55,158.41)}, rotate = 177.12] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (327.97,74.35) -- (312.97,129.84) ;
-            \draw [shift={(312.45,131.77)}, rotate = 285.13] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (414.02,207.97) -- (473.37,204.99) ;
-            \draw [shift={(475.37,204.89)}, rotate = 177.12] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (426.51,69.4) -- (410.22,121.19) ;
-            \draw [shift={(409.62,123.1)}, rotate = 287.47] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-            \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (295.44,247.14) -- (260.97,200.71) ;
-            \draw [shift={(259.78,199.1)}, rotate = 53.41] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (12,-3) -- (0,0) -- (12,3) -- cycle    ;
-        \end{tikzpicture}
-    }
-    }
-
-\end{figure}
-
-\begin{equation}
-    \mathbf{a} ^{uncostrained} _i = (\mathbf{I} ^A _i) ^{-1}(\mathbf{S} _i \boldsymbol{\tau} _i - \mathbf{p} ^A _i)
-\end{equation}
-
-
-In the constrained case instead, the admissible accelerations of each joint are limited by the acceleration of the rest of the kinematic chain.
-
-
-\begin{equation}
-    \mathbf{a} ^{constrained} _i = \mathbf{S} _i \ddot{\mathbf{s}} _i + \underbrace{\mathbf{v} _i \times ^* \mathbf{S} _i \dot{\mathbf{s}}} _{\mathbf{c} _i}
-\end{equation}
-
-where $\mathbf{c} _i$ is the Coriolis acceleration. The equation for the rotor is then:
-
-\begin{equation}
-    {} ^M \mathbf{a} ^{constrained} _i = {} ^M \mathbf{S} _i \ddot{\mathbf{s}} _i + \underbrace{{} ^M \mathbf{v} _i \times ^* {} ^M\mathbf{S} _i \dot{\mathbf{s}}} _{{} ^M \mathbf{c} _i}
-\end{equation}
-
-This yields, in terms of the Gauss principle of least constraint:
-
-\begin{align}
-    \underset{\ddot{\mathbf{s}}}{\arg \min} & \qquad (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbf{I} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbf{I} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \nonumber           \\
-    \text{where }                           & \qquad \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + \mathbf{S} _i \ddot{\mathbf{s}} _i + \mathbf{c} _i \text{ and } {} ^M \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + {} ^M  \mathbf{S} _i \ddot{\mathbf{s}} _i + {} ^M \mathbf{c} _i \nonumber \\
-\end{align}
-
-The objective function can be then expanded as:
-
-\begin{equation}
-    J = \mathbf{a} ^T _i \mathbf{I} ^A _i \mathbf{a} _i - 2\mathbf{a} ^T _i \mathbf{I} ^a _i \mathbf{a} ^{uc} _i + (\mathbf{a} ^{uc} _i) ^T \mathbf{I} ^a _i \mathbf{a} ^{uc} _i + {} ^M \mathbf{a} ^T _i \mathbf{I} ^M _i {} ^M \mathbf{a} _i - 2 {} ^M \mathbf{a} ^T _i \mathbf{I} ^M _i {} ^M \mathbf{a} ^{uc} _i + ({} ^M \mathbf{a} ^{uc} _i) ^T \mathbf{I} ^M _i {} ^M \mathbf{a} ^{uc} _i
-\end{equation}
-
-as any term that is not quadratic in $\ddot{\mathbf{s}}$ is zero. The objective function can be then rewritten as:
-
-\begin{equation}
-    J _1 = \mathbf{a} ^T _i \mathbf{I} ^A _i \mathbf{a} _i - 2\mathbf{a} ^T _i \mathbf{I} ^a _i \mathbf{a} ^{uc} _i
-\end{equation}
-
-and
-
-\begin{equation}
-    J _2 = {} ^M \mathbf{a} ^T _i \mathbf{I} ^M _i {} ^M \mathbf{a} _i - 2 {} ^M \mathbf{a} ^T _i \mathbf{I} ^M _i {} ^M \mathbf{a} ^{uc} _i
-\end{equation}
-
-substituting the constraints in the objective function, removing terms not depending on $\ddot{\mathbf{s}}$ and taking the gradient, the following equation is obtained:
-
-\begin{align}
-    \frac{\partial J _1}{\partial \ddot{\mathbf{s}} _i} & = 2 \mathbf{S} ^T _i \mathbf{I} ^A _i \mathbf{S} _i \ddot{\mathbf{s}} _i + 2 \mathbf{S} ^T _i \mathbf{I} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i) - 2 \mathbf{S} ^T _i \mathbf{I} ^A _i \mathbf{a} ^{uc} _i \nonumber                                        \\
-    \frac{\partial J _2}{\partial \ddot{\mathbf{s}} _i} & = 2 {} ^M \mathbf{S} ^T _i \mathbf{I} ^M _i {} ^M \mathbf{S} _i \ddot{\mathbf{s}} _i + 2 {} ^M  \mathbf{S} ^T _i \mathbf{I} ^M _i (\mathbf{a} _{\lambda (i)} + {} ^M  \mathbf{c} _i) - 2 {} ^M \mathbf{S} ^T _i \mathbf{I} ^M _i {} ^M \mathbf{a} ^{uc} _i  \nonumber
-\end{align}
-
-Adding up the two terms and defining for compactness:
-
-\begin{equation}
-    \mathbf{D} _i = \mathbf{S} ^T _i \mathbf{I} ^A _i \mathbf{S} _i + {} ^M \mathbf{S} ^T _i \mathbf{I} ^M _i {} ^M \mathbf{S} _i
-\end{equation}
-
-we get to:
-
-\begin{equation}
-    \ddot{\mathbf{s}} _i = \mathbf{D} _i ^{-1} (\mathbf{S} ^T _i \mathbf{I} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i - \mathbf{a} ^{uc} _i) + {} ^M \mathbf{S} ^T _i \mathbf{I} ^M _i ( \mathbf{a} _{\lambda (i)} + {} ^M \mathbf{c} _i - {} ^M \mathbf{a} ^{uc} _i))
-\end{equation}
-
-from which we can derive the recursive relations for the accelerations:
+This yields that once the articulated body inertia and the bias force are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints, constituting the main advantage of the articulated-body algorithm.
 
 \clearpage
 \begin{algorithm}[h]
     \caption{Articulated-Body Algorithm}
     \label{alg:aba}
     \begin{algorithmic}[1]
-        \FOR{$i = 1 \text{ to } n$}
-        \STATE $[\mathbf{X}_J, \mathbf{S}_i] = \text{jcalc}(\text{jtype}(i), \dot{\mathbf{s}}_i)$
-        \STATE $\mathrm{\mathbf{v}}_J = \mathbf{S}_i \dot{\mathbf{s}}_i$
-        \STATE $^i\mathbf{X}_{\lambda(i)} = \mathbf{X}_J\mathbf{X}_T (i)$
-        \IF{$\lambda_i = 0$}
-        \STATE $\mathrm{\mathbf{v}}_i = \mathrm{\mathbf{v}}_J$
-        \STATE $\mathbf{c}_i = \mathbf{0}$
-        \ELSE
-        \STATE $\mathrm{\mathbf{v}}_i = {}^i\mathbf{X} _{\lambda(i)}\mathrm{\mathbf{v}}_{\lambda(i)} + \mathrm{\mathbf{v}}_J$
-        \STATE $\mathbf{c}_i = \mathrm{\mathbf{v}}_i \times ^* \mathrm{\mathbf{v}}_J$
-        \ENDIF
-        % \STATE $\mathbf{I}_i ^A = \mathbf{I}_i$
-        \STATE $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbf{I}_i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
-        \ENDFOR
+        \Require $\mathcal{M}, \mathbf{s}, \dot{\mathbf{s}}, \boldsymbol{\tau}$
 
+        \Comment{Backward Pass}
+        \For{$i = 1 \text{ to } n$}
+        \State $[\mathbf{X}_J, \boldsymbol{\Phi}_i] = \text{jcalc}(\text{jtype}(i), \dot{\mathbf{s}}_i)$
+        \State $\mathrm{\mathbf{v}}_J = \boldsymbol{\Phi}_i \dot{\mathbf{s}}_i$
+        \State $^i\mathbf{X}_{\lambda(i)} = \mathbf{X}_J\mathbf{X}_T (i)$
+        \If{$\lambda_i = 0$}
+        \State $\mathrm{\mathbf{v}}_i = \mathrm{\mathbf{v}}_J$
+        \State $\mathbf{c}_i = \mathbf{0}$
+        \Else
+        \State $\mathrm{\mathbf{v}}_i = {}^i\mathbf{X} _{\lambda(i)}\mathrm{\mathbf{v}}_{\lambda(i)} + \mathrm{\mathbf{v}}_J$
+        \State $\mathbf{c}_i = \mathrm{\mathbf{v}}_i \times ^* \mathrm{\mathbf{v}}_J$
+        \EndIf
+        \State $\mathbf{I}_i ^A = \mathbf{I}_i$
+        \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbf{I}_i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
+        \EndFor
+
+        \Comment{Forward Pass}
         % Pass 2
-        \FOR{$i = n \text{ to } 1$}
-        \STATE $\mathbf{U}_i = \mathbf{I}_i ^A \mathbf{S}_i$
-        \STATE $\mathbf{D} _i = \mathbf{S} ^T _i  {} \mathbf{U} _i \mathbf{S} _i $
-        \STATE $\mathbf{u}_i = \boldsymbol{\tau}_i - \mathbf{S}_i\mathbf{p}_i^A$
-        \IF{$\lambda_i \neq 0$}
-        \STATE $\mathbf{I} ^A = \mathbf{I} ^A _{\lambda (i)} + {} ^i X _{\lambda (i)} ^T (\mathbf{I} _i ^A - {}  \mathbf{U} _i  \mathbf{D} ^{-1} _i  {}  \mathbf{U} ^T _i) {} ^i X _{\lambda (i)} $
-        \STATE $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {} ^i X _{\lambda (i)} ^T (\mathbf{p} ^A_i + \mathbf{I} ^A _{\lambda (i)}  \mathbf{c}_i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i) $
-        \ENDIF
-        \ENDFOR
+        \For{$i = n \text{ to } 1$}
+        \State $\mathbf{U}_i = \mathbf{I}_i ^A \boldsymbol{\Phi}_i$
+        \State $\mathbf{D} _i = \boldsymbol{\Phi} ^T _i  {} \mathbf{U} _i \boldsymbol{\Phi} _i $
+        \State $\mathbf{u}_i = \boldsymbol{\tau}_i - \boldsymbol{\Phi}_i\mathbf{p}_i^A$
+        \If{$\lambda_i \neq 0$}
+        \State $\mathbf{I} ^A = \mathbf{I} ^A _{\lambda (i)} + {} ^i X _{\lambda (i)} ^T (\mathbf{I} _i ^A - {}  \mathbf{U} _i  \mathbf{D} ^{-1} _i  {}  \mathbf{U} ^T _i) {} ^i X _{\lambda (i)} $
+        \State $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {} ^i X _{\lambda (i)} ^T (\mathbf{p} ^A_i + \mathbf{I} ^A _{\lambda (i)}  \mathbf{c}_i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i) $
+        \EndIf
+        \EndFor
 
+        \Comment{Backward Pass}
         % Pass 3
-        \FOR{$i = 1 \text{ to } n$}
-        \IF{$\lambda_i = 0$}
-        \STATE $\mathbf{a}' = -\mathbf{a}_g$
-        \ELSE
-        \STATE $\mathbf{a}' = {}^{\lambda(i)}\mathbf{X}_i \mathbf{a}_{\lambda(i)}$
-        \STATE $\ddot{\mathbf{s}}_i = \mathbf{D}^{-1} (\mathbf{u}_i - (\mathbf{U}_i^T)\mathbf{a}')$
-        \STATE $\mathbf{a}_i = \mathbf{a}' + \mathbf{S}_i\mathbf{\ddot{q}}_i + \mathbf{c} _i$
-        \ENDIF
-        \ENDFOR
+        \For{$i = 1 \text{ to } n$}
+        \If{$\lambda_i = 0$}
+        \State $\mathbf{a}' = -\mathbf{a}_g$
+        \Else
+        \State $\mathbf{a}' = {}^{\lambda(i)}\mathbf{X}_i \mathbf{a}_{\lambda(i)}$
+        \State $\ddot{\mathbf{s}}_i = \mathbf{D}^{-1} (\mathbf{u}_i - (\mathbf{U}_i^T)\mathbf{a}')$
+        \State $\mathbf{a}_i = \mathbf{a}' + \boldsymbol{\Phi}_i\mathbf{\ddot{q}}_i + \mathbf{c} _i$
+        \EndIf
+        \EndFor
     \end{algorithmic}
 \end{algorithm}
-
-\section{Impacts and Contacts}
-\label{sec:back_contacts}
-\subsection{Smooth Impacts}
-
-In a high incident velocity impact between two solids, some of the kinetic energy is transferred to the vibrational model. This is due to the fact that the contact in smooth impacts is not perfectly inelastic, hence the partial elasticities of the materials involved in the collision induce vibrational modes in the system.
-
-Considering a point particle with mass $m$ and position $\mathbf{q}: \mathbb{R} \rightarrow \mathbb{R}$ in a one-dimensional space, compliant with a spring with stiffness $k$ and a damper with damping coefficient $c$, the resulting force generated can be defined as:
-
-\begin{equation}
-    F = \begin{cases}
-        -k\mathbf{q} - c\dot{\mathbf{q}} & \text{if } \mathbf{q} > 0    \\
-        0                                & \text{if } \mathbf{q} \leq 0
-    \end{cases}
-\end{equation}
-
-Considering an initial condition $\mathbf{q}(t=0) = 0$ and $\dot{\mathbf{q}}(t=0) = v_0 > 0$, i.e. the particle starts at the origin but moves towards the penetration region, will result in an active force $F(t) = -k\mathbf{q}(t) - c\dot{\mathbf{q}}(t)$ that will be applied to the particle until it reaches the equilibrium position $\mathbf{q} = 0$. The resulting motion will be a damped oscillation that can be derived from the Lagrangian mechanics as seen in \cref{eqn:lagrangian}, where the Lagrangian $\mathcal{L}$ of the system is defined as:
-
-\begin{equation}
-    \mathcal{L} = \mathcal{T} - \mathcal{V} = \frac{1}{2}m\dot{\mathbf{q}}^2 - \frac{1}{2}k\mathbf{q}^2
-\end{equation}
-
-which yields the following equation of motion:
-
-\begin{equation}
-    \ddot{\mathbf{q}} + \underbrace{\frac{c}{m}} _{\omega ^2} \dot{\mathbf{q}} + \underbrace{\frac{k}{m}} _\gamma \mathbf{q} = 0
-\end{equation}
-
-where $\omega$ is the natural frequency of the system and $\gamma$ can be used to declare the damping ratio $\zeta = \frac{\gamma}{2\omega}$.
-
-The solution of the resulting equation is the one of a first-order linear \ac{ODE}:
-
-\begin{equation}
-    \mathbf{q}(t) = \mathbf{q}_0 e^{-\zeta \omega t} \cos(\omega \sqrt{1 - \zeta ^2} t)
-\end{equation}
-
-which implies an oscillatory regime for $\zeta < 1$ and an exponential decay for $\zeta > 1$, also called damped regime.
-
-\subsection{Non-smooth Impacts}
-
-Considering two bodies and given points $p ^{(0)}$ fixed on body 0 and $p ^{(1)}$ fixed on body 1, the \textit{signed} distance between the two should be non-negative i.e. $c(p ^{(0)}, p ^{(1)}) \geq 0$.
-
-The impact involves forces that change rapidly to cause jump discontinuities in the velocities $\dot{q}$. Therefore it is possible to state that the velocity before and after the impact at time $t_i$ differ:
-
-\begin{equation}
-    \lim _{t \uparrow t _i} \dot{q} = \dot{q} _{-} \neq \dot{q} _{+} = \lim _{t \downarrow t _i} \dot{q}
-\end{equation}
-
-Mathematically, the trajectories $q(t)$ remain continuous while the velocities $\dot{q}(t)$ exhibit jump discontinuities, hence accelerations $\ddot{q}(t)$ are not defined at impact times.
-
-Considering the case of a spherical rigid body impacting an infinite plane, the convexity of the two objects implies that the closest point between the two can be identified uniquely.
-Writing the signed distance function respect to the rigid body center of mass position $x(t)$, we get that $c(q(t)) = \tilde{c}(x(t)) \geq 0$.
-
-With this approach, we can define two configuration manifolds: $Q _1 \in \mathbb{R} ^2 \times \mathrm{SO}3$ for the planar motion and $Q _1 \in \mathbb{R} ^3 \times \mathrm{SO}3$ for the spatial motion, where $\mathrm{SO}3$ is the group of rigid rotations in three dimensions. We define a Lagrangian multiplier $\nu \in \mathbb{R}$ corresponding to the magnitude of the force acting in the normal direction at the contact.
-
-In a discrete mechanics framework, defining $h$ the fixed time step for all steps, if the violation in the impact point at step $i$ called $q _i$ is not too big, a good approximation of the incident velocity is:
-
-\begin{equation}
-    v _{-} = \frac{q _i - q _{i-1}}{h}
-\end{equation}
-
-To estimate the outbound velocity $v _{+}$ instead, we impose the discrete impulsive Newton impact law in one spatial dimension as:
-
-\begin{equation}
-    v _{+} = -\psi v _{-}
-\end{equation}
-
-where $\psi \in [0,1]$ is the \textit{restitution coefficient}.
-
-A perfectly elastic collision corresponds to $\psi = 1$ in which the outbound velocity is the reflection of the incoming one. Now, given that the impulse occurs at a fixed location $q$, the only change in energy is a kinetic energy change, hence for the Newton-Poisson impact law for a point particle of mass $m$, the change in energy is:
-
-\begin{equation}
-    E _{+} - E _{-} = T(q, v _{+}) - T(q, v _{-}) = (\psi ^2 - 1) T(q, v _{-}) \leq 0
-\end{equation}
-
-where $T(q, v)$ is the kinetic energy.
-
-To generalize in three dimensions, we define an estimate of the normal component of the incident velocity with respect to the contact manifold as $C _k v _{-}$ where $C _k$ is the $n _c \times n$ Jacobian matrix of the $n _c$ contact surface evaluated at the discrete time $k$. Using the complementarity formulation, assuming the presence of other inequality constraints with the agglomerated Jacobian $G$, adding regularization parameters with diagonal non-negative matrices $\Sigma$ and $\Xi$, and considering the diagonal matrix for restitution coefficients $\Psi = \text{diag}(\psi _1, \psi _2, \dots, \psi _{n _c}),  \psi _i \in [0, 1]$, we get the following linear complementarity problem (LCP):
-
-\begin{equation}
-    \begin{rcases}
-        Mv _{+} - G ^T _k \lambda - C ^T _k v & = M v _{-}    \\
-        G _k v _{+} + \Sigma \lambda          & = G _k v _{-} \\
-        C _k v _{+} + \Psi C v _{-} + \Xi v   & = w           \\
-    \end{rcases} \quad \text{subject to
-        :  } \quad v \geq 0 \perp w \geq 0
-\end{equation}
-
-By solving the optimization above, it can be shown that this leads to $T _{+} \leq T _{-}$, therefore the impulsive stage can only decrease the kinetic energy.
