@@ -21,8 +21,8 @@ Moreover, \jax supports back and forward \textit{Automatic Differentiation} (\ac
 
 \section{JAXSim}
 
-\jaxsim \citep{ferigo_jaxsim_2022} as it is \ac{JIT} and leverages \jax
-It provides an end-to-end GPU-accelerated simulation that allows strong parallelization on multiple environments, whose only limit is the number of \ac{CUDA} cores present in the GPU unit.
+It is immediate to think of the possibility of combining the power of \jax with the flexibility and ease of use of Python to create a physics simulator that can be easily extended and customized. This was the main idea behind \texttt{brax} \citep{freeman_brax_2021}, a differentiable rigid body physics simulator in maximal coordinates. Nevertheless, the absence of a high-level interface to immediatly get the mechanical system quantities of the Euler-Poincare equation, as well as the lack of support for \ac{SDF} files, often used in model-based robotics research, led to the development of \jaxsim \citep{ferigo_jaxsim_2022}, a hardware accelerated physics simulator that exploits the strong parallelization capabilities and the \ac{JIT} compilation of \jax to speed up the simulation process.
+
 
 \section{Impacts and Contacts}
 \label{sec:back_contacts}

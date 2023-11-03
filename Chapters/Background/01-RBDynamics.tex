@@ -202,8 +202,8 @@ The first variation of the action functional can be written as:
 where $\delta \mathbf{q}$ and $\delta \mathbf{\dot{q}}$ are the variations of the generalized coordinates and velocities, respectively. The first variation of the action functional is zero if and only if the integrand is zero. In the case of Euclidean spaces, i.e. $\mathbb{Q} = \mathbb{T} _{\mathbb{G}}\mathbb{Q} =\mathbb{R} ^n$, this yields the Euler-Lagrange equation:
 
 \begin{equation}
-    \label{eqn:lagrangian}
     \frac{d}{dt} \frac{\partial \mathcal{L}}{\partial \mathbf{\dot{q}}} - \frac{\partial \mathcal{L}}{\partial \mathbf{q}} = 0
+    \label{eqn:lagrangian}
 \end{equation}
 
 The following chapters will always consider a rigid body pose and body-fixed velocities, thus yielding the \textit{left-trivialized Lagrangian} \citep{traversaro_modelling_2019}:
@@ -510,7 +510,7 @@ This yields that once the articulated body inertia and the bias force are known,
     \begin{algorithmic}[1]
         \Require $\mathcal{M}, \mathbf{s}, \dot{\mathbf{s}}, \boldsymbol{\tau}$
 
-        \Comment{Backward Pass}
+        % \Comment{Backward Pass}
         \For{$i = 1 \text{ to } n$}
         \State $[\mathbf{X}_J, \boldsymbol{\Phi}_i] = \text{jcalc}(\text{jtype}(i), \dot{\mathbf{s}}_i)$
         \State $\mathrm{\mathbf{v}}_J = \boldsymbol{\Phi}_i \dot{\mathbf{s}}_i$
@@ -526,7 +526,7 @@ This yields that once the articulated body inertia and the bias force are known,
         \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbf{I}_i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
         \EndFor
 
-        \Comment{Forward Pass}
+        % \Comment{Forward Pass}
         % Pass 2
         \For{$i = n \text{ to } 1$}
         \State $\mathbf{U}_i = \mathbf{I}_i ^A \boldsymbol{\Phi}_i$
@@ -538,7 +538,7 @@ This yields that once the articulated body inertia and the bias force are known,
         \EndIf
         \EndFor
 
-        \Comment{Backward Pass}
+        % \Comment{Backward Pass}
         % Pass 3
         \For{$i = 1 \text{ to } n$}
         \If{$\lambda_i = 0$}

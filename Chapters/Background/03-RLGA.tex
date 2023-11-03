@@ -101,7 +101,6 @@ updates exponential moving averages of the two gradients, where $\beta_1$ and $\
         \EndIf
         \State $g_t \leftarrow \nabla _{\theta} f_t (\theta_{t-1}$)
         \State $m_t \leftarrow \beta_1 m_{t-1} + (1-\beta_1)g_t$
-        \State $m_t \leftarrow \beta_1 m_{t-1} + (1-\beta_1)g_t$
         \State $\hat{m_t} \leftarrow \beta_1 m_{t-1} + (1-\beta_1)g_t$
         \State $\hat{v_t} \leftarrow v_t / (1-\eta_2 ^t)$
         \State $\theta_t \leftarrow \theta_t - \gamma \hat{m_t} / (\sqrt{\hat{v}} + \varepsilon)$
@@ -122,7 +121,7 @@ updates exponential moving averages of the two gradients, where $\beta_1$ and $\
         \State Compute rewards-to-go $\hat{R} _t$
         \State Compute advantage estimates $\hat{A} _t$
         (using any method of advantage estimation) based on the current value function $V _{\phi _k}$
-        \State{Update policy by maximizing the PPO-Clip objective:}
+        \State Update policy by maximizing the PPO-Clip objective:
         $$
             \theta _{k + 1} = \underset{\theta}{\arg\max} = \frac{1}{|\mathcal{D} _k|T} \sum _{r \in \mathcal{D} _k} \sum _{t = 0} ^{T} \min \left( \frac{\pi _{\theta} (a _t | s _t)}{\pi _{\theta_k} (a _t | s _t)} A ^{\pi _{\theta_k}} (s _t, a _t), g(\varepsilon, A ^{\pi _{\theta_k}}(s _t, a _t)) \right)
         $$
