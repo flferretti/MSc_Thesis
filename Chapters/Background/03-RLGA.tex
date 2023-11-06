@@ -52,7 +52,7 @@ Therefore the approximation in \cref{eqn:finitediff} cannot be computed. Thus, t
 
 
 \paragraph{Generalized Advantage Estimate}
-By defining the advantage estimator or \textit{temporal difference estimate} as in \cite{schulman_high-dimensional_2018}:
+By defining the \textit{generalized advantage estimator} (\ac{GAE}) or \textit{temporal difference estimate} as in \cite{schulman_high-dimensional_2018}:
 
 \begin{equation}
     \hat{A}(s,a) = r _0 + \gamma \hat{V}(s _1) - \hat{V}(s _0)
@@ -111,6 +111,8 @@ updates exponential moving averages of the two gradients, where $\beta_1$ and $\
 
 \subsubsection{Proximal Policy Optimization}
 
+Amongst policy gradient methods, the \textit{Proximal Policy Optimization} (\ac{PPO}) is by far one of the most used and effective algorithms. It is a family of first-order methods that use a \textit{surrogate objective} in order to ensure a \textit{trust region} on the policy update. The version of \ac{PPO} adopted in this work uses a clipped surrogate objective and introduces a penalization term on the \ac{KL} divergence between the new and the old policy, ensuring small policy updates that would otherwise lead to unstable training.
+
 \begin{algorithm}[H]
     \caption{Clipped Proximal Policy Optimization}
     \label{alg:ppo}
@@ -140,6 +142,6 @@ updates exponential moving averages of the two gradients, where $\beta_1$ and $\
 
 \section{Evolutionary Algorithms}
 
-Evolutionary algorithm is a family of algorithms that are inspired by the natural selection
+Evolutionary algorithm or \textit{Genetic Algorithm}s (\ac{GA}) is a family of algorithms that are inspired by the natural selection
 process, in which the fittest individuals are selected to reproduce and pass their genetic
 material to the next generation.
