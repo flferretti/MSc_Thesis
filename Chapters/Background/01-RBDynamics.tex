@@ -523,7 +523,7 @@ As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multi
         \end{tikzpicture}}}
 \end{figure}
 
-The Articulated-Body Algorithm (\ac{ABA}) finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going up to the root, by considering a joint $i$ interacting with the rest of the kinematic chain through an unknown force $\mathbf{f} _i$ defined as:
+The Articulated-Body Algorithm (\ac{ABA}) finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going up to the root. If we consider a joint $i$ interacting with the rest of the kinematic chain, it will be subject to an unknown force $\mathbf{f} _i$ defined as:
 
 \begin{equation}
     \mathbf{f} _i = \mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
@@ -540,8 +540,8 @@ The spatial force acting at joint $i$ and the acceleration of body $i$ are relat
     \label{eqn:aba_torque}
 \end{equation}
 
-where $\boldsymbol{\Phi} _i$ is the motion subspace of the $i$-th link, $\mathbf{a} _i$ is the acceleration of the $i$-th link, $\mathbf{a} _{\lambda(i)}$ is the acceleration of the parent link, $\ddot{\mathbf{s}} _i$ is the acceleration of the $i$-th joint, and $\dot{\boldsymbol{\Phi}} _i$ is the derivative of the motion subspace of the $i$-th link with respect to the joint coordinates.
-By solving \cref{eqn:aba_torque} for $\ddot{\mathbf{s}}$ and substituting it in the objective function, the following results is obtained:
+where $\boldsymbol{\Phi} _i$ is the motion subspace of the $i$-th link, $\mathbf{a} _i$ is its acceleration, $\mathbf{a} _{\lambda(i)}$ is the acceleration of the parent link, $\ddot{\mathbf{s}} _i$ is the acceleration of the $i$-th joint, and $\dot{\boldsymbol{\Phi}} _i$ is the derivative of the motion subspace of the $i$-th link with respect to the joint coordinates.
+By solving \cref{eqn:aba_torque} for $\ddot{\mathbf{s}}$ the following results is obtained:
 
 \begin{equation}
     \ddot{\mathbf{s}} _i = \mathbf{I} _i ^{-1} (\boldsymbol{\tau} _i - \boldsymbol{\Phi} ^T _i \mathbf{p} ^A _i - \boldsymbol{\Phi} ^T _i \mathbf{I} _i ^A \mathbf{a} _{\lambda(i)})
@@ -549,7 +549,6 @@ By solving \cref{eqn:aba_torque} for $\ddot{\mathbf{s}}$ and substituting it in 
 
 This yields that once the articulated body inertia and the bias force are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints, constituting the main advantage of the articulated-body algorithm.
 
-\clearpage
 \begin{algorithm}[h]
     \caption{Articulated-Body Algorithm}
     \label{alg:aba}
