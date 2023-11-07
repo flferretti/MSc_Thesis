@@ -1,11 +1,14 @@
 \chapter{Hardware Accelerated Physics Simulation Frameworks}
 \label{chp:back_PhysicsSimulators}
 
-Training a physical \ac{RL} agent often involves prohibitive costs and potential safety issues, that is why simulators play a major role in most training scenarios. As a matter of fact, the trial-and-error process needed for the agent to gain experience regarding the world may involve damaging complex and expensive hardware, limiting the possibility for the agent to explore and learn more efficiently. With the use of scalable physics simulators, there is the possibility of creating highly complex, customized environments to reproduce multiple scenarios, allowing also to have a testing environment that is as close as possible to the real world. Nevertheless, with the increase of the environment and agent complexity,
+Training a physical \ac{RL} agent often involves prohibitive costs and potential safety issues, that is why simulators play a major role in most training scenarios. As a matter of fact, the trial-and-error process needed for the agent to gain experience regarding the world may involve damaging complex and expensive hardware, limiting the possibility for the agent to explore and learn more efficiently. With the use of scalable physics simulators, there is the possibility of creating highly complex, customized environments to reproduce multiple scenarios, allowing also to have a testing environment that is as close as possible to the real world. Nevertheless, with the increase of the environment and agent complexity, the computational cost of the simulation process increases as well, hence the need for fast simulators.
 
-At time, the most common physic simulation frameworks used for this purpose are PyBullet \citep{coumans_pybullet_2016}, MuJoCo \citep{todorov_mujoco_2012},
+The most common way to speed up computations when simulating physical systems is to use hardware accelerators. In fact, the natural efficiency of \textit{Graphical Processing Units} (\ac{GPU}s) and \textit{Tensor Processing Units} (\ac{TPU}) in solving parallel calculations can be exploited to cut down simulation times \citep{liang_gpu-accelerated_2018}. This is because the simulation can be approched as a set of independent tasks that can be then executed at the same time.
 
-The most common way to speed up computations is to use hardware accelerators, in fact, the natural efficiency of \ac{GPU}s in solving parallel calculations can be exploited to cut down simulation times \citep{liang_gpu-accelerated_2018}.
+At time, the main physic simulation frameworks used for this purpose which have a Python accessible interface are Gazebo \citep{Koenig2004} and Open Dynamics Engine, or ODE \citep{ode:2008} \citep{erez_simulation_2015,ivaldi:hal-01116148}, thus if we restrict to the one used for reinforcement learning, \texttt{pybullet} \citep{coumans_pybullet_2016} and \texttt{mujoco-py} \citep{todorov_mujoco_2012} are the most commonly used. Nevertheless, the former is not hardware accelerated, while the latter is not open-source and requires a license to be used. Moreover, both of them do not offer a high-level interface to easily create complex environments, which is often the case when it comes to robotics research.
+For what regards simulators that exploit hardware accelerations, Drake
+\citep{drake}, NVIDIA \textsc{Isaac gym} \citep{makoviychuk_isaac_2021}, \texttt{brax} \citep{freeman_brax_2021} and most recently the \jax empowered MuJoCo XLA (MJX) are the most popular choices.
+
 
 \section{Nvidia ISAAC Gym}
 
