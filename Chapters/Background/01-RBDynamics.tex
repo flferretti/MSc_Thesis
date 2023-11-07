@@ -7,13 +7,46 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
 
 \paragraph{Spatial Vectors} A spatial vector is a 6D vector that describes the motion of a rigid body in space.
 
-In the case of a rigid body, the velocity of a point\CarlottaSays{isn't this $P$ ? anyhow a plot could help out a lot here} $O$ attached to the body with respect to a reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\dot{\mathbf{s}}$ about an axis passing through $O$ and its linear component $\mathbf{v} _A$, for which the following relation holds:
+\begin{figure}
+    \centering
+    \caption{Velocity of rigid body expressed in terms of spatial vectors.}
+    \tikzset{every picture/.style={line width=0.75pt}}
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        \draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (379.99,208.64) -- (379.99,111.06) ;
+        \draw [shift={(379.99,109.06)}, rotate = 90] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+        \draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (379.98,208.64) -- (463.22,257.42) ;
+        \draw [shift={(464.94,258.43)}, rotate = 210.37] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+        \draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (379.99,208.64) -- (338.26,233.09) -- (296.75,257.42) ;
+        \draw [shift={(295.03,258.43)}, rotate = 329.63] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+        \draw  [line width=3] [line join = round][line cap = round] (278.46,125.78) .. controls (279.81,107.79) and (300.93,88.72) .. (321.49,92.95) .. controls (348.63,98.54) and (338.39,150.24) .. (310.57,170.62) .. controls (286.05,188.57) and (246.65,193.72) .. (237.42,177.02) .. controls (231.68,166.64) and (244.3,147.49) .. (261,139.39) .. controls (264.29,137.79) and (282.45,132.22) .. (278.45,124.98) ;
+        \draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] [dash pattern={on 3.75pt off 7.5pt on 37.5pt off 7.5pt}]  (224.18,95.63) -- (379.99,208.64) ;
+        \draw  [draw opacity=0][line width=1.5]  (247.83,109.17) .. controls (250.15,107.51) and (252.87,106.21) .. (255.73,105.49) .. controls (263.49,103.53) and (269.36,106.62) .. (268.84,112.38) .. controls (268.32,118.15) and (261.61,124.41) .. (253.85,126.36) .. controls (246.09,128.32) and (240.22,125.23) .. (240.74,119.46) .. controls (240.85,118.18) and (241.28,116.87) .. (241.95,115.59) -- (254.79,115.92) -- cycle ; \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]    (251.3,107.11) .. controls (252.71,106.43) and (254.2,105.87) .. (255.73,105.49) .. controls (263.49,103.53) and (269.36,106.62) .. (268.84,112.38) .. controls (268.32,118.15) and (261.61,124.41) .. (253.85,126.36) .. controls (246.09,128.32) and (240.22,125.23) .. (240.74,119.46) .. controls (240.85,118.18) and (241.28,116.87) .. (241.95,115.59) ;  \draw [shift={(247.83,109.17)}, rotate = 338.9] [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=1 ][line width=0.08]  [draw opacity=0] (15.6,-3.9) -- (0,0) -- (15.6,3.9) -- cycle    ;
+        \draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]    (298.49,138.09) -- (360.8,106.21) ;
+        \draw [shift={(363.47,104.84)}, rotate = 152.9] [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]    (14.21,-4.28) .. controls (9.04,-1.82) and (4.3,-0.39) .. (0,0) .. controls (4.3,0.39) and (9.04,1.82) .. (14.21,4.28)   ;
+        \draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ][line width=1.5]  (294,138.09) .. controls (294,135.58) and (296.01,133.55) .. (298.49,133.55) .. controls (300.97,133.55) and (302.98,135.58) .. (302.98,138.09) .. controls (302.98,140.61) and (300.97,142.64) .. (298.49,142.64) .. controls (296.01,142.64) and (294,140.61) .. (294,138.09) -- cycle ; \draw  [line width=1.5]  (294,138.09) -- (302.98,138.09) ; \draw  [line width=1.5]  (298.49,133.55) -- (298.49,142.64) ;
+        \draw  [line width=1.5] [line join = round][line cap = round] (299.1,138.58) .. controls (299.08,138.83) and (298.95,139.56) .. (298.95,139.31) .. controls (298.95,139.18) and (300.23,138.76) .. (300.33,138.37) .. controls (300.4,138.11) and (299.1,139.02) .. (299.26,139) .. controls (301.37,138.71) and (299.1,138.8) .. (298.95,139.88) .. controls (298.93,140.04) and (299.87,139.36) .. (299.98,139.31) .. controls (300.53,139.05) and (301.15,138.88) .. (301.62,138.48) .. controls (301.72,138.38) and (301.34,138.54) .. (301.21,138.58) .. controls (301,138.64) and (299.91,138.85) .. (300.08,139.1) .. controls (300.21,139.31) and (301.92,137.93) .. (301.82,138.79) .. controls (301.78,139.21) and (301.08,139.16) .. (300.69,139.31) .. controls (300.63,139.33) and (300.78,139.19) .. (300.85,139.15) .. controls (301.22,138.95) and (301.84,138.49) .. (302.08,138.84) .. controls (302.32,139.2) and (301.99,140.26) .. (301.41,139.67) .. controls (301.21,139.47) and (301.48,138.55) .. (301.87,138.89) .. controls (302.89,139.77) and (301.81,139.71) .. (301.67,139.52) .. controls (301.17,138.85) and (302.72,138.36) .. (302.75,138.53) .. controls (302.81,138.9) and (302.06,138.96) .. (301.93,139.31) .. controls (301.82,139.58) and (301.96,139.91) .. (301.87,140.19) .. controls (301.77,140.55) and (301.51,140.84) .. (301.36,141.18) .. controls (301.31,141.3) and (301.24,141.67) .. (301.26,141.54) .. controls (301.47,140.39) and (301.63,139) .. (302.28,138.01) .. controls (302.6,137.53) and (301.78,139.04) .. (301.46,139.52) .. controls (301.23,139.87) and (300.44,140.84) .. (300.75,140.56) .. controls (303.14,138.35) and (301.15,140.3) .. (300.54,140.92) .. controls (300.32,141.14) and (300.81,140.36) .. (300.95,140.09) .. controls (301.06,139.87) and (301.25,139.69) .. (301.36,139.47) .. controls (301.44,139.3) and (301.16,139.78) .. (301.05,139.93) .. controls (300.7,140.42) and (300.28,140.86) .. (299.92,141.34) .. controls (299.88,141.4) and (299.45,142.32) .. (299.15,142.17) .. controls (299.05,142.12) and (299.67,140.21) .. (300.18,140.04) .. controls (300.33,139.99) and (300.06,140.33) .. (299.98,140.45) .. controls (299.51,141.13) and (298.91,141.7) .. (298.44,142.38) .. controls (298.4,142.42) and (298.57,142.38) .. (298.59,142.32) .. controls (298.8,141.66) and (298.96,140.98) .. (299.1,140.3) .. controls (299.14,140.11) and (299.09,139.54) .. (299.15,139.73) .. controls (299.24,139.97) and (299.12,140.76) .. (299.1,140.51) .. controls (299.08,140.2) and (299.07,139.52) .. (299.36,139.62) .. controls (299.89,139.8) and (299.57,141.04) .. (299.57,141.13) .. controls (299.56,141.27) and (299.42,140.85) .. (299.46,140.71) .. controls (299.59,140.27) and (299.79,139.85) .. (299.92,139.41) .. controls (299.94,139.35) and (299.84,139.51) .. (299.82,139.57) .. controls (299.75,139.84) and (299.77,140.14) .. (299.67,140.4) .. controls (299.51,140.82) and (299.4,141.31) .. (299.05,141.6) .. controls (298.87,141.75) and (299.02,141.1) .. (299.1,140.87) .. controls (299.17,140.7) and (300.17,139.73) .. (300.08,139.78) .. controls (299.59,140.02) and (299.41,140.9) .. (299.41,141.44) .. controls (299.41,141.48) and (299.42,141.54) .. (299.46,141.54) .. controls (299.51,141.54) and (299.54,141.49) .. (299.57,141.44) .. controls (299.91,140.69) and (300.2,140.03) .. (300.69,139.36) .. controls (300.75,139.29) and (300.57,139.49) .. (300.54,139.57) .. controls (300.27,140.22) and (300.09,141) .. (299.67,141.6) .. controls (299.63,141.65) and (299.64,141.45) .. (299.67,141.39) .. controls (299.83,141.06) and (300.01,140.74) .. (300.23,140.45) .. controls (300.44,140.18) and (300.74,140) .. (300.95,139.73) .. controls (301,139.66) and (300.94,139.39) .. (300.9,139.47) .. controls (300.56,140.1) and (300.25,140.76) .. (299.82,141.34) .. controls (299.6,141.63) and (298.9,142.47) .. (299.1,142.17) .. controls (299.86,141.02) and (300.02,141.19) .. (301.1,140.3) .. controls (301.16,140.25) and (300.94,140.34) .. (300.9,140.4) .. controls (300.8,140.55) and (300.74,140.72) .. (300.64,140.87) .. controls (300.2,141.53) and (299.56,142.02) .. (299,142.58) .. controls (298.3,143.3) and (300.67,141.48) .. (301.41,140.82) .. controls (301.57,140.67) and (301.89,140.11) .. (301.72,140.25) .. controls (300.81,140.94) and (300.05,141.82) .. (299.15,142.53) .. controls (299.08,142.59) and (299.34,142.45) .. (299.41,142.38) .. controls (299.73,142.06) and (300,141.69) .. (300.33,141.39) .. controls (300.7,141.07) and (302.03,140.52) .. (302.03,139.73) .. controls (302.03,139.61) and (301.87,139.72) .. (301.87,139.73) .. controls (301.52,140.19) and (300.15,142.04) .. (299.98,141.6) .. controls (299.76,141.05) and (299.98,140.42) .. (300.03,139.83) .. controls (300.04,139.6) and (299.87,139.31) .. (300.03,139.15) ;
+        \draw  [line width=1.5] [line join = round][line cap = round] (300.23,139.57) .. controls (300.19,139.35) and (300.18,139.1) .. (300.03,138.95) ;
+        \draw  [line width=1.5] [line join = round][line cap = round] (294.23,137.49) .. controls (295.32,137.47) and (296.42,137.48) .. (297.51,137.44) .. controls (297.75,137.43) and (298.19,137.58) .. (298.23,137.33) .. controls (298.43,136.28) and (298.22,135.18) .. (298.13,134.11) .. controls (298.07,133.49) and (297.36,134.34) .. (297.31,134.37) .. controls (295.99,135.17) and (295.72,135.35) .. (295.1,136.55) .. controls (294.96,136.82) and (294.37,137.2) .. (294.64,137.33) .. controls (295.32,137.68) and (295.39,137.16) .. (296.02,137.07) .. controls (296.58,137) and (297.15,137.11) .. (297.72,137.07) .. controls (298.08,137.05) and (297.64,136.35) .. (297.67,135.98) .. controls (297.7,135.39) and (298.11,134.76) .. (297.87,134.22) .. controls (297.73,133.9) and (297.53,134.84) .. (297.26,135.05) .. controls (296.81,135.39) and (296.14,135.41) .. (295.77,135.83) .. controls (295.43,136.21) and (295.43,136.8) .. (295.25,137.28) .. controls (295.23,137.35) and (295.26,137.13) .. (295.31,137.07) .. controls (295.51,136.8) and (295.78,136.58) .. (295.97,136.29) .. controls (296.33,135.76) and (296.78,135.28) .. (297.26,134.84) .. controls (297.31,134.79) and (297.11,134.81) .. (297.05,134.84) .. controls (296.69,135.02) and (296.29,135.16) .. (296.02,135.46) .. controls (295.57,135.98) and (294.41,136.8) .. (294.95,137.23) .. controls (295.63,137.79) and (297.74,134.95) .. (297.97,134.68) .. controls (298.03,134.63) and (297.93,134.84) .. (297.87,134.89) .. controls (297.58,135.16) and (296.02,135.89) .. (296.02,136.81) .. controls (296.02,137.4) and (296.8,135.93) .. (297.26,135.57) .. controls (297.38,135.47) and (297.25,135.91) .. (297.15,136.03) .. controls (296.9,136.39) and (295.97,136.71) .. (296.28,137.02) .. controls (296.6,137.34) and (297.06,136.58) .. (297.41,136.29) .. controls (297.46,136.25) and (297.25,136.29) .. (297.2,136.35) .. controls (296.95,136.69) and (296.77,137.08) .. (296.54,137.44) .. controls (296.53,137.45) and (296.47,137.44) .. (296.49,137.44) .. controls (297.11,137.44) and (298.38,135.81) .. (297.97,136.29) .. controls (297.65,136.68) and (296.65,137.08) .. (297,137.44) .. controls (297.32,137.77) and (297.63,136.76) .. (297.97,136.45) .. controls (298.04,136.39) and (298,136.63) .. (297.97,136.71) .. controls (297.93,136.91) and (297.77,137.08) .. (297.77,137.28) .. controls (297.77,137.38) and (297.88,137.07) .. (297.97,137.07) .. controls (298.22,137.07) and (298.36,137.62) .. (298.18,137.8) ;
+        \draw  [line width=1.5] [line join = round][line cap = round] (298.08,135.72) .. controls (297.92,135.83) and (297.77,135.93) .. (297.62,136.03) ;
+        \draw  [line width=1.5] [line join = round][line cap = round] (294.84,135.31) .. controls (295.22,135.37) and (295.1,136.07) .. (295.05,136.45) .. controls (295.04,136.48) and (295.03,136.58) .. (295.05,136.55) .. controls (295.33,136.27) and (295.24,136.14) .. (295.41,135.77) .. controls (295.48,135.63) and (295.59,135.51) .. (295.67,135.36) .. controls (295.71,135.27) and (295.9,135.04) .. (295.82,135.1) .. controls (295.46,135.39) and (295.18,135.68) .. (294.79,135.93) ;
+        \draw (303.64,265.06) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,opacity=1 ]  {$x$};
+        \draw (471.61,237.21) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,opacity=1 ]  {$y$};
+        \draw (388.63,100.33) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,opacity=1 ]  {$z$};
+        \draw (373.1,219.89) node [anchor=north west][inner sep=0.75pt]    {$O$};
+        \draw (256.8,83.8) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ]  {$\omega $};
+        \draw (340.8,82.8) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ]  {$\mathbf{v}_{G}$};
+        \draw (292.8,115.8) node [anchor=north west][inner sep=0.75pt]    {$G$};
+        \draw   (269.79, 125.12) circle [x radius= 5, y radius= 5]   ;
+    \end{tikzpicture}
+\end{figure}
+
+In the case of a rigid body, the velocity of a point $G$ attached to the body with respect to an intertial reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\omega$ about an axis passing through $O$ and its linear component $v _A$, for which the following relation holds:
 
 \begin{equation}
-    v _A = \dot{\mathbf{s}} \times \bar{OP}
+    v _A = \omega \times {}^O\mathbf{R}_G
 \end{equation}
 
-where $\bar{OP}$ is the position vector of $P$ with respect to $O$. This holds for any point $O$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
+where ${}^O\mathbf{R}_G$ is the position vector of $G$ with respect to $O$. This holds for any point $G$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
 
 \begin{equation}
     \mathcal{D} _O = \{\mathbf{d} _x, \mathbf{d} _y, \mathbf{d} _z, \mathbf{d} _{O _x}, \mathbf{d} _{O _y}, \mathbf{d} _{O _z} \} \subset \mathcal{M} ^6
@@ -60,14 +93,7 @@ where $\mathcal{M} ^6$ is the space of 6D vectors, defining a Pl\"ucker coordina
     \end{tikzpicture}
 \end{figure}
 
-\paragraph{Spatial Subspace} Once defined $\mathcal{M} ^n$ as a vector space, we can define a subset $\boldsymbol{\Phi} \subset \mathcal{M} ^n$, which is also a vector space. It can be defined as
-the null space of a constraint matrix $\mathbf{K}$, e.g. let $\mathbf{K} \in \mathbb{R} ^{m \times n}$ be a constraint matrix as:
-
-\begin{equation}
-    \mathbf{K} = \{ [\mathbf{k} _1, \dots, \mathbf{k} _n]  \subset \mathcal{M} ^m \mid \mathbf{K} \boldsymbol{\nu} = 0 \} \quad \text{with } \mathbf{k} _i \in \mathcal{M} ^m
-\end{equation}
-
-we can define the subspace $\boldsymbol{\Phi}$ as:
+\paragraph{Spatial Subspace} Once defined $\mathcal{M} ^n$ as a vector space, we can define a subset $\boldsymbol{\Phi} \subset \mathcal{M} ^n$, which is also a vector space. Given a constraint matrix $\mathbf{K} \in \mathbb{R} ^{m \times n}$ with $m$ number of constraints and $n$ number of degrees of freedom, then we can define the subspace $\boldsymbol{\Phi}$ as the null space of $\mathbf{K}$:
 
 \begin{equation}
     \boldsymbol{\Phi} = \ker (\mathbf{K})
@@ -78,48 +104,68 @@ This defines a motion subspace for a system, e.g. defines the directions in whic
 \paragraph{Spatial Velocity} The spatial velocity of a rigid body is defined as a serialization of the linear and angular velocity of a point $A$ attached to the body. In particular, let $\mathbf{p} _A \in \mathcal{D}_O$ be the position vector of $A$ with respect to $O$, then the spatial velocity of the body is defined as the component-wise derivative of the position vector respect to time:
 
 \begin{equation}
-    \boldsymbol{\nu} _A = \frac{d}{dt} {}^O\mathbf{p} _A =
+    \mathbf{v} _A = \frac{d}{dt} {}^{[O]}\mathbf{p} _A =
     \lim _{\delta t \to 0} \frac{1}{\delta t}
     \begin{bmatrix}
-        p _{A _x} (t + \delta t)     & - & p _{A _x} (t) \\
-        p _{A _y} (t + \delta t)     & - & p _{A _y} (t) \\
-        p _{A _z} (t + \delta t)     & - & p _{A _z} (t) \\
-        p _{A _{O_x}} (t + \delta t) & - & p _{A _x} (t) \\
-        p _{A _{O_y}} (t + \delta t) & - & p _{A _y} (t) \\
-        p _{A _{O_z}} (t + \delta t) & - & p _{A _z} (t) \\
+        p _{A _x} (t + \delta t)     & - & p _{A _x} (t)     \\
+        p _{A _y} (t + \delta t)     & - & p _{A _y} (t)     \\
+        p _{A _z} (t + \delta t)     & - & p _{A _z} (t)     \\
+        p _{A _{O_x}} (t + \delta t) & - & p _{A _{O_x}} (t) \\
+        p _{A _{O_y}} (t + \delta t) & - & p _{A _{O_y}} (t) \\
+        p _{A _{O_z}} (t + \delta t) & - & p _{A _{O_z}} (t) \\
     \end{bmatrix}
     = \begin{bmatrix}
-        \mathbf{v} _A \\
-        \dot{\mathbf{s}} _A
+        v _A \\
+        \omega _A
     \end{bmatrix}
 \end{equation}
-
-where $\mathbf{v} _A$ is the linear velocity of the point $O$ and $\dot{\mathbf{s}} _A$ is the angular velocity of the body.
 
 \paragraph{Spatial Acceleration} Given that the spatial velocity decouples the linear and angular components of the motion, defining a property of the body as a whole and not of a single body-fixed point, the spatial acceleration of a rigid body is defined as simply as just the time derivative of its spatial velocity:
 
 \begin{equation}
-    \dot{\boldsymbol{\nu} _A} = \frac{\mathrm{d}}{\mathrm{d}t} \begin{bmatrix}
-        \mathbf{v} _A (t) \\
-        \ddot{\mathbf{s}} _A (t)
+    \dot{\mathbf{v}} _A = \frac{d}{dt} \begin{bmatrix}
+        v _A (t) \\
+        \omega (t)
     \end{bmatrix}
     =
     \begin{bmatrix}
-        \dot{\mathbf{v}} _A \\
-        \ddot{\mathbf{s}} _A
+        \dot{v} _A \\
+        \dot{\omega}
     \end{bmatrix}
 \end{equation}
 
-\paragraph{Spatial Forces} The spatial force acting on a rigid body is defined, in a similar manner as the spatial velocity as a serialization of the linear and the angular components of the wrench acting on the body, in particular, it is related to its motion as:
+\paragraph{Spatial Forces} The spatial force acting on a rigid body is defined, in a similar manner as the spatial velocity as a stacking of the linear component $f \in \mathbb{R}^3$ and the angular component $\tau \in \mathbb{R}^3$ of the wrench acting on the body, in particular, we can defined $\mathbf{f} \in \mathbb{R}^6$ respect to a frame $B$ in relation to its motion as:
 
 \begin{equation}
-    \mathbf{f} = \begin{bmatrix}
-        \mathbf{f} \\
-        \boldsymbol{\tau}
-    \end{bmatrix} = \mathbf{M}_i \dot{\boldsymbol{\nu}} _i + \boldsymbol{\nu}_i \times ^* \mathbf{M}_i \boldsymbol{\nu}_i
+    {}_{B}\mathbf{f} = \begin{bmatrix}
+        {}_{B}f \\
+        {}_{B}\tau
+    \end{bmatrix}
 \end{equation}
 
-where $\dot{\boldsymbol{\nu}} \in \mathbb{R}^6$ is the spatial acceleration of the body, $\mathbf{M}_i \in \mathbb{R}^{6 \times 6}$ is the spatial inertia matrix of the body and $\boldsymbol{\nu}_i \in \mathbb{R}^6$ is its spatial velocity.
+\paragraph{Multibody Velocity} Given a floating-base multibody system composed of $n$ rigid bodies, we can define the velocity of the system as the concatenation of the root link velocity $\mathbf{v}_A$ and the velocities of each body composing the system $\dot{\mathbf{s}} \in \mathbb{R} ^{n}$:
+
+\begin{equation}
+    \boldsymbol{\nu} = \begin{bmatrix}
+        \begin{bmatrix} v _a \\ \omega _A \end{bmatrix} \\
+        \dot{\mathbf{s}}                                \\
+    \end{bmatrix} = \begin{bmatrix}
+        \mathbf{v}_A \\
+        \dot{\mathbf{s}}
+    \end{bmatrix}
+\end{equation}
+
+\paragraph{Multibody Acceleration} Similarly, the acceleration of the floating-base system can be defined as the concatenation of the acceleration of the root link $\dot{\mathbf{v}} _A$ and the accelerations of each body composing the system $\ddot{\mathbf{s}} \in \mathbb{R} ^{n}$:
+
+\begin{equation}
+    \dot{\boldsymbol{\nu _A}} = \begin{bmatrix}
+        \begin{bmatrix} \dot{v} _a \\ \dot{\omega} _A \end{bmatrix} \\
+        \ddot{\mathbf{s}}                                           \\
+    \end{bmatrix} = \begin{bmatrix}
+        \dot{\mathbf{v}}_A \\
+        \ddot{\mathbf{s}}
+    \end{bmatrix}
+\end{equation}
 
 \section{Kinematics}
 
@@ -127,15 +173,15 @@ where $\dot{\boldsymbol{\nu}} \in \mathbb{R}^6$ is the spatial acceleration of t
 
 A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links correspond to the rigid bodies composing the inertial properties of the system, while the joints are usually modeled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
 
-For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases. Furthermore, the system will be considered \textit{acyclic}, i.e. it will not contain any closed loop, as the presence of loops would make the system kinematically redundant,
-In this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\boldsymbol{\Phi} _j \in \mathcal{M} ^6$ as:
+For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases. Furthermore, the system will be considered \textit{acyclic}, i.e. it will not contain any closed loop, as the presence of loops would make the system kinematically redundant.
+Given a joint we can define a \textit{joint axis} $\mathbf{a} \in \mathbb{R}^3, |\mathbf{a}| = 1$ with $\mathbf{a}^\wedge \mathbf{a} = \mathbbm{0}_{3 \times 1}$, in this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\boldsymbol{\Phi} _j \in \mathcal{M} ^6$ as:
 
 \begin{equation}
     \boldsymbol{\Phi} _j =
     \begin{cases}
-        [0, 0, 0, 0, 0, 0] ^\top & \text{if the joint is fixed}     \\
-        [0, 0, 1, 0, 0, 0] ^\top & \text{if the joint is prismatic} \\
-        [0, 0, 0, 1, 0, 0] ^\top & \text{if the joint is revolute}
+        [\mathbbm{0}_{1 \times 6}] ^\top             & \text{if the joint is fixed}     \\
+        [\mathbf{a}, \mathbbm{0}_{1 \times 3}] ^\top & \text{if the joint is prismatic} \\
+        [\mathbbm{0}_{1 \times 3}, \mathbf{a}] ^\top & \text{if the joint is revolute}
     \end{cases}
 \end{equation}
 
@@ -161,7 +207,7 @@ and $\mathrm{SO}(3)$ is the \textit{special orthogonal} Lie group defined as:
     \right\}
 \end{equation}
 
-The derivative of the pose $\dot{{}^W\mathbf{H}}$ is a vector belonging to the tangent space of $\mathbb{Q}$, i.e. $\dot{{}^W\mathbf{H}} \in \mathbb{T} _{\mathbb{G}} \mathbb{Q}$:
+The derivative of the pose ${}^W\dot{\mathbf{H}}$ is a vector belonging to the tangent space of $\mathbb{Q}$, i.e. ${}^W\dot{\mathbf{H}} \in \mathbb{T} _{\mathbb{G}} \mathbb{Q}$:
 
 \begin{equation}
     \mathbb{T} _{\mathbb{G}} \mathbb{Q} := \left\{
