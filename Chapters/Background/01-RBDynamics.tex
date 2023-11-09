@@ -43,10 +43,10 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
 In the case of a rigid body, the velocity of a point $G$ attached to the body with respect to an intertial reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\omega$ about an axis passing through $O$ and its linear component $v _A$, for which the following relation holds:
 
 \begin{equation}
-    v _A = \omega \times {}^O\mathbf{R}_G
+    v _A = \omega \times {}^O R_G
 \end{equation}
 
-where ${}^O\mathbf{R}_G$ is the position vector of $G$ with respect to $O$. This holds for any point $G$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
+where ${}^O R_G$ is the position vector of $G$ with respect to $O$. This holds for any point $G$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
 
 \begin{equation}
     \mathcal{D} _O = \{\mathbf{d} _x, \mathbf{d} _y, \mathbf{d} _z, \mathbf{d} _{O _x}, \mathbf{d} _{O _y}, \mathbf{d} _{O _z} \} \subset \mathcal{M} ^6
@@ -526,6 +526,7 @@ As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multi
 The Articulated-Body Algorithm (\ac{ABA}) finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going up to the root. If we consider a joint $i$ interacting with the rest of the kinematic chain, it will be subject to an unknown force $\mathbf{f} _i$ defined as:
 
 \begin{equation}
+    \label{eqn:biasforce}
     \mathbf{f} _i = \mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
 \end{equation}
 
@@ -536,8 +537,8 @@ In ABA, first, a forward pass is performed to compute the initial articulated bo
 The spatial force acting at joint $i$ and the acceleration of body $i$ are related by:
 
 \begin{equation}
-    \boldsymbol{\tau} _i = \boldsymbol{\Phi} ^T _i \mathbf{f} _i = \boldsymbol{\Phi} ^T _i (\mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i) = \boldsymbol{\Phi} ^T _i (\mathbf{I} _i ^A (\mathbf{a} _{\lambda(i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \dot{\boldsymbol{\Phi}} _i \dot{\mathbf{s}} _i)+ \mathbf{p} ^A _i)
     \label{eqn:aba_torque}
+    \boldsymbol{\tau} _i = \boldsymbol{\Phi} ^T _i \mathbf{f} _i = \boldsymbol{\Phi} ^T _i (\mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i) = \boldsymbol{\Phi} ^T _i (\mathbf{I} _i ^A (\mathbf{a} _{\lambda(i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \dot{\boldsymbol{\Phi}} _i \dot{\mathbf{s}} _i)+ \mathbf{p} ^A _i)
 \end{equation}
 
 where $\boldsymbol{\Phi} _i$ is the motion subspace of the $i$-th link, $\mathbf{a} _i$ is its acceleration, $\mathbf{a} _{\lambda(i)}$ is the acceleration of the parent link, $\ddot{\mathbf{s}} _i$ is the acceleration of the $i$-th joint, and $\dot{\boldsymbol{\Phi}} _i$ is the derivative of the motion subspace of the $i$-th link with respect to the joint coordinates.
