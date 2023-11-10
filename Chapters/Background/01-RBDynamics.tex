@@ -36,7 +36,6 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
         \draw (256.8,83.8) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ]  {$\omega $};
         \draw (340.8,82.8) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,opacity=1 ]  {$\mathbf{v}_{G}$};
         \draw (292.8,115.8) node [anchor=north west][inner sep=0.75pt]    {$G$};
-        \draw   (269.79, 125.12) circle [x radius= 5, y radius= 5]   ;
     \end{tikzpicture}
 \end{figure}
 
@@ -260,7 +259,7 @@ The following chapters will always consider a rigid body pose and body-fixed vel
 
 in which $\boldsymbol{\nu}^\wedge$ is the skew-symmetric matrix of the body-fixed velocity $\boldsymbol{\nu}$.
 
-Once defined a map $\mathbf{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a Coriolis vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of centrifugal and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, a Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the contact forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{SicilianoKhatib2008}:
+Once defined a map $\mathbf{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a Coriolis vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of centrifugal and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, a Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the external forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{SicilianoKhatib2008}:
 
 \begin{equation}
     \label{eqn:equation_of_motion}
@@ -271,16 +270,16 @@ Once defined a map $\mathbf{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the gener
 \section{Forward Dynamics}
 \label{sec:back_fd}
 
-The forward dynamics problem consists of computing the joint accelerations of a multibody system given the joint positions, velocities, and applied forces. As the problem is unsolvable for a single body of the system, the usual approach is to define the constraints that the links must satisfy, write the equation for each link, calculate the local coefficient, and then propagate them in the kinematic tree until a point in which the problem becomes solvable, usually the base of the tree in backpropagation or the end-effector in forward propagation. Although being inertia-matrix algorithms much simpler to implement, propagation algorithms involving recursive backsubstition are more efficient in terms of computational cost, as they can reach the theoretical minimal complexity of $\mathcal{O}(n)$. In this work, the notation $\mathrm{FD}(\cdot)$ will be used to indicate the forward dynamics computation.
+The forward dynamics problem consists of computing the joint accelerations of a multibody system given the joint positions, velocities, and applied forces. The computation of the acceleration of a link normally involves the inversion of the mass matrix, which can easily become huge in a multibody system with a high number of links, in fact, the mass matrix of a system with $n$ links is a $6+n \times 6+n$ matrix, as explained in \cref{sec:back_eom}. Although being algorithms involving the inertia matrix inversion much simpler to implement, propagation algorithms involving recursive backsubstition are more efficient in terms of computational cost, as they can reach the theoretical minimal complexity of $\mathcal{O}(n)$. In this work, the notation $\mathrm{FD}(\cdot)$ will be used to indicate the forward dynamics computation.
 
 \begin{equation}
-    \ddot{\mathbf{q}} = \mathrm{FD} (\mathcal{M}, \mathbf{q}, \dot{\mathbf{q}}, \boldsymbol{\tau}, \mathbf{F} ^{\text{ext}})
+    \ddot{\mathbf{s}} = \mathrm{FD} (\mathcal{M}, \mathbf{s}, \dot{\mathbf{s}}, \boldsymbol{\tau}, \mathbf{F} ^{\text{ext}})
 \end{equation}
 
 \subsection{Articulated-Body Algorithm}
 \label{subsec:back_aba}
 
-As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multi-body system with a high number of links is computationally expensive, in fact, even using \citet{coppersmith_matrix_1990} algorithm or its optimized version by \citet{vassilevska-williams2012breaking}, which reached a complexity of $\mathcal{O}(n^{2.373})$, the computation of the inverse of the mass matrix is still too expensive for real-time scenarios. That is why recursive methods results are more suitable for applications where a fast computation of the dynamics is required.
+As anticipated, the inversion of the mass matrix for a multi-body system with a high number of links is computationally expensive, in fact, even using \citet{coppersmith_matrix_1990} algorithm or its optimized version by \citet{vassilevska-williams2012breaking}, which reached a complexity of $\mathcal{O}(n^{2.373})$, the computation of the inverse of the mass matrix is still too expensive for real-time scenarios. That is why recursive methods results are more suitable for applications where a fast computation of the dynamics is required. In recursive algorithms, as the problem is unsolvable for a single body of the system, the usual approach is to define the constraints that the links must satisfy, write the equation for each link, calculate the local coefficient, and then propagate them in the kinematic tree until a point in which the problem becomes solvable, usually the base of the tree in backpropagation or the end-effector in forward propagation.
 
 % === FIG: Kinematic Chain === %
 \begin{figure}[h]
@@ -523,18 +522,18 @@ As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multi
         \end{tikzpicture}}}
 \end{figure}
 
-The Articulated-Body Algorithm (\ac{ABA}) finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going up to the root. If we consider a joint $i$ interacting with the rest of the kinematic chain, it will be subject to an unknown force $\mathbf{f} _i$ defined as:
+The \textit{Articulated-Body Algorithm} \citep{featherstone_rigid_2008} finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going down to the root. If we consider a joint $i$ interacting with the rest of the kinematic chain, it will be subject to an unknown force $\mathbf{f} _i$ defined as:
 
 \begin{equation}
     \label{eqn:biasforce}
     \mathbf{f} _i = \mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
 \end{equation}
 
-where $\mathbf{I} _i ^A$ is the articulated body inertia, i.e. the inertia felt at the base of the subtree when all its joints are free to move, and $\mathbf{p} ^A _i$ is the associated bias force.
+where $\mathbf{I} _i ^A$ is the articulated body inertia, i.e. the inertia propagated at the base of the subtree when all its joints are free to move, and $\mathbf{p} ^A _i$ is the associated bias force.
 
 In ABA, first, a forward pass is performed to compute the initial articulated body inertia, the initial bias forces, and the link velocities, then a backward pass is performed to compute the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain.
 
-The spatial force acting at joint $i$ and the acceleration of body $i$ are related by:
+By indicating with $\lambda(i)$ the parent link of link $i$, we can express the spatial force acting and the acceleration of body $i$ as in \cref{eqn:aba_torque}:
 
 \begin{equation}
     \label{eqn:aba_torque}

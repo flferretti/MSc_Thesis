@@ -619,11 +619,12 @@ and
 
 % \mathbf{p} _{\lambda (i)} ^A = \mathbf{p} _{\lambda (i)} + \mathbf{p} _i ^A + \mathbf{p} _i ^R + \mathbf{I} _i ^A \mathbf{c} _i + \mathbf{I} _i ^R {} ^R \mathbf{c} _i + \mathbf{I} _i ^A \boldsymbol{\Phi} _i \mathbf{D} _i ^{-1} \boldsymbol{\Phi} ^T _i \mathbf{I} ^A _i \mathbf{a} _i ^{uc} - \mathbf{I} _i ^A \boldsymbol{\Phi} _i \mathbf{D} ^{-1} _i \boldsymbol{\Phi} ^T _i \mathbf{I} ^A _i \mathbf{c} _i + \mathbf{I} _i ^R \boldsymbol{\Phi} _i ^R \mathbf{D} _i ^{-1} {}^R \boldsymbol{\Phi} _i ^T \mathbf{I} ^R _i {} ^R \mathbf{a} _i ^{uc} - \mathbf{I} _i ^R \boldsymbol{\Phi} _i ^R \mathbf{D} ^{-1} _i {} ^R \boldsymbol{\Phi} ^T _i \mathbf{I} ^R _i {} ^R \mathbf{c} _i
 
-\clearpage
 \begin{algorithm}
     \caption{Rotor-conditioned Articulated-Body Algorithm}
     \label{alg:rotaba}
     \begin{algorithmic}[1]
+        % \Comment{Backward Pass}
+
         \For{$i = 1 \text{ to } n$}
         \State $[\mathbf{X}_J, \boldsymbol{\Phi}_i] = \text{jcalc}(\text{jtype}(i), \dot{\mathbf{s}}_i)$
         \State $\color{webgreen}{[{} ^R\mathbf{X}_J, {} ^R\boldsymbol{\Phi}_i] = \text{jcalc}(\text{jtype}(i), \dot{\mathbf{s}}_i \boldsymbol{\Gamma} _i)}$
@@ -646,6 +647,8 @@ and
         \EndFor
 
         % Pass 2
+        % \Comment{Forward Pass}
+
         \For{$i = n \text{ to } 1$}
         \State $\mathbf{U}_i = \mathbf{I}_i ^A \boldsymbol{\Phi}_i$
         \State $\color{webgreen}{{}^R\mathbf{U}_i = \mathbf{I}_i ^R {}^R\boldsymbol{\Phi}_i}$
@@ -658,7 +661,7 @@ and
         \EndIf
         \EndFor
 
-        % Pass 3
+        % \Comment{Backward Pass}
         \For{$i = 1 \text{ to } n$}
         \If{$\lambda_i = 0$}
         \State $\mathbf{a}' = -\mathbf{a}_g$
@@ -671,7 +674,7 @@ and
     \end{algorithmic}
 \end{algorithm}
 
-\section{Comparison between ABA and CRBA with injected rotor dynamics}
+\section{Comparison between the Motor-Conditioned ABA and Inertia-Matrix Based Forward Dynamics}
 
 The main difference between the \ac{ABA} approach and the approach adopted in the Inertia-Based method regards the concretization of the rotors. In fact, the former considers the rotors as extra links in the kinematic chain, with their spatial inertia and dynamic, conditioned by the presence of viscous friction and subject to a torque proportionally greater respect to the torque perceived by the parent link as shown in \cref{fig:ABA_comparison}.
 
