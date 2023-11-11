@@ -75,7 +75,11 @@ The reward space is then defined as a discrete space in order to make the learni
 
 
 \subsection{Humanoid locomotion task}
-The humanoid walking task is without a doubt one of the most challenging tasks in the field of robotics. The task aims to find a policy $\pi$ that is able to make the robot walk forward in a possibly \textit{human-like} motion. Given its high complexity, constituted by the necessity of controlling a large number of joints, which drastically increases the dimensionality of the problem and the need to design a contact model that can simulate the interaction between the robot and the environment, yet allowing the algorithm to be able to predict the agent's behavior as described in \cref{sec:back_contacts},
+The humanoid walking task is without a doubt one of the most challenging tasks in the field of robotics. The task aims to find a policy $\pi$ that is able to make the robot walk forward in a possibly \textit{human-like} motion. Its high complexity is mainly constituted by the necessity of controlling a large number of joints, which drastically increases the dimensionality of the problem, both in terms of action space and in observation space, from which it could be difficult to select the most relevant features for the algorithm.
+
+Throughout this project, the primary challenge in the Reinforcement Learning (\ac{RL}) framework was twofold. Firstly, the development a contact model capable of accurately simulating the interaction between the robot and its environment. Simultaneously, it was crucial for this contact model to facilitate the algorithm's ability to forecast the agent's behavior, which could be difficult in the case of simple soft contact models as elucidated in \cref{sec:back_contacts}. Unfortunately, the simulator was in an early developmental stage for the walking task, i.e. for the contact model's incomplete status, which was not the central focus of this work. Given the constraints of time available for thesis composition, we eventually opted to abandon this path and instead employed the more developed and readily available simulator, \textsc{Isaac Gym}, provided by NVIDIA. The details of the transition are elaborated in Appendix B (PUT IN MAIN MATTER?).
+
+The humanoid walking task described in the following paragraphs, has been achieved using \ac{PPO} together with the \ac{AMP} implementation from \texttt{rl\_games}.
 
 The action space is defined as:
 
@@ -83,9 +87,7 @@ The action space is defined as:
     \mathcal{A} = \left\{ a \in \mathbb{R} ^{23} \mid -1 \leq a_i \leq 1 \right\}
 \end{equation}
 
-where $a_i$ is the $i$-th joint desired position, which is then converted to a torque via a PD controller and then clipped to the maximum torque of the joint.
-
-The observation space is defined as:
+where $a_i$ is the $i$-th joint desired position, which is then converted to a torque via a PD controller, while the observation space is defined as:
 
 \begin{equation}
     \mathcal{S} = \left\{ s \in \mathbb{R} ^{80} \mid -\infty \leq s_i \leq \infty \right\}
@@ -129,23 +131,7 @@ Rewards, actions, and observations are then normalized to the range $[0,1]$ in o
 \end{table}
 
 
-Hyperparameter tuning is a crucial part of the \ac{RL} framework, and it is often the most time-consuming part of the process. In this work, the hyperparameters were tuned using \texttt{optuna} \citep{akiba_optuna_2019}, a hyperparameter optimization framework, which uses \textit{Tree-structured Parzen Estimator} (\ac{TPE}) sampler with a median pruner, that models the objective function and suggests the next set of hyperparameters to evaluate. The hyperparameters that were tuned are the following:
-
-\begin{itemize}
-    \item Time Horizon
-    \item Minibatch Size
-    \item Number of Minibatches
-    \item Number of Epochs
-    \item Clipping
-    \item Discount Factor $\gamma$
-    \item GAE Parameter $\lambda$
-    \item Value Function Coefficient
-    \item Entropy Coefficient $\beta$
-    \item Learning Rate
-    \item Network Architecture
-\end{itemize}
-
-which resulted in in values reported in \cref{tab:ppohyperparameters}.
+Hyperparameter tuning is a crucial part of the \ac{RL} framework, and it is often the most time-consuming part of the process. In this work, the hyperparameters were tuned using \texttt{optuna} \citep{akiba_optuna_2019}, a hyperparameter optimization framework, which uses \textit{Tree-structured Parzen Estimator} (\ac{TPE}) sampler with a median pruner, that models the objective function and suggests the next set of hyperparameters to evaluate. The hyperparameters tuned resulted in the values reported in \cref{tab:ppohyperparameters}.
 
 
 \begin{table}[h]
