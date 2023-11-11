@@ -1,7 +1,7 @@
 \chapter{Rigid Multibody Dynamics}
 \label{chp:back_RBDynamics}
 
-In this chapter, a mathematical groundwork for characterizing the dynamics of a floating-base multibody system is presented, setting a convention that is used throughout this work. Then, a first introduction to recursive algorithms for the computation of the dynamics of a multibody system is presented, to give a comprehensive understanding of the state of the art in the field of rigid multibody dynamics algorithms. In the forthcoming discussion, a 6D \textit{spatial vectors} notation firstly introduced by \citet{featherstone_rigid_2008} and successively integrated and adapted by \citet{traversaro_multibody_2019} is presented. As a matter of fact, this notation allows us to describe the motion of a rigid body without excessive use of indices, which can be confusing and error-prone when dealing with complex recursive algorithms that will be further discussed. This convention will be used to describe the kinematics and dynamics of a floating-base multibody system in a unified manner throughout this work.
+In this chapter, a mathematical groundwork for characterizing the dynamics of a floating-base multibody system is presented, setting a convention that is used throughout this work. Then, a first introduction to recursive algorithms for the computation of the dynamics of a multibody system is presented, to give a comprehensive understanding of the state of the art in the field of rigid multibody dynamics algorithms. In the forthcoming discussion, a 6D \textit{spatial vectors} notation firstly introduced by \citet{featherstone_rigid_2008} and successively integrated and adapted by \citet{traversaro_multibody_2019} \CarlottaSays{the appearance of the bibliography seems different here} is presented. \CarlottaSays{\st{As a matter of fact}}, this notation allows us to describe the motion of a rigid body without excessive use of indices, which can be confusing and error-prone when dealing with complex recursive algorithms that will be further discussed. This convention will be used to describe the kinematics and dynamics of a floating-base multibody system in a unified manner throughout this work.
 
 \section{Formalisms and Notation}
 
@@ -9,7 +9,7 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
 
 \begin{figure}
     \centering
-    \caption{Velocity of rigid body expressed in terms of spatial vectors.}
+    \caption{Velocity of rigid body expressed in terms of spatial vectors. \CarlottaSays{What is the O near $\omega$ ? }}
     \tikzset{every picture/.style={line width=0.75pt}}
     \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
         \draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (379.99,208.64) -- (379.99,111.06) ;
@@ -40,19 +40,19 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
     \end{tikzpicture}
 \end{figure}
 
-In the case of a rigid body, the velocity of a point $G$ attached to the body with respect to an intertial reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\omega$ about an axis passing through $O$ and its linear component $v _A$, for which the following relation holds:
+In the case of a rigid body, the velocity of a point $G$ attached to the body with respect to an intertial reference frame attached to an arbitrary point $O$ in the space can be generally expressed by its angular component $\omega$ \CarlottaSays{in which frame is expressed w ? where is it measured ?} about an axis passing through $O$ and its linear component $v _A$, for which the following relation holds:
 
 \begin{equation}
     v _A = \omega \times {}^O R_G
 \end{equation}
 
-where ${}^O R_G$ is the position vector of $G$ with respect to $O$. This holds for any point $G$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
+where ${}^O R_G$ \CarlottaSays{why you use R for a vector ? usually is a rotation matrix. To which set does it belong ? }is the position vector of $G$ with respect to $O$. This holds for any point $G$ on the rigid body. In order to simplify the notation, introducing a Cartesian coordinate frame $\mathcal{O} _{xyz}$, we can define a basis of 6 spatial vectors $\mathcal{D} _O = \{\mathbf{d} _i\} ^6 _{i=1}$ as:
 
 \begin{equation}
     \mathcal{D} _O = \{\mathbf{d} _x, \mathbf{d} _y, \mathbf{d} _z, \mathbf{d} _{O _x}, \mathbf{d} _{O _y}, \mathbf{d} _{O _z} \} \subset \mathcal{M} ^6
 \end{equation}
 
-where $\mathcal{M} ^6$ is the space of 6D vectors, defining a Pl\"ucker coordinate system on $\mathcal{M} ^6$ as shown in \cref{fig:pluecker}.
+where $\mathcal{M} ^6$ is the space of 6D vectors, defining a Pl\"ucker \CarlottaSays{CItation needed} coordinate system on $\mathcal{M} ^6$ as shown in \cref{fig:pluecker}.
 
 % === Fig: Pluecker === %
 \begin{figure}
@@ -101,7 +101,7 @@ where $\mathcal{M} ^6$ is the space of 6D vectors, defining a Pl\"ucker coordina
 
 This defines a motion subspace for a system, e.g. defines the directions in which the system is free to move.
 
-\paragraph{Spatial Velocity} The spatial velocity of a rigid body is defined as a serialization of the linear and angular velocity of a point $A$ attached to the body. In particular, let $\mathbf{p} _A \in \mathcal{D}_O$ be the position vector of $A$ with respect to $O$, then the spatial velocity of the body is defined as the component-wise derivative of the position vector respect to time:
+\paragraph{Spatial Velocity} The spatial velocity of a rigid body is defined as a serialization of the linear and angular velocity of a point $A$ attached to the body. In particular, let $\mathbf{p} _A \in \mathcal{D}_O$ be the position \CarlottaSays{Position is referred to the linear part only, and pose is both linear and angular }vector of $A$ with respect to $O$, then the spatial velocity of the body is defined as the component-wise derivative of the position vector respect to time:
 
 \begin{equation}
     \mathbf{v} _A = \frac{d}{dt} {}^{[O]}\mathbf{p} _A =
@@ -143,7 +143,7 @@ This defines a motion subspace for a system, e.g. defines the directions in whic
     \end{bmatrix}
 \end{equation}
 
-\paragraph{Multibody Velocity} Given a floating-base multibody system composed of $n$ rigid bodies, we can define the velocity of the system as the concatenation of the root link velocity $\mathbf{v}_A$ and the velocities of each body composing the system $\dot{\mathbf{s}} \in \mathbb{R} ^{n}$:
+\paragraph{Multibody Velocity} Given a floating-base multibody system composed of $n$ rigid bodies, we can define the velocity of the system as the concatenation of the root link \CarlottaSays{What is a root link ? not yet defined} velocity $\mathbf{v}_A$ and the velocities of each body composing the system $\dot{\mathbf{s}} \in \mathbb{R} ^{n}$:
 
 \begin{equation}
     \boldsymbol{\nu} = \begin{bmatrix}
@@ -167,14 +167,14 @@ This defines a motion subspace for a system, e.g. defines the directions in whic
     \end{bmatrix}
 \end{equation}
 
-\section{Kinematics}
+\section{Kinematics \CarlottaSays{of what ? }}
 
 \subsection{Joints and Links}
 
 A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links correspond to the rigid bodies composing the inertial properties of the system, while the joints are usually modeled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
 
 For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases. Furthermore, the system will be considered \textit{acyclic}, i.e. it will not contain any closed loop, as the presence of loops would make the system kinematically redundant.
-Given a joint we can define a \textit{joint axis} $\mathbf{a} \in \mathbb{R}^3, |\mathbf{a}| = 1$ with $\mathbf{a}^\wedge \mathbf{a} = \mathbbm{0}_{3 \times 1}$, in this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\boldsymbol{\Phi} _j \in \mathcal{M} ^6$ as:
+Given a joint we can define a \textit{joint axis} $\mathbf{a} \in \mathbb{R}^3, |\mathbf{a}| = 1$ with $\mathbf{a}^\wedge \mathbf{a} = \mathbbm{0}_{3 \times 1}$\CarlottaSays{the operator $^\wedge$ and the symbol $\mathbbm{0}$ are not defined, you should define at least in List of Symbols, same for the identity symbol}, in this case, if we recall the definition of the spatial subspace, we can define the joint motion subspace $\boldsymbol{\Phi} _j \in \mathcal{M} ^6$ as:
 
 \begin{equation}
     \boldsymbol{\Phi} _j =
@@ -260,18 +260,19 @@ The following chapters will always consider a rigid body pose and body-fixed vel
 
 in which $\boldsymbol{\nu}^\wedge$ is the skew-symmetric matrix of the body-fixed velocity $\boldsymbol{\nu}$.
 
-Once defined a map $\mathbf{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a Coriolis vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of centrifugal and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, a Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the contact forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{SicilianoKhatib2008}:
+Once defined a map $\mathbf{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a Coriolis vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of centrifugal and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, a Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the contact forces \CarlottaSays{this are external forces, maybe better to say: external forces e.g. the contacts} $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{SicilianoKhatib2008}:
 
 \begin{equation}
     \label{eqn:equation_of_motion}
     \mathbf{M}(\mathbf{q}) \mathbf{\ddot{\boldsymbol{\nu}}} + \mathbf{h} (\mathbf{q}, \boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J}^\top _\text{c} \mathbf{F} ^\text{ext}
 \end{equation}
 
+\CarlottaSays{General comment, the equation not inline should be cited in the text.}
 
 \section{Forward Dynamics}
 \label{sec:back_fd}
 
-The forward dynamics problem consists of computing the joint accelerations of a multibody system given the joint positions, velocities, and applied forces. As the problem is unsolvable for a single body of the system, the usual approach is to define the constraints that the links must satisfy, write the equation for each link, calculate the local coefficient, and then propagate them in the kinematic tree until a point in which the problem becomes solvable, usually the base of the tree in backpropagation or the end-effector in forward propagation. Although being inertia-matrix algorithms much simpler to implement, propagation algorithms involving recursive backsubstition are more efficient in terms of computational cost, as they can reach the theoretical minimal complexity of $\mathcal{O}(n)$. In this work, the notation $\mathrm{FD}(\cdot)$ will be used to indicate the forward dynamics computation.
+The forward dynamics problem consists of computing the joint accelerations of a multibody system given the joint positions, velocities, and applied forces. As the problem is unsolvable for a single body of the system, the usual approach is to define the constraints that the links must satisfy, write the equation for each link, calculate the local coefficient, and then propagate \CarlottaSays{mention that they are recursive algorithm ? this will make automatic clearer what are you talking about }them in the kinematic tree until a point in which the problem becomes solvable, usually the base of the tree in backpropagation or the end-effector in forward propagation. Although being inertia-matrix algorithms \CarlottaSays{what are inertia-matrix algorithms ? maybe I have missed the definition} much simpler to implement, propagation algorithms involving recursive backsubstition are more efficient in terms of computational cost \CarlottaSays{if you have a reference cite it }, as they can reach the theoretical minimal complexity of $\mathcal{O}(n)$. In this work, the notation $\mathrm{FD}(\cdot)$ will be used to indicate the forward dynamics computation.
 
 \begin{equation}
     \ddot{\mathbf{q}} = \mathrm{FD} (\mathcal{M}, \mathbf{q}, \dot{\mathbf{q}}, \boldsymbol{\tau}, \mathbf{F} ^{\text{ext}})
@@ -280,7 +281,7 @@ The forward dynamics problem consists of computing the joint accelerations of a 
 \subsection{Articulated-Body Algorithm}
 \label{subsec:back_aba}
 
-As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multi-body system with a high number of links is computationally expensive, in fact, even using \citet{coppersmith_matrix_1990} algorithm or its optimized version by \citet{vassilevska-williams2012breaking}, which reached a complexity of $\mathcal{O}(n^{2.373})$, the computation of the inverse of the mass matrix is still too expensive for real-time scenarios. That is why recursive methods results are more suitable for applications where a fast computation of the dynamics is required.
+As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multi-body system with a high number of links is computationally expensive\CarlottaSays{maybe I have missed this, but where do you say this ? }, in fact, even using \citet{coppersmith_matrix_1990} algorithm or its optimized version by \citet{vassilevska-williams2012breaking}, which reached a complexity of $\mathcal{O}(n^{2.373})$, the computation of the inverse of the mass matrix is still too expensive for real-time scenarios. That is why recursive methods results are more suitable for applications where a fast computation of the dynamics is required.
 
 % === FIG: Kinematic Chain === %
 \begin{figure}[h]
@@ -522,17 +523,17 @@ As explained in \cref{sec:back_fd}, the inversion of the mass matrix for a multi
             \draw (242.1,222.7) node [anchor=north west][inner sep=0.75pt]    {$\textcolor[rgb]{0.29,0.56,0.89}{\lambda }\textcolor[rgb]{0.29,0.56,0.89}{(}\textcolor[rgb]{0.29,0.56,0.89}{i}\textcolor[rgb]{0.29,0.56,0.89}{)}$};
         \end{tikzpicture}}}
 \end{figure}
-
-The Articulated-Body Algorithm (\ac{ABA}) finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going up to the root. If we consider a joint $i$ interacting with the rest of the kinematic chain, it will be subject to an unknown force $\mathbf{f} _i$ defined as:
+\CarlottaSays{not important at all, but as suggestion for next time, put the tikz in a separate file to include, makes the latex code more organize and easier to navigate}
+The Articulated-Body Algorithm (\ac{ABA}) \CarlottaSays{why both written and as pedix the meaning of the acronym ? } finds its roots by initially considering a subdivision of the kinematic structure in sub-trees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going \CarlottaSays{\st{up} down } to the root. If we consider a joint $i$ interacting with the rest of the kinematic chain, it will be subject to an unknown force $\mathbf{f} _i$ defined as:
 
 \begin{equation}
     \label{eqn:biasforce}
     \mathbf{f} _i = \mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
 \end{equation}
 
-where $\mathbf{I} _i ^A$ is the articulated body inertia, i.e. the inertia felt at the base of the subtree when all its joints are free to move, and $\mathbf{p} ^A _i$ is the associated bias force.
+where $\mathbf{I} _i ^A$ is the articulated body inertia, i.e. the inertia \CarlottaSays{\st{felt} you do not actually feel the inertia :) } at the base of the subtree when all its joints are free to move, and $\mathbf{p} ^A _i$ is the associated bias force \CarlottaSays{before $\mathbf{p}$ was a position vector, now is a bias force, confusing}.
 
-In ABA, first, a forward pass is performed to compute the initial articulated body inertia, the initial bias forces, and the link velocities, then a backward pass is performed to compute the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain.
+In ABA, first, a forward pass is performed to compute the initial articulated body inertia, the initial bias forces, and the link velocities, then a backward pass is performed to compute the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain. \CarlottaSays{maybe an explanation of the direction of forward and backward  can help e..g leaves-root and viceversa} \CarlottaSays{also explaining that $\lambda(i)$ identifies the parent could help the reader}
 
 The spatial force acting at joint $i$ and the acceleration of body $i$ are related by:
 
@@ -548,7 +549,7 @@ By solving \cref{eqn:aba_torque} for $\ddot{\mathbf{s}}$ the following results i
     \ddot{\mathbf{s}} _i = \mathbf{I} _i ^{-1} (\boldsymbol{\tau} _i - \boldsymbol{\Phi} ^T _i \mathbf{p} ^A _i - \boldsymbol{\Phi} ^T _i \mathbf{I} _i ^A \mathbf{a} _{\lambda(i)})
 \end{equation}
 
-This yields that once the articulated body inertia and the bias force are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints, constituting the main advantage of the articulated-body algorithm.
+This yields that once the articulated body inertia and the bias force are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints, constituting the main advantage of the articulated-body algorithm. \CarlottaSays{THe algorithm should be cited somewhere in the text !!!! in the algorithm you use $\lambda_i$ but is not specified, double check that all the symbols of the algorithm are explained in the text e.g. what is phi, what is jcalc, what is jtype etc }
 
 \begin{algorithm}[h]
     \caption{Articulated-Body Algorithm}
