@@ -101,6 +101,9 @@ The use of \ac{OOP} is exploited in this work in order to add a layer of abstrac
 
 \section{Impacts and Contacts}
 \label{sec:back_contacts}
+
+When dealing with rigid body dynamics, the most common approach to model the contact between two bodies is to use a \textit{penalty-based} approach, which consists of adding a force to the system when the distance between two bodies is below a certain threshold. This approach is computationally efficient and easy to implement, but it does not allow to model the dynamics of the contact, which is often the case when dealing with high-velocity impacts. In fact, in the case of a high-velocity impact, the contact between two bodies is not perfectly inelastic, hence the partial elasticities of the materials involved in the collision induce vibrational modes in the system. This is why a \textit{compliant} approach is often preferred, which allows to model the dynamics of the contact, but it is computationally more expensive and requires a more complex implementation.
+
 \subsection{Smooth Impacts}
 
 In a high incident velocity impact between two solids, some of the kinetic energy is transferred to the vibrational model. This is due to the fact that the contact in smooth impacts is not perfectly inelastic, hence the partial elasticities of the materials involved in the collision induce vibrational modes in the system.
