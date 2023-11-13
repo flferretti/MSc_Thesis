@@ -1,17 +1,57 @@
 \chapter{Reinforcement Learning and Genetic Algorithms}
 \label{chp:back_RLGA}
 
-\section{Formalism for Reinforcement Learning}
+This chapter presents the minimal theoretical background of reinforcement learning and genetic algorithms. A particular focus is given to the \ac{PPO} algorithm, which is the main algorithm used in the \ac{RL} framework of the codesign process. Finally, some novel approaches in the field of \ac{RL} are presented. This chapter are based on the work of \citep{sutton_reinforcement_1998,li_deep_2018,agarwal_deep_2022}
 
-\paragraph{Markov Decision Process} A \ac{MDP} is defined as a tuple $\mathcal{M} = (\mathcal{S}, \mathcal{A}, \mathcal{F}, r, \gamma)$ where $\mathcal{S}$ is the set of states $\mathbf{s} \in \mathcal{S}$, which may be either discrete or continuous, $\mathcal{A}$ is the set of actions $\mathbf{a} \in \mathcal{A}$ which in a similar fashion may be continuous or discrete, $\mathcal{F}$ is the state-transition function space that describes a conditional probability distribution $\mathcal{F}(\mathbf{s} _{t+1}|\mathbf{s}_t, \mathbf{a} _t)$ that describes the dynamics of the system, $\mathcal{R} : \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ is the reward function and $\gamma \in \left]0,1\right]$ is the discount factor for the reward. If the environment is \textit{deterministic}, state transitions can be expressed with a state-transition function $f: \mathcal{S} \times \mathcal{A} \rightarrow \mathcal{S}$, if the environment is \textit{stochastic}, state transitions can be expressed with the \textit{state-transition probability density function} $\mathcal{P}: \mathcal{S} \times \mathcal{A} \rightarrow \mathrm{Pr}[\mathcal{S}]$.
+\section{Fundamentals of Reinforcement Learning}
 
-A reinforcement learning scenario has no knowledge regarding the data used for training, i.e. the state-transition map and the reward function are unknown.
+Reinforcement learning comes from a fusion of optimal control theory and the theory of machine learning and consists of guiding agents in dynamic environments to maximize cumulative rewards. Unlike supervised learning, \ac{RL} doesn't require labeled input/output pairs, and it focuses on striking a balance between exploring uncharted territory and exploiting existing knowledge. The environment is often modeled as a Markov decision process, distinguishing it from classical dynamic programming by its ability to handle large \ac{MDP}s without assuming an exact mathematical model.
 
-In general, a reinforcement learning process can be described therefore as a \textit{partially observable Markov decision process}, in which the tuple describing the problem assumes the form $\mathcal{M} =  (\mathcal{S}, \mathcal{A}, \mathcal{O}, \mathcal{F}, r, \gamma)$, where the new variable $\mathcal{O}$ is defined as the observation space. For the purpose of this discussion and to simplify the notation, the training process will always be considered \textit{fully observable}.
+Reinforcement learning's versatility extends to a wide range of disciplines like game theory, control theory, and swarm intelligence. Contrary to optimal control theory's emphasis on exact solutions, \ac{RL} addresses problems without a known mathematical model. Assessing an agent's performance against an optimally acting agent introduces the concept of regret, a measure from decision theory of the disparity between what the agent achieves and the best possible outcome, prompting a deeper understanding of the effectiveness and improvement potential within the learning process. For that, \ac{RL} excels in scenarios involving a trade-off between long-term and short-term rewards, requiring agents to consider the extended consequences of their actions. Overall, its adaptability makes it a powerful tool for complex problems that are difficult to model mathematically, such as multibody dynamics.
 
-At each time step $t$, the agent receives from the environment a state $\mathbf{s}_t \in \mathcal{S}$ and following a policy $\pi (\mathbf{a}_t | \mathbf{s}_t)$ outputs an action $\mathbf{a} \in \mathcal{A}$. The environment will, via a transition function $\mathcal{F}$ output a reward $r$ and a observation $\mathbf{o} \in \mathcal{O}$.
+\begin{figure}
+    \centering
+    \caption{Reinforcement Learning Framework}
+    \label{fig:rlframework}
+    \includegraphics[width=.7\textwidth]{Images/rl_ergocub.png}
+\end{figure}
 
-In \ac{DRL} the policy is described by a Neural Network (\ac{NN}), therefore it is modelled as a probability distribution parameterized by the set of the \ac{NN} weights and biases $\boldsymbol{\theta}$ as:
+\paragraph{Markov Decision Process} A \ac{MDP} is defined as a five-tuple $\mathcal{M} = (\mathcal{S}, \mathcal{A}, \mathcal{F}, r, \gamma)$ where:
+
+\begin{itemize}
+    \item $\mathcal{S}$ is the set of environment states $\mathbf{s} \in \mathcal{S}$, which may be either discrete or continuous
+    \item $\mathcal{A}$ is the set of agent actions $\mathbf{a} \in \mathcal{A}$ which in a similar fashion may be continuous or discrete
+    \item $\mathcal{F} (\mathbf{s}^\prime | \mathbf{s}, \mathbf{a}): \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathcal{S}$ is the state-transition function space that describes a conditional probability distribution $\mathcal{F}(\mathbf{s} _{t+1}|\mathbf{s}_t, \mathbf{a} _t)$ that describes the dynamics of the system
+    \item $\mathcal{R} (\mathbf{s}^\prime, \mathbf{a}, \mathbf{s}): \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ is the reward function
+    \item $\gamma \in [0,1]$ is the discount factor that determines the weight of future rewards
+\end{itemize}
+
+If the environment is \textit{deterministic}, state transitions can be expressed with a state-transition function $\mathcal{F}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathcal{S}$, if the environment is \textit{stochastic}, state transitions can be expressed with the \textit{state-transition probability density function}, i.e. $\mathcal{F}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathrm{Pr}[\mathcal{S}]$.
+
+As a reinforcement learning scenario has no prior knowledge regarding the data used for training, the state-transition map and the reward function are unknown.
+
+In general, a reinforcement learning process can be described therefore as a \textit{partially observable Markov decision process}, in which the tuple describing the problem assumes the form $\mathcal{M} =  (\mathcal{S}, \mathcal{A}, \mathcal{O}, \mathcal{F}, r, \gamma)$, where the new variable $\mathcal{O}$ is defined as the observation space. For the purpose of this discussion and to simplify the notation, the training process will always be considered \textit{fully observable}, e.g. the observation space will be equal to the state space $\mathcal{O} = \mathcal{S}$.
+
+At each time step $t$, the agent receives from the environment a state $\mathbf{s}_t \in \mathcal{S}$ and following a policy $\pi (\mathbf{a}_t | \mathbf{s}_t)$ outputs an action $\mathbf{a} \in \mathcal{A}$. The environment will, via a transition function $\mathcal{F}$ output a reward $r$ and an observation $\mathbf{o} \in \mathcal{O}$, yield an evolution of the state:
+
+\begin{equation}
+    \mathcal{F}(\mathbf{s} _{t+1}, r _{t+1} | \mathbf{s} _t, \mathbf{a} _t)
+\end{equation}
+
+in which $r_t \in \mathbb{R}$ is the reward at time $t$, whose value is determined by the expected value of the immediate reward $r_t$:
+
+\begin{equation}
+    \mathcal{R}(\mathbf{s} _t, \mathbf{a} _t, \mathbf{s} _{t+1}) = \mathbb{E} \left[ r _t | \mathbf{s} _t, \mathbf{a} _t, \mathbf{s} _{t+1} \right] = \sum _t r _t \frac{\mathcal{F}(\mathbf{s} _{t+1}, r _{t+1} | \mathbf{s} _t, \mathbf{a} _t)}{\mathcal{F}(\mathbf{s} _{t+1} | \mathbf{s} _t, \mathbf{a} _t)}
+\end{equation}
+
+As the immediate reward depends on the state at time $t+1$, and therefore how action $\mathbf{a} _t$ affects the state at time $t$, we can define a \textit{return} $G _t$ as the total reward collected from time $t$ to the end of the episode:
+
+\begin{equation}
+    G _t = \sum ^{T - t} _{k = 0} r _{t+k+1}
+\end{equation}
+
+
+In \ac{DRL} the policy is described by a Neural Network (\ac{NN}), therefore it is modeled as a probability distribution parameterized by the set of the \ac{NN} weights and biases $\boldsymbol{\theta}$ as:
 
 \begin{equation}
     a _t \sim \pi _{\boldsymbol{\theta}}(\cdot | s_t): \mathcal{S} \rightarrow \mathrm{Pr}(\mathcal{A})
@@ -29,14 +69,14 @@ where:
     \nabla _{\theta} J(\pi) = \nabla _{\theta} \int _{h ^{\pi}} p(h ^{\pi})R(h ^{\pi})dh ^{\pi}
 \end{equation}
 
-which is usually approximated with Finite Difference method:
+which is usually approximated with the Finite Difference method:
 
 \begin{equation}
     \label{eqn:finitediff}
     \frac{\partial J(\boldsymbol{\theta})}{\partial \theta _i} \approx \frac{J(\boldsymbol{\theta} + \delta \boldsymbol{\theta}) - J(\boldsymbol{\theta})}{\delta \theta _i}
 \end{equation}
 
-In likelihood ratio method such as \ac{SDE} the new policy is not know, as it adds a \textit{state-dependent offset} to actions at each timestep, which will return the same value in the state state withing an episode, but it will vary between episodes. Given a pseudo-random function $\hat{\varepsilon}(\mathbf{x}, \hat{\theta})$ where $\hat{\theta} \sim \mathcal{N}(0, \hat{\sigma} _j ^2)$, the action is computed as:
+In likelihood ratio methods such as \ac{SDE} the new policy is not known, as it adds a \textit{state-dependent offset} to actions at each timestep, which will return the same value in the state state within an episode, but it will vary between episodes. Given a pseudo-random function $\hat{\varepsilon}(\mathbf{x}, \hat{\theta})$ where $\hat{\theta} \sim \mathcal{N}(0, \hat{\sigma} _j ^2)$, the action is computed as:
 
 \begin{equation}
     \mathbf{a} = f(\mathbf{x}, \boldsymbol{\theta}) + \hat{\varepsilon}(\mathbf{x}, \hat{\theta})
@@ -74,7 +114,7 @@ A potentially good solution might be to take the exponential average as input to
                                                & = \sum ^{ \infty } _{l = 0} (\gamma \lambda) ^t \delta ^V _{t+l} \nonumber
 \end{align}
 
-where $\lambda$ is the exponential weight discount. If this is set to $0$, then we have exactly the \ac{TD} advantage estimate (high bias, low variance) and if we set it to $1$, this is equivalent of choosing $i=n$ for the extended advantage estimate (low bias, high variance).
+where $\lambda$ is the exponential weight discount. If this is set to $0$, then we have exactly the \ac{TD} advantage estimate (high bias, low variance) and if we set it to $1$, this is equivalent to choosing $i=n$ for the extended advantage estimate (low bias, high variance).
 
 \paragraph{Kullback-Leibler Divergence} The \ac{KL} divergence is a measure of how one probability distribution is different from a second, reference probability distribution. In other words, the \ac{KL} divergence measures the expected number of extra bits required to code samples from one distribution, given that we are using a code based on the reference distribution. The \ac{KL} divergence is defined as:
 
