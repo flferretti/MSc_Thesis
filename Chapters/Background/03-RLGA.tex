@@ -140,8 +140,40 @@ Amongst policy gradient methods, the \textit{Proximal Policy Optimization} (\ac{
     \end{algorithmic}
 \end{algorithm}
 
-\section{Evolutionary Algorithms}
+\section{Fundamentals of Evolutionary Algorithms}
 
-Evolutionary algorithm or \textit{Genetic Algorithm}s (\ac{GA}) is a family of algorithms that are inspired by the natural selection
-process, in which the fittest individuals are selected to reproduce and pass their genetic
-material to the next generation.
+Evolutionary algorithm or \textit{Genetic Algorithm}s (\ac{GA}) is a family of powerful optimization algorithms that are inspired by the natural selection
+process and genetics, in which the fittest individuals are selected to reproduce and pass their characteristics to the next generation.
+
+Rooted in evolutionary computation, these algorithms emulate the process of natural selection to evolve solutions for complex problems. Introduced by \citet{holland_1992_ga}, genetic algorithms are particularly effective when the solution space is large and finding near-optimal solutions in diverse domains.
+
+The core idea behind genetic algorithms involves representing potential solutions to a problem as individuals in a population. Through successive generations, these individuals undergo genetic operations mimicking the mechanisms of biological evolution. As the algorithm progresses, the fittest individuals, those with higher adaptability or better solutions, are more likely to survive and contribute to the next generation.
+
+Genetic algorithms have proven to be versatile and effective for optimization tasks, especially when dealing with complex, non-linear, and multi-dimensional search spaces. Their ability to explore diverse solution spaces and adapt to changing environments makes them valuable tools in problem-solving across various disciplines. \citep{gu_modified_2021}
+
+A generic evolutionary algorithm starts with an initial population of individuals, chosen randomly or according to some heuristic, then the first two individuals are randomly picked from the population and combined to generate a new individual in a process called \textit{crossover}. The new individual is then mutated with a certain probability and added to the population if fit enough. The process is repeated until a stopping criterion is met, e.g. a maximum number of generations is reached or the fitness of the population is above a certain threshold. An overview of the evolutionary process can be found in \cref{fig:genetic_algo}.
+
+\begin{figure}
+    \centering
+    \caption{Evolutionary Algorithm Flowchart}
+    \label{fig:genetic_algo}
+    \includegraphics[width=.9\textwidth]{Images/genetic_algo.png}
+\end{figure}
+
+\subsection{Genetic Operators}
+
+\paragraph{Tournament Selection}
+
+Tournament selection is a strategy to select individuals for reproduction in which a subset of individuals is selected from the population and the fittest individual is chosen from the subset. Tournament selection is a generic selection operator that can be used in any genetic algorithm.
+
+\paragraph{Mutation}
+
+Mutation is a genetic operator used to introduce new genetic information into the population. In practice, the individual characteristic is modified by applying a random perturbation to its genetic information.
+
+\paragraph{Elitism}
+
+Elitism is a selection strategy in which the fittest individuals are preserved from one generation to the next. It is used to ensure that the fittest individuals are not lost during the evolution process and to speed up the convergence of the algorithm.
+
+\paragraph{Crossover}
+
+Crossover is a genetic operator used to combine the genetic information of two individuals to generate a new individual. In the context of evolutionary algorithms, crossover is used to generate new individuals from the population. The crossover operator is inspired by the natural reproduction process, in which the genetic information of two individuals is combined to generate a new individual. A generic \textit{k-point crossover} operator takes two individuals and a number $k$ as input and returns two new individuals. The two individuals are divided into $k+1$ segments, and the segments are then swapped between the two individuals.
