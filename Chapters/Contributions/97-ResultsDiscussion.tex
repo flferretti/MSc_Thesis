@@ -40,7 +40,7 @@ As expected, the explained variance gets closer to $1$ as the training progresse
 
 In \cref{fig:stickbotresults}, the metrics obtained during the training with \textsc{Isaac gym} are reported.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \caption{Stickbot RL Training Metrics}
     \label{fig:stickbotresults}
@@ -49,3 +49,17 @@ In \cref{fig:stickbotresults}, the metrics obtained during the training with \te
 \end{figure}
 
 The mean episode length and the mean reward increase as the training progresses, which means that the policy is effectively learning to solve the task maximizing the reward.
+
+\subsection{Codesign with Genetic Algorithm}
+
+\begin{figure}[h]
+    \centering
+    \caption{Cartpole Codesign Results}
+    \subfloat[Fitness Plot \label{fig:fitness}]{\includegraphics[width=0.4\textwidth]{Images/fitness.png}}
+    \subfloat[Diversity Plot \label{fig:diversity}]{\includegraphics[width=0.4\textwidth]{Images/diversity.png}}
+\end{figure}
+
+In this section, we present the results obtained with the genetic algorithm. In particular, we present the results obtained with the codesign
+framework for the \textit{Cartpole}.
+
+As we can see from \cref{fig:fitness}, the convergence is achieved after SOME generations, with a fitness value of SOME. The diversity decreases as expected, as the population converges to the optimal solution, as we can see from \cref{fig:diversity}.
