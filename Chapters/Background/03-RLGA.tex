@@ -183,13 +183,9 @@ Amongst policy gradient methods, the \textit{Proximal Policy Optimization} (\ac{
 \section{Fundamentals of Evolutionary Algorithms}
 
 Evolutionary algorithm or \textit{Genetic Algorithm}s (\ac{GA}) is a family of powerful optimization algorithms that are inspired by the natural selection
-process and genetics, in which the fittest individuals are selected to reproduce and pass their characteristics to the next generation.
-
-Rooted in evolutionary computation, these algorithms emulate the process of natural selection to evolve solutions for complex problems. Introduced by \citet{holland_1992_ga}, genetic algorithms are particularly effective when the solution space is large and finding near-optimal solutions in diverse domains.
+process and genetics, in which the fittest individuals are selected to reproduce and pass their characteristics to the next generation. Rooted in evolutionary computation, these algorithms emulate the process of natural selection to evolve solutions for complex problems. Introduced by \citet{holland_1992_ga}, genetic algorithms are particularly effective when dealing with complex, non-linear, and multi-dimensional search spaces, finding near-optimal solutions in diverse domains. Their ability to explore diverse solution spaces, without the need for differentiability, and to adapt to changing environments makes them valuable tools in the optimization field. \citep{katoch_review_2021}
 
 The core idea behind genetic algorithms involves representing potential solutions to a problem as individuals in a population. Through successive generations, these individuals undergo genetic operations mimicking the mechanisms of biological evolution. As the algorithm progresses, the fittest individuals, those with higher adaptability or better solutions, are more likely to survive and contribute to the next generation.
-
-Genetic algorithms have proven to be versatile and effective for optimization tasks, especially when dealing with complex, non-linear, and multi-dimensional search spaces. Their ability to explore diverse solution spaces and adapt to changing environments makes them valuable tools in problem-solving across various disciplines. \citep{gu_modified_2021}
 
 A generic evolutionary algorithm starts with an initial population of individuals, chosen randomly or according to some heuristic, then the first two individuals are randomly picked from the population and combined to generate a new individual in a process called \textit{crossover}. The new individual is then mutated with a certain probability and added to the population if fit enough. The process is repeated until a stopping criterion is met, e.g. a maximum number of generations is reached or the fitness of the population is above a certain threshold. An overview of the evolutionary process can be found in \cref{fig:genetic_algo}.
 
