@@ -228,7 +228,7 @@ The equation of motion of a generic multibody mechanical system can be derived s
 where $\mathcal{L} (\mathbf{q} = {}^W\mathbf{H} _B, \dot{\mathbf{q}} = {}^W\dot{\mathbf{H}} _B)$ is the Lagrangian of the system. For a floating-base multibody system, it can be obtained as the sum of the Lagrangian of each link composing the system:
 
 \begin{equation}
-    \mathcal{L} = \mathcal{T}(\mathbf{q},\boldsymbol{\nu}) - \mathcal{U}(\mathbf{q}) = \sum _{L \in \mathbb{L}} \mathrm{v} ^\top _L \mathbf{M} _L \mathrm{v} _L - \sum _{L \in \mathbb{L}} \begin{bmatrix}
+    \mathcal{L} = \mathcal{T}(\mathbf{q},\boldsymbol{\nu}) - \mathcal{U}(\mathbf{q}) = \sum _{L \in \mathbb{L}} \mathrm{v} ^\top _L \mathbb{M} _L \mathrm{v} _L - \sum _{L \in \mathbb{L}} \begin{bmatrix}
         \mathbf{g} ^\top _L & \mathbbm{0}
     \end{bmatrix} {}^W\mathbf{H} _L
     \begin{bmatrix}
@@ -236,7 +236,7 @@ where $\mathcal{L} (\mathbf{q} = {}^W\mathbf{H} _B, \dot{\mathbf{q}} = {}^W\dot{
     \end{bmatrix}
 \end{equation}
 
-where $\mathbb{L}$ is the set of links composing the system, $\mathbf{M} _L \in \mathbb{R} ^{6 \times 6}$ is the spatial inertia matrix of the link $L$, $\mathbf{g} _L$ is the gravitational acceleration vector, ${}^W\mathbf{H} _L \in \mathbb{Q}$ is the pose of the link $L$ and $m _L \in \mathbb{R}$ and $c _L \in \mathbb{R}$ are the mass and the Coriolis acceleration
+where $\mathbb{L}$ is the set of links composing the system, $\mathbb{M} _L \in \mathbb{R} ^{6 \times 6}$ is the spatial inertia matrix of the link $L$, $\mathbf{g} _L$ is the gravitational acceleration vector, ${}^W\mathbf{H} _L \in \mathbb{Q}$ is the pose of the link $L$ and $m _L \in \mathbb{R}$ and $c _L \in \mathbb{R}$ are the mass and the Coriolis acceleration
 
 The first variation of the action functional can be written as:
 
@@ -259,11 +259,11 @@ The following chapters will always consider a rigid body pose and body-fixed vel
 
 in which $\boldsymbol{\nu}^\wedge$ is the skew-symmetric matrix of the body-fixed velocity $\boldsymbol{\nu}$.
 
-Once defined a map $\mathbf{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a Coriolis vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of centrifugal and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, a Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the external forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{SicilianoKhatib2008}:
+Once defined a map $\mathbb{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a Coriolis vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of centrifugal and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, a Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the external forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{SicilianoKhatib2008}:
 
 \begin{equation}
     \label{eqn:equation_of_motion}
-    \mathbf{M}(\mathbf{q}) \mathbf{\ddot{\boldsymbol{\nu}}} + \mathbf{h} (\mathbf{q}, \boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J}^\top _\text{c} \mathbf{F} ^\text{ext}
+    \mathbb{M}(\mathbf{q}) \mathbf{\ddot{\boldsymbol{\nu}}} + \mathbf{h} (\mathbf{q}, \boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J}^\top _\text{c} \mathbf{F} ^\text{ext}
 \end{equation}
 
 
@@ -526,10 +526,10 @@ The \textit{Articulated-Body Algorithm} \citep{featherstone_rigid_2008} finds it
 
 \begin{equation}
     \label{eqn:biasforce}
-    \mathbf{f} _i = \mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
+    \mathbf{f} _i = \mathbb{M} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
 \end{equation}
 
-where $\mathbf{I} _i ^A$ is the articulated body inertia, i.e. the inertia propagated at the base of the subtree when all its joints are free to move, and $\mathbf{p} ^A _i$ is the associated bias force.
+where $\mathbb{M} _i ^A$ is the articulated body inertia, i.e. the inertia propagated at the base of the subtree when all its joints are free to move, and $\mathbf{p} ^A _i$ is the associated bias force.
 
 In ABA, first, a forward pass is performed to compute the initial articulated body inertia, the initial bias forces, and the link velocities, then a backward pass is performed to compute the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain.
 
@@ -537,14 +537,14 @@ By indicating with $\lambda(i)$ the parent link of link $i$, we can express the 
 
 \begin{equation}
     \label{eqn:aba_torque}
-    \boldsymbol{\tau} _i = \boldsymbol{\Phi} ^T _i \mathbf{f} _i = \boldsymbol{\Phi} ^T _i (\mathbf{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i) = \boldsymbol{\Phi} ^T _i (\mathbf{I} _i ^A (\mathbf{a} _{\lambda(i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \dot{\boldsymbol{\Phi}} _i \dot{\mathbf{s}} _i)+ \mathbf{p} ^A _i)
+    \boldsymbol{\tau} _i = \boldsymbol{\Phi} ^T _i \mathbf{f} _i = \boldsymbol{\Phi} ^T _i (\mathbb{M} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i) = \boldsymbol{\Phi} ^T _i (\mathbb{M} _i ^A (\mathbf{a} _{\lambda(i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \dot{\boldsymbol{\Phi}} _i \dot{\mathbf{s}} _i)+ \mathbf{p} ^A _i)
 \end{equation}
 
 where $\boldsymbol{\Phi} _i$ is the motion subspace of the $i$-th link, $\mathbf{a} _i$ is its acceleration, $\mathbf{a} _{\lambda(i)}$ is the acceleration of the parent link, $\ddot{\mathbf{s}} _i$ is the acceleration of the $i$-th joint, and $\dot{\boldsymbol{\Phi}} _i$ is the derivative of the motion subspace of the $i$-th link with respect to the joint coordinates.
 By solving \cref{eqn:aba_torque} for $\ddot{\mathbf{s}}$ the following results is obtained:
 
 \begin{equation}
-    \ddot{\mathbf{s}} _i = \mathbf{I} _i ^{-1} (\boldsymbol{\tau} _i - \boldsymbol{\Phi} ^T _i \mathbf{p} ^A _i - \boldsymbol{\Phi} ^T _i \mathbf{I} _i ^A \mathbf{a} _{\lambda(i)})
+    \ddot{\mathbf{s}} _i = \mathbb{M} _i ^{-1} (\boldsymbol{\tau} _i - \boldsymbol{\Phi} ^T _i \mathbf{p} ^A _i - \boldsymbol{\Phi} ^T _i \mathbb{M} _i ^A \mathbf{a} _{\lambda(i)})
 \end{equation}
 
 This yields that once the articulated body inertia and the bias force are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints, constituting the main advantage of the articulated-body algorithm.
@@ -567,19 +567,19 @@ This yields that once the articulated body inertia and the bias force are known,
         \State $\mathrm{\mathbf{v}}_i = {}^i\mathbf{X} _{\lambda(i)}\mathrm{\mathbf{v}}_{\lambda(i)} + \mathrm{\mathbf{v}}_J$
         \State $\mathbf{c}_i = \mathrm{\mathbf{v}}_i \times ^* \mathrm{\mathbf{v}}_J$
         \EndIf
-        \State $\mathbf{I}_i ^A = \mathbf{I}_i$
-        \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbf{I}_i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
+        \State $\mathbb{M}_i ^A = \mathbb{M}_i$
+        \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbb{M}_i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
         \EndFor
 
         % \Comment{Forward Pass}
         % Pass 2
         \For{$i = n \text{ to } 1$}
-        \State $\mathbf{U}_i = \mathbf{I}_i ^A \boldsymbol{\Phi}_i$
+        \State $\mathbf{U}_i = \mathbb{M}_i ^A \boldsymbol{\Phi}_i$
         \State $\mathbf{D} _i = \boldsymbol{\Phi} ^T _i  {} \mathbf{U} _i \boldsymbol{\Phi} _i $
         \State $\mathbf{u}_i = \boldsymbol{\tau}_i - \boldsymbol{\Phi}_i\mathbf{p}_i^A$
         \If{$\lambda_i \neq 0$}
-        \State $\mathbf{I} ^A = \mathbf{I} ^A _{\lambda (i)} + {} ^i X _{\lambda (i)} ^T (\mathbf{I} _i ^A - {}  \mathbf{U} _i  \mathbf{D} ^{-1} _i  {}  \mathbf{U} ^T _i) {} ^i X _{\lambda (i)} $
-        \State $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {} ^i X _{\lambda (i)} ^T (\mathbf{p} ^A_i + \mathbf{I} ^A _{\lambda (i)}  \mathbf{c}_i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i) $
+        \State $\mathbb{M} ^A = \mathbb{M} ^A _{\lambda (i)} + {} ^i X _{\lambda (i)} ^T (\mathbb{M} _i ^A - {}  \mathbf{U} _i  \mathbf{D} ^{-1} _i  {}  \mathbf{U} ^T _i) {} ^i X _{\lambda (i)} $
+        \State $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {} ^i X _{\lambda (i)} ^T (\mathbf{p} ^A_i + \mathbb{M} ^A _{\lambda (i)}  \mathbf{c}_i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i) $
         \EndIf
         \EndFor
 
