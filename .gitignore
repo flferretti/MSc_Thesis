@@ -13,3 +13,5 @@
 *.bbl
 *.blg
 *.synctex.gz 
+*.xml
+.vscode/
