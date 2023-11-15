@@ -102,13 +102,13 @@ The use of \ac{OOP} is exploited in this work in order to add a layer of abstrac
 \section{Impacts and Contacts}
 \label{sec:back_contacts}
 
-When dealing with rigid body dynamics, the most common approach to model the contact between two bodies is to use a \textit{penalty-based} approach, which consists of adding a force to the system when the distance between two bodies is below a certain threshold. This approach is computationally efficient and easy to implement, but it does not allow to model the dynamics of the contact, which is often the case when dealing with high-velocity impacts. In fact, in the case of a high-velocity impact, the contact between two bodies is not perfectly inelastic, hence the partial elasticities of the materials involved in the collision induce vibrational modes in the system. This is why a \textit{compliant} approach is often preferred, which allows to model the dynamics of the contact, but it is computationally more expensive and requires a more complex implementation.
+When dealing with rigid body dynamics, the most common approach to model the contact between two bodies is to use a \textit{penalty-based} approach \citep{inproceedings}, which consists of adding a force to the system when the distance between two bodies is below a certain threshold. This approach is computationally efficient and easy to implement, but it does not allow to model the dynamics of the contact, which is often the case when dealing with high-velocity impacts. In fact, in the case of a high-velocity impact, the contact between two bodies is not perfectly inelastic, hence the partial elasticities of the materials involved in the collision induce vibrational modes in the system. This is why a \textit{compliant} approach is often preferred, which allows to model the dynamics of the contact, but it is computationally more expensive and requires a more complex implementation.
 
 \subsection{Smooth Impacts}
 
-In a high incident velocity impact between two solids, some of the kinetic energy is transferred to the vibrational model. This is due to the fact that the contact in smooth impacts is not perfectly inelastic, hence the partial elasticities of the materials involved in the collision induce vibrational modes in the system.
+In a high incident velocity impact between two solids, due to the nonperfect inelasticity, some of the kinetic energy is transferred to the vibrational model.
 
-Considering a point particle with mass $m$ and position $\mathbf{q}: \mathbb{R} \rightarrow \mathbb{R}$ in a one-dimensional space, compliant with a spring with stiffness $k$ and a damper with damping coefficient $c$, the resulting force generated can be defined as:
+Considering a point particle with mass $m$ and position $\mathbf{q}(t): \mathbb{R} \rightarrow \mathbb{R}$ in a one-dimensional space, compliant with a spring with stiffness $k$ and a damper with damping coefficient $c$, the resulting force generated can be defined as:
 
 \begin{equation}
     F = \begin{cases}
@@ -117,7 +117,7 @@ Considering a point particle with mass $m$ and position $\mathbf{q}: \mathbb{R} 
     \end{cases}
 \end{equation}
 
-Considering an initial condition $\mathbf{q}(t=0) = 0$ and $\dot{\mathbf{q}}(t=0) = v_0 > 0$, i.e. the particle starts at the origin but moves towards the penetration region, will result in an active force $F(t) = -k\mathbf{q}(t) - c\dot{\mathbf{q}}(t)$ that will be applied to the particle until it reaches the equilibrium position $\mathbf{q} = 0$. The resulting motion will be a damped oscillation that can be derived from the Lagrangian mechanics as seen in \cref{eqn:lagrangian}, where the Lagrangian $\mathcal{L}$ of the system is defined as:
+Considering an initial position $\mathbf{q}(t=0) = 0$ and a starting velocity $v_0 \in \mathbb{R}$ such that $\dot{\mathbf{q}}(t=0) = v_0 > 0$, i.e. the particle starts at the origin but moves towards the penetration region, will result in an active force $F(t) = -k\mathbf{q}(t) - c\dot{\mathbf{q}}(t)$ that will be applied to the particle until it reaches the equilibrium position $\mathbf{q} = 0$. The resulting motion will be a damped oscillation that can be derived from the Lagrangian mechanics as seen in \cref{eqn:lagrangian}, where the Lagrangian $\mathcal{L}$ of the system is defined as:
 
 \begin{equation}
     \mathcal{L} = \mathcal{T} - \mathcal{V} = \frac{1}{2}m\dot{\mathbf{q}}^2 - \frac{1}{2}k\mathbf{q}^2
@@ -138,7 +138,7 @@ The solution of the resulting equation is the one of a first-order linear \ac{OD
 \end{equation}
 
 which implies an oscillatory regime for $\zeta < 1$ and an exponential decay for $\zeta > 1$, also called overdamped regime.
-Although being relatively simple to implement, this approach is not always the most efficient, as it requires to solve a \ac{DAE} at each time step, which can be computationally expensive, making it extremely sensitive to the choice of the time step $h$.
+Although relatively simple to implement, this approach is not always the most efficient, as it requires solving a \textit{differential algebraic equation} at each time step, which can be computationally expensive, making it extremely sensitive to the choice of the time step $h$.
 
 \subsection{Non-smooth Impacts}
 
@@ -150,19 +150,19 @@ The impact involves forces that change rapidly to cause jump discontinuities in 
     \lim _{t \uparrow t _i} \dot{q} = \dot{q} _{-} \neq \dot{q} _{+} = \lim _{t \downarrow t _i} \dot{q}
 \end{equation}
 
-Mathematically, the trajectories $q(t)$ remain continuous while the velocities $\dot{q}(t)$ exhibit jump discontinuities, hence accelerations $\ddot{q}(t)$ are not defined at impact times.
+Mathematically, the position $q(t)$ remains continuous while the velocity $\dot{q}(t)$ exhibits jump discontinuities, hence the acceleration $\ddot{q}(t)$ is not defined at impact times.
 
-Considering the case of a spherical rigid body impacting an infinite plane, the convexity of the two objects implies that the closest point between the two can be identified uniquely. By writing the signed distance function with respect to the rigid body center of mass position $x(t)$, we get that $c(q(t)) = \tilde{c}(x(t)) \geq 0$, yet when the sphere is in contact with the plane we have that $\tilde{c}(x(t)) = 0$. With this approach, we can define two configuration manifolds: $Q _1 \subset \mathbb{R} ^2 \times \mathrm{SO}3$ for the planar motion and $Q _2 \subset \mathbb{R} ^3 \times \mathrm{SO}3$ for the spatial motion. Without loss of generality, the problem can be simplified in notation by defining a Lagrangian multiplier $\nu \in \mathbb{R}$ corresponding to the magnitude of the force acting in the normal direction at the contact point while keeping a configuration manifold $Q \in \mathbb{R}^3 \times \mathrm{SO}(3)$.
+Considering the case of a spherical rigid body impacting an infinite plane, the convexity of the two objects implies that the closest point between the two can be identified uniquely. By writing the signed distance function with respect to the rigid body center of mass position $x(t)$, we get that $c(q(t)) = \tilde{c}(x(t)) \geq 0$, yet when the sphere is in contact with the plane we have that $\tilde{c}(x(t)) = 0$. With this approach, we can define two configuration manifolds: $Q _1 \subset \mathbb{R} ^2 \times \mathrm{SO}3$ for the planar motion and $Q _2 \subset \mathbb{R} ^3 \times \mathrm{SO}3$ for the spatial motion. Without loss of generality, the problem can be simplified in notation by defining a Lagrangian multiplier $\xi \in \mathbb{R}$ corresponding to the magnitude of the force acting in the normal direction at the contact point while keeping a configuration manifold $Q \in \mathbb{R}^3 \times \mathrm{SO}(3)$.
 By using the augmented Lagrangian, the \cref{eqn:lagrangian} can be rewritten as:
 
 \begin{equation}
     \frac{d}{dt} \frac{\partial}{\partial \dot{q}} \mathcal{L} - \frac{\partial}{\partial q} \mathcal{L} - J^\top \lambda = 0 \quad \text{and} \quad \varepsilon\lambda + g(q) = 0
 \end{equation}
 
-where $\lambda$ are the coordinates of $m$ one-dimensional point particles having position $\lambda _{j}$, $J$ is the Jacobian and  $g \in Q \times \mathbb{R} \rightarrow \mathbb{R} ^m$ is the configuration coordinate function, and discretizing the time with a fixed time step $h$, we get to:
+where $\lambda$ are the coordinates of $m$ one-dimensional point particles having position $\lambda _{j}$, $J$ is the Jacobian and  $g \in Q \times \mathbb{R} \rightarrow \mathbb{R} ^m$ is the configuration coordinate function, and by discretizing the time with a fixed time step $h$, we get:
 
 \begin{equation}
-    \int _0 ^h ds\nu^\top c(q(s)) \sim h\nu_0 ^\top c_0
+    \int _0 ^h ds\xi^\top c(q(s)) \sim h\xi_0 ^\top c_0
 \end{equation}
 
 as the least action principle requires the discrete action to be minimized over the allowed trajectories $c(q_k) >0$, using the theorem of Karush-Kuhn-Tucker, we get to a stationarity condition that does not allow for energy conservation \citep{lacoursiere_ghosts_2007}.
@@ -172,34 +172,32 @@ as the least action principle requires the discrete action to be minimized over 
 In a discrete mechanics framework, defining $h$ the fixed time step for all steps, if the violation in the impact point at step $i$ called $q _i$ is not too big, a good approximation of the incident velocity is:
 
 \begin{equation}
-    v _{-} = \frac{q _i - q _{i-1}}{h}
+    \dot{q} _{-} = \frac{q _i - q _{i-1}}{h}
 \end{equation}
 
-To estimate the outbound velocity $v _{+}$ instead, we impose the discrete impulsive Newton impact law in one spatial dimension as:
+To estimate the outbound velocity $\dot{q} _{+}$ instead, we impose the discrete impulsive Newton impact law in one spatial dimension as:
 
 \begin{equation}
-    v _{+} = -\psi v _{-}
+    \dot{q} _{+} = -\psi \dot{q} _{-}
 \end{equation}
 
 where $\psi \in [0,1]$ is the \textit{restitution coefficient}.
 
-A perfectly elastic collision corresponds to $\psi = 1$ in which the outbound velocity is the reflection of the incoming one. Now, given that the impulse occurs at a fixed location $q$, the only change in energy is a kinetic energy change, hence for the Newton-Poisson impact law for a point particle of mass $m$, the change in energy is:
+A perfectly elastic collision corresponds to $\psi = 1$ in which the outbound velocity is the reflection of the incoming one. Now, given that the impulse occurs at a fixed position $q$, the only change in energy is a kinetic energy change, hence for the Newton-Poisson impact law for a point particle of mass $m$ with kinetic energy $\mathcal{T}(q, \dot{q})$, the change in energy is:
 
 \begin{equation}
-    E _{+} - E _{-} = T(q, v _{+}) - T(q, v _{-}) = (\psi ^2 - 1) T(q, v _{-}) \leq 0
+    E _{+} - E _{-} = \mathcal{T}(q, \dot{q} _{+}) - \mathcal{T}(q, \dot{q} _{-}) = (\psi ^2 - 1) \mathcal{T}(q, \dot{q} _{-}) \leq 0
 \end{equation}
 
-where $T(q, v)$ is the kinetic energy.
-
-To generalize in three dimensions, we define an estimate of the normal component of the incident velocity with respect to the contact manifold as $C _k v _{-}$ where $C _k$ is the $n _c \times n$ Jacobian matrix of the $n _c$ contact surface evaluated at the discrete time $k$. Using the complementarity formulation, assuming the presence of other inequality constraints with the agglomerated Jacobian $G$, adding regularization parameters with diagonal non-negative matrices $\Sigma$ and $\Xi$, and considering the diagonal matrix for restitution coefficients $\Psi = \text{diag}(\psi _1, \psi _2, \dots, \psi _{n _c}),  \psi _i \in [0, 1]$, we get the following linear complementarity problem (LCP):
+To generalize in three dimensions, we define an estimate of the normal component of the incident velocity with respect to the contact manifold as $C _k \dot{q} _{-}$ where $C _k$ is the $n _c \times n$ Jacobian matrix of the $n _c$ contact surface evaluated at the discrete time $k$. Using the complementarity formulation, assuming the presence of other inequality constraints with the agglomerated Jacobian $J$, adding regularization parameters with diagonal non-negative matrices $\Sigma$ and $\Xi$, and considering the diagonal matrix for restitution coefficients $\Psi = \text{diag}(\psi _1, \psi _2, \dots, \psi _{n _c}),  \psi _i \in [0, 1]$, we get the following linear complementarity problem (LCP):
 
 \begin{equation}
     \begin{rcases}
-        Mv _{+} - G ^\top _k \lambda - C ^\top _k v & = M v _{-}    \\
-        G _k v _{+} + \Sigma \lambda                & = G _k v _{-} \\
-        C _k v _{+} + \Psi C v _{-} + \Xi v         & = w           \\
+        M\dot{q} _{+} - G ^\top _k \lambda - C ^\top _k \dot{q} & = M \dot{q} _{-}    \\
+        G _k \dot{q} _{+} + \Sigma \lambda                      & = G _k \dot{q} _{-} \\
+        C _k \dot{q} _{+} + \Psi C \dot{q} _{-} + \Xi \dot{q}   & = w                 \\
     \end{rcases} \quad \text{subject to
-        :  } \quad v \geq 0 \perp w \geq 0
+        :  } \quad \dot{q} \geq 0 \perp w \geq 0
 \end{equation}
 
 By solving the optimization above, it can be shown that this leads to $T _{+} \leq T _{-}$, therefore the impulsive stage can only decrease the kinetic energy.
