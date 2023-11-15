@@ -307,8 +307,8 @@ This yields that once the articulated body inertia and the bias force are known,
     \begin{algorithmic}[1]
         \Require $\mathcal{M}, \mathbf{s}, \dot{\mathbf{s}}, \boldsymbol{\tau}$
 
-        % \Comment{Backward Pass}
         \For{$i = 1 \text{ to } n$}
+        \Comment{Backward Pass}
         \State $[\mathbf{X}_J, \boldsymbol{\Phi}_i] = \text{jcalc}(\text{jtype}(i), \dot{\mathbf{s}}_i)$
         \State $\mathrm{\mathbf{v}}_J = \boldsymbol{\Phi}_i \dot{\mathbf{s}}_i$
         \State $^i\mathbf{X}_{\lambda(i)} = \mathbf{X}_J\mathbf{X}_T (i)$
@@ -323,9 +323,11 @@ This yields that once the articulated body inertia and the bias force are known,
         \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbb{M}_i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
         \EndFor
 
-        % \Comment{Forward Pass}
+        \item[]
+
         % Pass 2
         \For{$i = n \text{ to } 1$}
+        \Comment{Forward Pass}
         \State $\mathbf{U}_i = \mathbb{M}_i ^A \boldsymbol{\Phi}_i$
         \State $\mathbf{D} _i = \boldsymbol{\Phi} ^\top _i  {} \mathbf{U} _i \boldsymbol{\Phi} _i $
         \State $\mathbf{u}_i = \boldsymbol{\tau}_i - \boldsymbol{\Phi}_i\mathbf{p}_i^A$
@@ -335,9 +337,11 @@ This yields that once the articulated body inertia and the bias force are known,
         \EndIf
         \EndFor
 
-        % \Comment{Backward Pass}
+        \item[]
+
         % Pass 3
         \For{$i = 1 \text{ to } n$}
+        \Comment{Backward Pass}
         \If{$\lambda_i = 0$}
         \State $\mathbf{a}' = -\mathbf{a}_g$
         \Else
