@@ -13,16 +13,19 @@ When evaluating the difference between the results obtained with the modified \a
 
 \section{Robot Codesign Results}
 
-In this section, we present the results of the robot codesign process, which is the main contribution of this work. We start by presenting the results of the \ac{RL} framework, which is used to optimize the control strategy of the system. Then, we present the results of the \ac{RL} framework with the addition of the genetic algorithm.
+The usage of genetic algorithm together with reinforcement learning involves the tuning of several hyperparameters, which can have a significant impact on the performance of the algorithm. Moreover, given the computational cost of the reinforcement learning training, the choice of parameters is bounded by the available computational resources. As an example, the number of generations of the genetic algorithm is strictly related to the number of reinforcement learning training that can be performed, yet reducing its value can lead to a smaller explored space of solutions, bringing therefore to suboptimal results.
 
-\subsection{RL Framework}
+In reinforcement learning, it is crucial to keep track of some metrics during the training, in order to evaluate the performance of the algorithm, detect possible issues and stop the training if the maximum reward is reached. In fact, if the training does not have an early stopping condition, the agent might begin to forget the optimal policy, leading to disastrous results. At the aim of logging the training metrics, we opted for the use of \textit{Weights {\&} Biases}\footnote{\url{https://wandb.ai}}, a tool that allows for the tracking, which in opposition to the most common \textit{Tensorboard}\footnote{\url{https://www.tensorflow.org/tensorboard}} tool, supports online logging and real-time monitoring of the training metrics. The main metrics that we tracked during the training are:
 
-For the reinforcement learning training, we opted for the use of \textit{Weights {\&} Biases}\footnote{\url{https://wandb.ai}}, a tool that allows for the tracking of the training metrics and the hyperparameters used during the training. In opposition to the most common \textit{Tensorboard}\footnote{\url{https://www.tensorflow.org/tensorboard}} tool, \textit{Weights {\&} Biases} supports online logging, which allows for the real-time monitoring of the training metrics and more extensive logging capabilities.
+\begin{itemize}
+    \item \textbf{Explained Variance}: a metric that measures how much the variance of the return is explained by the value function.
+    \item \textbf{Approximated KL}: a metric that measures the distance between the new policy and the old policy.
+    \item \textbf{Value Loss}: a metric that measures the loss of the value function.
+    \item \textbf{Episodic Mean Reward}: the mean reward obtained during the episode.
+    \item \textbf{Episodic Mean Length}: the mean length of the episode.
+\end{itemize}
 
-
-\subsubsection{Cartpole Swing-Up}
-
-For the cartpole swing-up task, the metrics obtained during the training with \texttt{stable\_baselines3} together with \jaxsim are reported in \cref{fig:cartpoleresults}.
+In particular, if the algorithm is converging, the explained variance should get closer to $1$, the approximated KL should remain small, the value loss should decrease and the mean reward and the mean episode length should increase or remain constant.
 
 \begin{figure}
     \centering
@@ -34,33 +37,9 @@ For the cartpole swing-up task, the metrics obtained during the training with \t
     \subfloat[Rollout Metrics]{\includegraphics[width=0.45\textwidth]{Images/Results/rollout_cartpole.png}}
 \end{figure}
 
-As expected, the explained variance gets closer to $1$ as the training progresses, while the approximated KL divergence remains small, which means that the policy update is not too large. The value loss decreases as the training progresses, which means that the value function is getting better at predicting the return. The rollout metrics show that the mean reward and the mean episode length increase as the training progresses, which means that the policy is getting better at solving the task.
+The results obtained during the training are reported in \cref{fig:cartpoleresults}. As expected, the explained variance gets closer to $1$ as the training progresses, while the approximated KL divergence remains small, which means that the policy update is not too large. The value loss decreases as the training progresses, which means that the value function is getting better at predicting the return. The rollout metrics show that the mean reward and the mean episode length increase as the training progresses, which means that the policy is getting better at solving the task.
 
-\subsubsection{Stickbot Locomotion}
-
-In \cref{fig:stickbotresults}, the metrics obtained during the training with \textsc{Isaac gym} are reported.
-
-\begin{figure}[h]
-    \centering
-    \caption{Stickbot RL Training Metrics.}
-    \label{fig:stickbotresults}
-    \subfloat[Episodic Mean Length]{\includegraphics[width=0.45\textwidth]{Images/Results/rollout_eplen_stickbot.png}}
-    \subfloat[Episodic Mean Reward]{\includegraphics[width=0.45\textwidth]{Images/Results/rollout_meanrew_stickbot.png}}
-\end{figure}
-
-The mean episode length and the mean reward increase as the training progresses, which means that the policy is effectively learning to solve the task maximizing the reward.
-
-\subsection{Codesign with Genetic Algorithm}
-
-\begin{figure}[h]
-    \centering
-    \caption{Cartpole Codesign Results.}
-    \subfloat[Fitness Plot \label{fig:fitness}]{\includegraphics[width=0.4\textwidth]{Images/convergence_plot.png}}
-    \subfloat[Diversity Plot \label{fig:diversity}]{\includegraphics[width=0.4\textwidth]{Images/diversity_plot.png}}
-\end{figure}
-
-In this section, we present the results obtained with the genetic algorithm. In particular, we present the results obtained with the codesign
-framework for the \textit{Cartpole}.
+For what concerns the genetic algorithm, the hyperparameters had been tuned in order to expand the search space as much as possible. As the dimensionality and the discrete nature of the problem allow us to represent the search space as a grid, we could easily verify its extension as in \cref{fig:searchspace}.
 
 \begin{figure}
     \centering
@@ -69,4 +48,12 @@ framework for the \textit{Cartpole}.
     \includegraphics[width=0.5\textwidth]{Images/search_space.png}
 \end{figure}
 
-As we can see from \cref{fig:fitness}, the convergence is achieved after SOME generations, with a fitness value of SOME. The diversity decreases as expected, as the population converges to the optimal solution, as we can see from \cref{fig:diversity}.
+The results obtained with the genetic algorithm are reported in \cref{fig:codesignresults}. As expected, the fitness increases as the training progresses, indicating that the genetic algorithm is able to update the population with increasingly more individuals with higher fitness, as shown in \cref{fig:fitness}. Moreover, the diversity, reported in \cref{fig:diversity}, had been tracked in order to verify that the standard deviation from one generation to the other decreases, indicating a convergence of the population toward an optimal solution.
+
+\begin{figure}[h]
+    \centering
+    \caption{Cartpole Codesign Results.}
+    \label{fig:codesignresults}
+    \subfloat[Fitness Plot \label{fig:fitness}]{\includegraphics[width=0.4\textwidth]{Images/convergence_plot.png}}
+    \subfloat[Diversity Plot \label{fig:diversity}]{\includegraphics[width=0.4\textwidth]{Images/diversity_plot.png}}
+\end{figure}
