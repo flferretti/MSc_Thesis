@@ -111,7 +111,6 @@ At the aim of this task, the ErgoCub robot model, developed by the Italian Insti
 
 Hyperparameter tuning is a crucial part of the \ac{RL} framework, and it is often the most time-consuming part of the process. In this work, the hyperparameters were tuned using \texttt{optuna} \citep{akiba_optuna_2019}, a hyperparameter optimization framework, which uses \textit{Tree-structured Parzen Estimator} (\ac{TPE}) sampler with a median pruner, that models the objective function and suggests the next set of hyperparameters to evaluate. The hyperparameters tuned resulted in the values reported in \cref{tab:ppohyperparameters_jaxsim}.
 
-
 \begin{table}[h]
     \centering
     \begin{tabular}{ll}
@@ -146,7 +145,31 @@ Hyperparameter tuning is a crucial part of the \ac{RL} framework, and it is ofte
 Given the high complexity of the problem, the network architecture composed of two separate networks, one for the policy and one for the value function, has been enlarged in order to increase the capacity of the network to learn the task and to avoid the need of a large number of training iterations. In particular, the policy network is composed of two hidden layers of size $64$ and $64$ respectively, with a \ac{ReLU} activation function. The value function network is composed of three hidden layers of size $1024$, $512$, and $128$ respectively, with a \ac{ReLU} activation function, while the critic network has an architecture similar to the policy network, with the removal of the last hidden layer. The input of the policy network is then a vector of size $80$ composed of the observation space and the output is a vector of size $23$, equal to the action space size.
 The output of the value network is a scalar, which is then used to compute the advantage function.
 
-The \ac{RL} framework has been trained for $10$M steps, which given the episodic length, corresponds to $1024$ epochs. The training took approximately $90$ minutes on the \texttt{IITBMP014SRV001} machine thanks to the high number of available cores.
+A tentative implementation has been performed using \textit{Long Short-Term Memory} (LSTM) neural networks, instead of simple \textit{Feed Forward} (FF) neural networks for the actor and the critic. \ac{LSTM} are a particular type of \textit{Recurrent Neural Networks} (RNNs) that, with the use of a \textit{forget gate}, are able to learn the temporal dependencies of the task avoiding the common issue of \ac{RNN}s of vanishing gradients. However, the results obtained with the \ac{LSTM} networks were not satisfactory, which is why the \ac{FF} networks have been used for the final implementation.
+
+The final version of the implementation also featured an \textit{imitation learning} implementation starting from a bipedal locomotion configurations dataset. In this framework, the major weight of the reward was assigned to a $\ell_1$ loss between the robot pose and the target pose at each step, inducing the robot to be synchronized with the prior dataset samples. A \textit{Radial Basis Function} (\ac{RBF}) kernel was applied to the loss in order to make the reward function more robust to small errors in the pose, and the kernel width was then tuned for each component of the configuration, namely the position and the orientation of the root link and the joints positions, as reported in \cref{eqn:imitationlearning_jaxsim}:
+
+\begin{equation}
+    \label{eqn:imitationlearning_jaxsim}
+    r _t = \sum _{\varepsilon \in \mathcal{E}} \gamma _{i _{prior}} e ^{-\gamma _{\epsilon} \varepsilon} - \gamma _{control} \sum _i ^{n} \tau _i ^2
+\end{equation}
+
+where $\gamma _{prior}$ and $\gamma _{control}$ are the weights of the prior and control terms, respectively, $\varepsilon$ is the error of the $j$-th term of the error function set $\mathcal{E}$ defined in \cref{eqn:err_function}, and $n$ is the number of degrees of freedom of the robot.
+
+\begin{equation}[right=\empheqrbrace{}]
+    \label{eqn:err_function}
+    \mathcal{E} =
+    \begin{cases}
+        \varepsilon _{\text{orientation}}    := \lVert \mathbb{I}_3 - R_{robot}^T R_{prior}  \rVert _{\mathcal{F}}        \\
+        \varepsilon _{\text{base position}}  := \lVert {}^wP _B {} _{robot} - {}^w P _B {}_{prior}  \rVert _{\mathcal{F}} \\
+        \varepsilon _{\text{joint positions}}:= \lVert s _{robot} - s _{prior}  \rVert _{\mathcal{F}}                     \\
+    \end{cases}
+\end{equation}
+
+where $\mathcal{F}$ is the Frobenius norm $\in \mathbb{R}$, $R$ is an orientation represented as \textit{direction cosine matrix} of a unit quaternion, ${}^wP _B$ is the base position $\in \mathbb{R} ^3$, $s$ is the vector of joint positions $\in \mathbb{R} ^{n}$, and $w$ is the world frame.
+The orientation error $\mathcal{E} _{\text{orientation}} : \mathrm{SO}(3) \times \mathrm{SO}(3) \rightarrow [0, 2\sqrt{2}] \in \mathbb{R} ^+$ comes from \citep{huynh_metrics_2009}.
+
+The \ac{RL} framework has been trained for $10^7$ steps, which given the episodic length, corresponds to $1024$ epochs. Thanks to the high number of available cores, the training took approximately $90$ minutes on the \texttt{IITBMP014SRV001} machine.
 
 \begin{table}
     \centering
