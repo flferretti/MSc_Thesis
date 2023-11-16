@@ -5,17 +5,29 @@
 
 The introduction of motor dynamics in the context of a recursive forward dynamics algorithm like \ac{ABA}, involves additional computations that are not present in the original algorithm. In this section, we present a benchmark that compares the performance of the modified \ac{ABA} algorithm with the original one, in order to evaluate the impact of the additional computations on the performance of the algorithm. Furthermore, the accuracy of the modified \ac{ABA} algorithm is evaluated by comparing the results with the ones obtained with the modified Inertia-Matrix method.
 
-Regarding the computational performance, the modified \ac{ABA} algorithm is expected to be slower than the original one, due to the additional computations required to compute the motor dynamics. However, from the results reported in ADD REF TO RESULTS, it is possible to see that the modified \ac{ABA} algorithm is comparably fast to the original one, with a difference of less than $1\%$ in the execution time. This is due to the fact that the additional computations required to compute the motor dynamics are negligible compared to the other computations required by the algorithm.
+Regarding the computational performance, the modified \ac{ABA} algorithm is expected to be slower than the original one, due to the additional computations required to compute the motor dynamics. However, from the results reported in \cref{fig:fd_benchmark}, it is possible to see that the modified \ac{ABA} algorithm is comparably fast to the original one, with a difference of less than $1\%$ in the execution time. This is due to the fact that the additional computations required to compute the motor dynamics are negligible compared to the other computations required by the algorithm.
 
-When evaluating the difference between the results obtained with the modified \ac{ABA} algorithm and the modified Inertia-Matrix method, it is possible to see that the difference depends on the motor inertia values. In particular, the difference is larger for the joints with a smaller motor inertia, while it is smaller for the joints with a larger motor inertia.
+\begin{figure}
+    \centering
+    \caption{PLACEHOLDER -- Modified Forward Dynamics Benchmark.}
+    \label{fig:fd_benchmark}
+    \includegraphics[width=0.5\textwidth]{Images/Results/placeholder.png}
+\end{figure}
 
+When evaluating the difference between the results obtained with the modified \ac{ABA} algorithm and the modified Inertia-Matrix method, it is possible to see that the difference depends on the motor inertia values. In particular, the difference is larger for the joints with a smaller motor inertia, while it is smaller for the joints with a larger motor inertia, as can be seen in \cref{fig:fd_comparison}. This is due to the fact that \dots
 
+\begin{figure}
+    \centering
+    \caption{PLACEHOLDER -- Modified Forward Dynamics Benchmark.}
+    \label{fig:fd_comparison}
+    \includegraphics[width=0.5\textwidth]{Images/Results/placeholder.png}
+\end{figure}
 
 \section{Robot Codesign Results}
 
-The usage of genetic algorithm together with reinforcement learning involves the tuning of several hyperparameters, which can have a significant impact on the performance of the algorithm. Moreover, given the computational cost of the reinforcement learning training, the choice of parameters is bounded by the available computational resources. As an example, the number of generations of the genetic algorithm is strictly related to the number of reinforcement learning training that can be performed, yet reducing its value can lead to a smaller explored space of solutions, bringing therefore to suboptimal results.
+The usage of genetic algorithms together with reinforcement learning involves the tuning of several hyperparameters, which can have a significant impact on the performance of the algorithm. Moreover, given the computational cost of the reinforcement learning training, the choice of parameters is bounded by the available computational resources. As an example, the number of generations of the genetic algorithm is strictly related to the number of reinforcement learning training that can be performed, yet reducing its value can lead to a smaller explored space of solutions, bringing therefore to suboptimal results.
 
-In reinforcement learning, it is crucial to keep track of some metrics during the training, in order to evaluate the performance of the algorithm, detect possible issues and stop the training if the maximum reward is reached. In fact, if the training does not have an early stopping condition, the agent might begin to forget the optimal policy, leading to disastrous results. At the aim of logging the training metrics, we opted for the use of \textit{Weights {\&} Biases}\footnote{\url{https://wandb.ai}}, a tool that allows for the tracking, which in opposition to the most common \textit{Tensorboard}\footnote{\url{https://www.tensorflow.org/tensorboard}} tool, supports online logging and real-time monitoring of the training metrics. The main metrics that we tracked during the training are:
+In reinforcement learning, it is crucial to keep track of some metrics during the training, in order to evaluate the performance of the algorithm, detect possible issues, and stop the training if the maximum reward is reached. In fact, if the training does not have an early stopping condition, the agent might begin to forget the optimal policy, leading to disastrous results. With the aim of logging the training metrics, we opted for the use of \textit{Weights {\&} Biases}\footnote{\url{https://wandb.ai}}, a tool that allows for the tracking, which in opposition to the most common \textit{Tensorboard}\footnote{\url{https://www.tensorflow.org/tensorboard}} tool, supports online logging and real-time monitoring of the training metrics. The main metrics that we tracked during the training are:
 
 \begin{itemize}
     \item \textbf{Explained Variance}: a metric that measures how much the variance of the return is explained by the value function.
