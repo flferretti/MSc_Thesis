@@ -9,7 +9,7 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
 
 \begin{figure}
     \centering
-    \caption{Velocity of rigid body expressed in terms of spatial vectors.}
+    \caption{Rigid Body Spatial Velocity Representation.}
     \input{Images/TikZ/rbd_velocity.tex}
 \end{figure}
 
@@ -30,7 +30,7 @@ where $\mathcal{M} ^6$ is the space of 6D vectors, defining a Pl\"ucker coordina
 % === Fig: Pluecker === %
 \begin{figure}
     \centering
-    \caption{Pl\"ucker motion coordinate system}
+    \caption{Pl\"ucker Motion Coordinate System.}
     \label{fig:pluecker}
     \input{Images/TikZ/pluecker.tex}
 \end{figure}
@@ -271,7 +271,7 @@ By solving \cref{eqn:aba_torque} for $\ddot{\mathbf{s}}$ the following results i
 This yields that once the articulated body inertia and the bias force are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints, constituting the main advantage of the articulated-body algorithm.
 
 \begin{algorithm}[h]
-    \caption{Articulated-Body Algorithm}
+    \caption{Articulated-Body Algorithm.}
     \label{alg:aba}
     \begin{algorithmic}[1]
         \Require $\mathcal{M}, \mathbf{s}, \dot{\mathbf{s}}, \boldsymbol{\tau}$

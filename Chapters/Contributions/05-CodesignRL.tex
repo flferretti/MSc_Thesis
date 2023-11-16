@@ -23,7 +23,7 @@ where $\theta_{\text{max}}$ and $x _{\text{max}}$ are respectively the imposed m
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{Images/cartpole_reward.png}
-    \caption{Cartpole Swingup Task -- Reward Function (CHANGE)}
+    \caption{Cartpole Swingup Task -- Reward Function. (CHANGE)}
     \label{fig:cartpolereward}
 \end{figure}
 
@@ -43,7 +43,7 @@ With that in mind, the action space will be defined as the set of torques applie
         Reward Space $\mathcal{R}$      & $[0,1]$                   \\
         \bottomrule
     \end{tabular}
-    \caption{Cartpole Swingup Task -- Space Definition}
+    \caption{Cartpole Swingup Task -- Space Definition.}
 \end{table}
 
 The trainings involving the cartpole swingup task and the codesign process have been performed on the \texttt{IITICUBWS065} machine whose specifications are reported in \cref{tab:rl_machine}.
@@ -146,7 +146,7 @@ Hyperparameter tuning is a crucial part of the \ac{RL} framework, and it is ofte
 Given the high complexity of the problem, the network architecture composed of two separate networks, one for the policy and one for the value function, has been enlarged in order to increase the capacity of the network to learn the task and to avoid the need of a large number of training iterations. In particular, the policy network is composed of two hidden layers of size $64$ and $64$ respectively, with a \ac{ReLU} activation function. The value function network is composed of three hidden layers of size $1024$, $512$, and $128$ respectively, with a \ac{ReLU} activation function, while the critic network has an architecture similar to the policy network, with the removal of the last hidden layer. The input of the policy network is then a vector of size $80$ composed of the observation space and the output is a vector of size $23$, equal to the action space size.
 The output of the value network is a scalar, which is then used to compute the advantage function.
 
-The \ac{RL} framework has been trained for $10$M steps, which given the episodic length, corresponds to $1024$ epochs. The training took approximately $90$ minutes on the \texttt{IITBMP014SRV001} machine. The results of the training are reported in \cref{fig:stickbotresults}.
+The \ac{RL} framework has been trained for $10$M steps, which given the episodic length, corresponds to $1024$ epochs. The training took approximately $90$ minutes on the \texttt{IITBMP014SRV001} machine thanks to the high number of available cores.
 
 \begin{table}
     \centering
@@ -163,7 +163,7 @@ The \ac{RL} framework has been trained for $10$M steps, which given the episodic
         Target Position      & $\mathbb{R} ^{3}$  \\
         \bottomrule
     \end{tabular}
-    \caption{Humanoid Walking Task -- Observation Space}
+    \caption{JAXsim -- ErgoCub Locomotion Observation Space}
 \end{table}
 
 Throughout this project, the primary challenge in the Reinforcement Learning (\ac{RL}) framework was twofold. Firstly, the development of a contact model capable of accurately simulating the interaction between the robot and its environment. Simultaneously, it was crucial for this contact model to facilitate the algorithm's ability to forecast the agent's behavior, which could be difficult in the case of simple soft contact models as elucidated in \cref{sec:back_contacts}. Unfortunately, the \jaxsim simulator was in an early developmental stage for the walking task, i.e. for the contact model, which was not the central focus of this work. Given the constraints of time available for thesis composition, we eventually opted to abandon this path and instead employed the more developed and readily available simulator, \textsc{Isaac Gym}, provided by NVIDIA.
@@ -196,14 +196,14 @@ As in the \jaxsim implementation, the ErgoCub model has been used, yet the meshe
         Key Frames Position   & $\mathbb{R} ^{4 \times 6}$ \\
         \bottomrule
     \end{tabular}
-    \caption{Humanoid Walking Task -- Observation Space}
+    \caption{Isaac Gym -- Humanoid Locomotion Observation Space.}
 \end{table}
 
 Rewards, actions, and observations are then normalized to the range $[0,1]$ in order to make the learning process more stable and to avoid the need to tune the reward function for different robots. The \cref{tab:cartpoletaskspacedef} summarizes the definition of the spaces used in the \ac{RL} framework.
 
 \begin{table}
     \centering
-    \caption{Humanoid Walking Task -- Space Definition}
+    \caption{Humanoid Walking Task -- Space Definition.}
     \label{tab:cartpoletaskspacedef}
     \begin{tabular}{l c}
         \toprule
@@ -249,7 +249,7 @@ The evolutionary algorithm has been used to select the motor parameters from the
         \textbf{XXXL}  & $0.001$                             & $1/160.0$           & $0.35$                                                     \\
         \bottomrule
     \end{tabular}
-    \caption{Motor Set Parameters}
+    \caption{Motor Set Parameters.}
     \label{tab:motorparams}
 \end{table}
 
@@ -268,7 +268,7 @@ Considering the computation-expensive nature of the \ac{RL} framework, the hyper
         Mutation Probability  & $0.2$          \\
         \bottomrule
     \end{tabular}
-    \caption{Evolutionary Algorithm Hyperparameters}
+    \caption{Evolutionary Algorithm Hyperparameters.}
 \end{table}
 
 \section{Humanoid Robots Codesign Loop}
@@ -278,7 +278,7 @@ The codesign loop starts in the evolutionary algorithm core, where the initial p
 
 \begin{figure}
     \centering
-    \caption{Codesign Loop}
+    \caption{Codesign Loop Flowchart.}
     \label{fig:codesignloop}
     \includegraphics[width=.9\textwidth]{Images/codesign_loop.png}
 \end{figure}

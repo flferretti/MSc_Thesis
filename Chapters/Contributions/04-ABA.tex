@@ -7,7 +7,7 @@ This chapter describes the formalism and the algorithms involved in the conditio
 
 \begin{figure}
     \centering
-    \caption{Harmonic Drive Model}
+    \caption{Harmonic Drive Model.}
     \label{fig:harmonic_drive}
     \includegraphics[width=0.8\textwidth]{Images/harmonic_drive.png}
 \end{figure}
@@ -200,7 +200,7 @@ where $\mathbf{a} _i$ and $\mathbf{a} _i ^{\text{uc}}$ are respectively the cost
 % === FIG: Unconstrained Motor === %
 \begin{figure}
     \centering
-    \caption{Uncostrained Motor Model on Kinematic Chain}
+    \caption{Uncostrained Motor Model on Kinematic Chain.}
     \label{fig:disassembled_motor}
     \resizebox{0.8\textwidth}{!}{
         \input{Images/TikZ/disassembled_motor.tex}
@@ -303,7 +303,7 @@ and
 The final version of the algorithm is reported in \cref{alg:rotaba}, utilizes the term  ${}^i\mathbf{X} _{\lambda (i)}$ to denote the transformation from the parent link to the child link, which was necessary in the implementation in \jaxsim.
 
 \begin{algorithm}
-    \caption{Rotor-conditioned Articulated-Body Algorithm}
+    \caption{Rotor-conditioned Articulated-Body Algorithm.}
     \label{alg:rotaba}
     \begin{algorithmic}[1]
         \For{$i = 1 \text{ to } n$}
@@ -364,7 +364,7 @@ The main difference between the \ac{ABA} approach and the approach adopted in th
 % === FIG: ABA vs IMB rotors === %
 \begin{figure}
     \centering
-    \caption{Comparison between the ABA and Inertia-Matrix based approaches for rotor dynamics.}
+    \caption{Motor Dynamics Modelling Comparison for Forward Dynamics.}
     \label{fig:ABA_comparison}
     \subfloat[ABA]{
         \resizebox{0.5\textwidth}{!}{
