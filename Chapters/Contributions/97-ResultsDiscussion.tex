@@ -55,11 +55,18 @@ The mean episode length and the mean reward increase as the training progresses,
 \begin{figure}[h]
     \centering
     \caption{Cartpole Codesign Results}
-    \subfloat[Fitness Plot \label{fig:fitness}]{\includegraphics[width=0.4\textwidth]{Images/fitness.png}}
-    \subfloat[Diversity Plot \label{fig:diversity}]{\includegraphics[width=0.4\textwidth]{Images/diversity.png}}
+    \subfloat[Fitness Plot \label{fig:fitness}]{\includegraphics[width=0.4\textwidth]{Images/convergence_plot.png}}
+    \subfloat[Diversity Plot \label{fig:diversity}]{\includegraphics[width=0.4\textwidth]{Images/diversity_plot.png}}
 \end{figure}
 
 In this section, we present the results obtained with the genetic algorithm. In particular, we present the results obtained with the codesign
 framework for the \textit{Cartpole}.
+
+\begin{figure}
+    \centering
+    \caption{Explored Search Space}
+    \label{fig:searchspace}
+    \includegraphics[width=0.5\textwidth]{Images/search_space.png}
+\end{figure}
 
 As we can see from \cref{fig:fitness}, the convergence is achieved after SOME generations, with a fitness value of SOME. The diversity decreases as expected, as the population converges to the optimal solution, as we can see from \cref{fig:diversity}.
