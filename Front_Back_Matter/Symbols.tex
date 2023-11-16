@@ -5,12 +5,12 @@
 
 \nomenclature[RL]{$\mathcal{S}$}{State Space}
 \nomenclature[RL]{$\mathcal{A}$}{Action Space}
-\nomenclature[RL]{$\mathcal{F} (\mathbf{s} ^\prime | \mathbf{s}, \mathbf{a}) : \mathcal{S} \time \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{P}(\mathcal{S})$}{State Transition Probability}
+\nomenclature[RL]{$\mathcal{F} (\mathbf{s} ^\prime | \mathbf{s}, \mathbf{a}) : \mathcal{S} \time \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{P}(\mathcal{S})$}{State Transition PDYNability}
 \nomenclature[RL]{$\mathcal{R} (\mathbf{s} ^\prime | \mathbf{s}, \mathbf{a})  : \mathcal{S} \time \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$}{Reward Function}
 \nomenclature[RL]{$\mathcal{H}$}{Hilbert Space}
 \nomenclature[RL]{$\mathrm{KL}$}{Kullback-Leibler Divergence}
 \nomenclature[RL]{$\gamma \in [0,1]$}{Discount Factor}
-\nomenclature[RL]{$\mathbb{P}(\cdot)$}{Probability}
+\nomenclature[RL]{$\mathbb{P}(\cdot)$}{PDYNability}
 \nomenclature[RL]{$\mathbb{E}(\cdot)$}{Expectation}
 \nomenclature[RL]{$\hat{\mathbb{E}}(\cdot)$}{Empirical Expectation}
 \nomenclature[RL]{$V (\mathbf{s})$}{State-Value Function}
@@ -22,38 +22,38 @@
 \nomenclature[RL]{$a \sim \pi (\cdot | \mathbf{s})$}{Action sampled from the policy $\pi$}
 
 
-\nomenclature[ROB]{$\mathrm{SO}3$}{Special Orthogonal Lie Group}
-\nomenclature[ROB]{$\mathrm{SE}3$}{Special Euclidean Lie Group}
-\nomenclature[ROB]{$\mathfrak{se}(3)$}{Lie Algebra of $SO3$}
-\nomenclature[ROB]{$\mathfrak{so}(3)$}{Lie Algebra of $SO3$}
-\nomenclature[ROB]{${}^A\mathbf{p} \in \mathbb{R}^3$}{Position Vector from A to B, measured in A}
-\nomenclature[ROB]{${}^A\mathbf{R}_B \in \mathrm{SO}(3)$}{Rotation Matrix from frame B to frame A}
-\nomenclature[ROB]{${}^Bv_A \in \mathbb{R}^3$}{Velocity Vector from A to B, measured in B}
-\nomenclature[ROB]{${}^B\omega_A \in \mathbb{R}^3$}{Angular Velocity Vector from A to B, measured in B}
-\nomenclature[ROB]{${}^B\boldsymbol{\nu}_A \in \mathbb{R}^6$}{Velocity Vector from A to B, measured in A}
-\nomenclature[ROB]{${}^A X _B$}{Velocity Transformation from frame B to frame A}
-\nomenclature[ROB]{${}^A H_B \in \mathrm{SE}(3)$}{Homogeneous Transformation from frame B to frame A}
-\nomenclature[ROB]{${}_Bf \in \mathbb{R}^3$}{Linear Force Vector, measured in B}
-\nomenclature[ROB]{${}^B\tau \in \mathbb{R}^3$}{Torque Vector, measured in B}
-\nomenclature[ROB]{${}_B \mathbf{f} \in \mathbb{R}^6$}{Wrench, measured in B}
-\nomenclature[ROB]{$\mathbb{M} \in \mathbb{R}^{6 \times 6}$}{Inertia Matrix}
-\nomenclature[ROB]{$g \in \mathbb{R}^+$}{Gravity Acceleration Constant}
-\nomenclature[ROB]{$\mathbf{g} \in \mathbb{R}^3$}{Gravity Vector}
-\nomenclature[ROB]{$n \in \mathbb{N}$}{Number of Degrees of Freedom}
-\nomenclature[ROB]{$\boldsymbol{\Phi}_i \in \mathbb{R}^{6}$}{Joint Motion Subspace for a joint $i$}
-\nomenclature[ROB]{$\mathbf{s} \in \mathbb{R}^n$}{Joint Position Vector}
-\nomenclature[ROB]{$\dot{\mathbf{s}} \in \mathbb{R}^n$}{Joint Velocity Vector}
-\nomenclature[ROB]{$\ddot{\mathbf{s}} \in \mathbb{R}^n$}{Joint Acceleration Vector}
-\nomenclature[ROB]{$\mathbf{h} \in \mathbb{R}^{6+n}$}{Coriolis Vector}
-\nomenclature[ROB]{$q \in \mathbb{H} : \lVert q \rVert = 1$}{Unit Quaternion}
-\nomenclature[ROB]{$\lambda (i)$}{Parent link of link $i$}
+\nomenclature[DYN]{$\mathrm{SO}3$}{Special Orthogonal Lie Group}
+\nomenclature[DYN]{$\mathrm{SE}3$}{Special Euclidean Lie Group}
+\nomenclature[DYN]{$\mathfrak{se}(3)$}{Lie Algebra of $SO3$}
+\nomenclature[DYN]{$\mathfrak{so}(3)$}{Lie Algebra of $SO3$}
+\nomenclature[DYN]{${}^A\mathbf{p} \in \mathbb{R}^3$}{Position Vector from A to B, measured in A}
+\nomenclature[DYN]{${}^A\mathbf{R}_B \in \mathrm{SO}(3)$}{Rotation Matrix from frame B to frame A}
+\nomenclature[DYN]{${}^Bv_A \in \mathbb{R}^3$}{Velocity Vector from A to B, measured in B}
+\nomenclature[DYN]{${}^B\omega_A \in \mathbb{R}^3$}{Angular Velocity Vector from A to B, measured in B}
+\nomenclature[DYN]{${}^B\boldsymbol{\nu}_A \in \mathbb{R}^6$}{Velocity Vector from A to B, measured in A}
+\nomenclature[DYN]{${}^A X _B$}{Velocity Transformation from frame B to frame A}
+\nomenclature[DYN]{${}^A H_B \in \mathrm{SE}(3)$}{Homogeneous Transformation from frame B to frame A}
+\nomenclature[DYN]{${}_Bf \in \mathbb{R}^3$}{Linear Force Vector, measured in B}
+\nomenclature[DYN]{${}^B\tau \in \mathbb{R}^3$}{Torque Vector, measured in B}
+\nomenclature[DYN]{${}_B \mathbf{f} \in \mathbb{R}^6$}{Wrench, measured in B}
+\nomenclature[DYN]{$\mathbb{M} \in \mathbb{R}^{6 \times 6}$}{Inertia Matrix}
+\nomenclature[DYN]{$g \in \mathbb{R}^+$}{Gravity Acceleration Constant}
+\nomenclature[DYN]{$\mathbf{g} \in \mathbb{R}^3$}{Gravity Vector}
+\nomenclature[DYN]{$n \in \mathbb{N}$}{Number of Degrees of Freedom}
+\nomenclature[DYN]{$\boldsymbol{\Phi}_i \in \mathbb{R}^{6}$}{Joint Motion Subspace for a joint $i$}
+\nomenclature[DYN]{$\mathbf{s} \in \mathbb{R}^n$}{Joint Position Vector}
+\nomenclature[DYN]{$\dot{\mathbf{s}} \in \mathbb{R}^n$}{Joint Velocity Vector}
+\nomenclature[DYN]{$\ddot{\mathbf{s}} \in \mathbb{R}^n$}{Joint Acceleration Vector}
+\nomenclature[DYN]{$\mathbf{h} \in \mathbb{R}^{6+n}$}{Coriolis Vector}
+\nomenclature[DYN]{$q \in \mathbb{H} : \lVert q \rVert = 1$}{Unit Quaternion}
+\nomenclature[DYN]{$\lambda (i)$}{Parent link of link $i$}
 
 
 \nomenclature[MATH]{$\mathbb{I}$}{Identity Matrix}
 \nomenclature[MATH]{$\mathbbm{0} _n$}{Null Squared Matrix of size $n$}
 \nomenclature[MATH]{$\mathbbm{1} _n$}{All-Ones Squared Matrix of size $n$}
 \nomenclature[MATH]{$\times$}{Cross Product}
-\nomenclature[MATH]{$\lVert \cdot \rVert _\mathcal{F} \equiv \lVert \cdot \rVert _{\ell ^2}$}{Frobenius Norm or $\ell ^1$ Norm}
+\nomenclature[MATH]{$\lVert \cdot \rVert _\mathcal{F} \equiv \lVert \cdot \rVert _{\ell ^2}$}{FDYNenius Norm or $\ell ^1$ Norm}
 
 \renewcommand{\nomname}{List of Symbols}
 \printnomenclature[3cm]
