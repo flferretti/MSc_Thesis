@@ -188,21 +188,21 @@ framework is able to generate a motor set that is able to maximize the performan
 
 % ABSTRACT IN ITALIAN
 \chapter*{Abstract in lingua italiana}
-Poiché il campo della robotica umanoide si sta espandendo rapidamente, i robot stanno diventando sempre più standardizzati e il crescente numero di
-applicazioni rende il design hardware un componente immutabile nello sviluppo di una strategia di controllo, che di solito è il principale focus della
-ricerca. Inoltre, l'intricata complessità dei sistemi di controllo e la complessità dei compiti che i robot devono svolgere rendono la progettazione del
-controllo impegnativa, con potenziali limitazioni nell'adattabilità a nuovi scenari. Al fine di massimizzare le prestazioni rispetto a un determinato compito,
-progettare la morfologia del robot insieme ai suoi sistemi di controllo in un approccio estensivo è una soluzione promettente.
+Nel campo della robotica umanoide, i robot stanno diventando sempre più standardizzati a causa della rapida espansione del settore e dell'aumento
+delle applicazioni. Questa tendenza rende il design hardware un elemento cruciale nello sviluppo della strategia di controllo, che spesso rappresenta
+il fulcro della ricerca. La complessità sia dei sistemi di controllo sia dei compiti che i robot devono affrontare rende la progettazione di tali
+sistemi un'impresa impegnativa, con possibili limitazioni nell'adattabilità a nuovi scenari. Per ottenere prestazioni ottimali in determinati compiti,
+un approccio promettente consiste nel progettare la morfologia del robot in modo integrato insieme ai suoi sistemi di controllo.
 
-La tesi mira a affrontare il problema di un design sinergico dei robot umanoidi e dei loro sistemi di controllo. In particolare, il presente lavoro si propone
-di sviluppare un framework per il codesign dei robot umanoidi che combini l'uso del deep reinforcement learning e degli algoritmi evolutivi. Poiché la simulazione
-richiesta durante la generazione di dati sintetici nella fase di apprendimento tramite rinforzo è computazionalmente costosa, sorge la necessità di un'architettura
-che consenta di accelerare la simulazione, coinvolgendo quindi l'uso di accelerazioni hardware tramite l'uso di simulatori che sfruttano le Unità di Elaborazione
-Grafica (GPU) e le Unità di Elaborazione Tensoriale (TPU). A questo scopo, la tesi affronta il problema di avere un algoritmo in grado di calcolare la dinamica tenendo
-conto della presenza dei motori, che rappresentano le variabili di ottimizzazione di interesse in questo scenario, con il loro rapporto di trasmissione, inerzia e
-attrito interno. Successivamente, viene sviluppato e testato approfonditamente un framework per il codesign di robot umanoidi, supportato da accelerazioni hardware,
-su un compito semplice, ma facilmente scalabile. I risultati mostrano che il framework proposto è in grado di generare un set di motori in grado di massimizzare le
-prestazioni del robot nel compito assegnato.
+La tesi si pone l'obiettivo di affrontare la sfida del design sinergico dei robot umanoidi insieme ai loro sistemi di controllo. In questo lavoro, si
+intende sviluppare un framework per il co-design dei robot umanoidi, unendo l'utilizzo del deep reinforcement learning con gli algoritmi evolutivi.
+Dato che la simulazione richiesta per generare dati sintetici nell'apprendimento tramite rinforzo è computazionalmente dispendiosa, è necessaria
+un'architettura che acceleri tale processo, coinvolgendo l'utilizzo di accelerazioni hardware tramite simulatori che sfruttino le Unità di Elaborazione Grafica
+(GPU) e Tensoriale (TPU). A questo scopo, la tesi si concentra dapprima sullo sviluppo di un algoritmo in grado di calcolare la dinamica considerando la
+presenza dei motori, variabili ottimizzabili in questo contesto, in riferimento al loro rapporto di trasmissione, inerzia e attrito viscoso interno.
+Successivamente, verrà sviluppato e testato un framework per il co-design di robot umanoidi, supportato da accelerazioni hardware, concentrandosi su un
+compito relativamente semplice, ma facilmente scalabile. I risultati evidenzieranno la capacità del framework proposto nel generare un set di motori
+che massimizzano le prestazioni del robot nel compito assegnato.
 \\
 \\
 \textbf{Parole chiave:} codesign, accelerazione hardware, apprendimento per rinforzo, algoritmi evolutivi, dinamica diretta % Keywords (italian)
