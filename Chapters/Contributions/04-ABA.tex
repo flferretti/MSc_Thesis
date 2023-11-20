@@ -1,7 +1,7 @@
 \chapter{Implementing Motors in Rigid Multibody Algorithms}
 \label{chp:contrib_ABA}
 
-This chapter describes the formalism and the algorithms involved in the conditioning of multibody systems behavior, taking into account motor dynamics in the framework of recursive computation methods. In particular, in the first part, the problem of considering rotor dynamics is addressed by modifying the inertia matrix of the system and introducing a new term in the Coriolis vector. This approach will be referred to as \textit{Inertia-Matrix Method}. While being relatively simple to implement, this method forces some hypotheses that can limit its range of application. An alternative approach is described in the second part of the chapter, in which the process of injecting the motor parameters in the Articulated Body Algorithm (\ac{ABA}) is discussed. In the last section, a comparison between the two approaches is presented, in order to highlight the potentialities and the drawbacks of each method.
+This chapter describes the formalism and the algorithms involved in the multibody systems forward dynamics reformulation, taking into account motor dynamics in the framework of recursive computation methods. In particular, in the first part, the problem of considering rotor dynamics is addressed by modifying the inertia matrix of the system and introducing a new term in the Coriolis vector. This approach will be referred to as \textit{Inertia-Matrix Method}. While being relatively simple to implement, this method forces some hypotheses that can limit its range of application. An alternative approach is described in the second part of the chapter, in which the process of injecting the motor parameters in the Articulated Body Algorithm (\ac{ABA}) is discussed. In the last section, a comparison between the two approaches is presented, in order to highlight the potentialities and the drawbacks of each method.
 
 \section{Rotor-conditioned Forward Dynamics with Inertia-Matrix Method}
 
@@ -18,7 +18,7 @@ Starting from the equation of motion of a robot manipulator, as expressed in \cr
     \mathbb{M}(q)\dot{\boldsymbol{\nu}} + \mathbf{h}(q,\boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J} ^\top \mathbf{f}
 \end{equation}
 
-where $\mathbb{M}(q)$ is the inertia matrix, $\mathbf{h}(q,\boldsymbol{\nu})$ is the Coriolis vector, $\mathbf{B}$ is the selection matrix for the actuation torques, $\boldsymbol{\tau}$ is actuation torques vector, $\mathbf{J}$ is the Jacobian matrix and $\mathbf{f}$ is the external forces vector, we can isolate the terms related to the base link from the rest of the kinematic chain:
+where $\mathbf{h}(q,\boldsymbol{\nu})$ is the Coriolis vector taking into account also gravity effects, $\mathbf{B}$ is the selector matrix for the joint torques, $\boldsymbol{\tau}$ is actuation torques vector, $\mathbf{J}$ is the Jacobian matrix and $\mathbf{f}$ is the external wrenches vector, we can isolate the terms related to the base link from the rest of the kinematic chain:
 
 \begin{align}
     \boldsymbol{\nu} =
@@ -33,7 +33,7 @@ where $\mathbb{M}(q)$ is the inertia matrix, $\mathbf{h}(q,\boldsymbol{\nu})$ is
     \end{bmatrix}
 \end{align}
 
-where $\mathrm{\mathbf{v}} \in \mathrm{SO}(3)$ and $\mathbf{s} \in \mathbb{R}^{n}$. Therefore, the equation of motion can be rewritten in its matrix form as:
+Therefore, the equation of motion can be rewritten in its matrix form as:
 
 \begin{equation}
     \begin{bmatrix}
@@ -61,10 +61,10 @@ where $\mathrm{\mathbf{v}} \in \mathrm{SO}(3)$ and $\mathbf{s} \in \mathbb{R}^{n
     \mathbf{f}
 \end{equation}
 
-Given that the dynamics of the set of $N _M = n$ motors can be described by \cref{eqn:mot_dyn} and graphically represented as in \cref{fig:harmonic_drive} \citep{folga2010}, we can rewrite the equation of motion as:
+Given that the dynamics of the set of $N _M = n$ motors, each of which is connected to a joint by means of a harmonic drive, graphically represented as in \cref{fig:harmonic_drive} \citep{folga2010}, we can write their equation of motion neglecting the Coulomb friction as:
 
 \begin{equation}
-    \mathbb{M} ^M \ddot{\boldsymbol{\theta}} + \mathbf{K}_v \dot{\boldsymbol{\theta}} = \boldsymbol{\tau}_m
+    \mathbb{M} ^M \ddot{\boldsymbol{\theta}} + \mathbf{K}_v \dot{\boldsymbol{\theta}} = \boldsymbol{\tau}_m - \boldsymbol{\tau}
     \label{eqn:mot_dyn}
 \end{equation}
 
@@ -74,11 +74,11 @@ where $\mathbf{K}_v \in \mathbb{R}^n$ is the diagonal matrix of motor viscous fr
     \mathbf{s} = \boldsymbol{\theta} \boldsymbol{\Gamma} &  & \dot{\mathbf{s}} = \frac{d}{dt} \mathbf{s} = \dot{\boldsymbol{\theta}} \boldsymbol{\Gamma} &  & \ddot{\mathbf{s}} = \frac{d^2}{dt^2} \mathbf{s} = \ddot{\boldsymbol{\theta}} \boldsymbol{\Gamma}
 \end{align}
 
-we can rewrite the equation \cref{eqn:mot_dyn} in the joints' space as:
+Hence, can rewrite the equation \cref{eqn:mot_dyn} in the joints' space as:
 
 \begin{equation}
     \label{eqn:mot_dyn_jointspace}
-    \boldsymbol{\tau} = \boldsymbol{\Gamma} ^{-T} (\mathbb{M} ^M\boldsymbol{\Gamma} ^{-1} \ddot{s} + \mathbf{K}_v \boldsymbol{\Gamma} ^{-1}\dot{s})
+    \boldsymbol{\tau} = \boldsymbol{\tau}_m - \boldsymbol{\Gamma} ^{-T} (\mathbb{M} ^M\boldsymbol{\Gamma} ^{-1} \ddot{s} + \mathbf{K}_v \boldsymbol{\Gamma} ^{-1}\dot{s})
 \end{equation}
 
 Therefore, the \ac{EoM} of the multibody system can be reformulated as:
@@ -130,7 +130,7 @@ In a more compact form, the \ac{EoM} can be also expressed as:
     \mathbf{\bar{M}}(q)\dot{\boldsymbol{\nu}} + \mathbf{h}(q,\boldsymbol{\nu}) = \mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^\top \mathbf{f} - \bar{\mathbf{K _v}}\boldsymbol{\nu}
 \end{equation}
 
-which yields the acceleration of the system:
+This yields the wanted output from the forward dynamics, the rigid body acceleration vector:
 
 \begin{equation}
     \dot{\boldsymbol{\nu}} = \mathbf{\bar{M}}(q) ^{-1} (\mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^\top \mathbf{f} - \mathbf{h}(q,\boldsymbol{\nu}) - \bar{\mathbf{K _v}}\boldsymbol{\nu})
@@ -148,7 +148,7 @@ In \cref{subsec:back_aba} we briefly introduced the recursive relations of the \
     \item The \ac{CoM} of the motor is coincident with its axis of rotation, e.g. the angular momentum of the motor is only due to its spinning motion.
 \end{enumerate}
 
-With these hypotheses, we can reformulate the motion subspace of the rotor attached to joint $i$ as:
+With these hypotheses, we can reformulate the motion subspace definition reported in \cref{eqn:subspace} for a the rotor attached to joint $i$ as:
 
 \begin{equation}
     \label{eqn:motor_subspace}
@@ -173,7 +173,7 @@ With these hypotheses, we can reformulate the motion subspace of the rotor attac
     }
 \end{figure}
 
-If we define the unconstrained system as the system where the link are geometrically constrained, defining a link dynamics independent from the interaction forces with the rest of the system as in \cref{fig:uc_and_constr_tree}. In a similar fashion as in \cref{eqn:motor_subspace}, the rotor will be subjected the same force, but the torque will be scaled up by the gear ratio \cref{fig:disassembled_motor}
+An unconstrained system refers to a system where the links are geometrically fixed in place, thereby defining the dynamics of each link independently of the forces interacting with the rest of the system, as represented in \cref{fig:uc_and_constr_tree}. In this setup, similarly to the equation represented in \cref{eqn:motor_subspace}, the rotor experiences the same force of the joint, but the torque is increased proportionally by the gear ratio, as illustrated in \cref{fig:disassembled_motor}
 
 \begin{equation}
     \mathbf{a} ^{uc} _{R _i} = (\mathbb{M} ^M _i) ^{-1}(\boldsymbol{\Phi} _i \frac{\boldsymbol{\tau} _i}{\boldsymbol{\Gamma} _i} - \mathbf{p} ^M _i)
@@ -181,8 +181,8 @@ If we define the unconstrained system as the system where the link are geometric
 
 where $\mathbb{M} ^M _i$ is the rotor inertia matrix, $\mathbf{p} ^M _i$ is the bias force of the rotor defined recalling \cref{eqn:biasforce} as  $\mathbf{p} ^M _i = {} ^M \mathbf{v} _i\times ^* \mathbb{M} ^M _i {} ^M \mathbf{v} _i$, where ${} ^M \mathbf{v} = \mathbf{v} _{\lambda (i)} + {} ^M \boldsymbol{\Phi} _i \dot{\mathbf{s}} _i$ and $\boldsymbol{\Gamma} _i$ is the gear ratio.
 
-% ##############################################################################################################
-Starting from the Gaussian principle of least constraint, the problem of finding the joint accelerations $\ddot{\mathbf{s}}$ that satisfy the equation of motion already seen in \cref{eqn:equation_of_motion}, which can be formulated as a constrained optimization problem:
+
+Beginning with the Gaussian principle of least constraint, the objective is to determine the joint accelerations $\ddot{\mathbf{s}}$ that fulfill the equation of motion as described in \ref{eqn:equation_of_motion}. This task can be framed as a constrained optimization problem:
 
 \begin{align}
     \label{eqn:aba_optim}
@@ -300,7 +300,7 @@ and
     \mathbf{p} ^A _{\lambda (i)} = \mathbf{p} ^A _{\lambda (i)} + \mathbf{p} ^A_i + \mathbf{p} ^M_i  + \mathbb{M} ^A _{\lambda (i)}  \mathbf{c}_i + \mathbb{M} {} ^M _i \mathbf{c} ^M _i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i + {} ^M \mathbf{U} _i \mathbf{D} ^{-1} _i {} ^M\mathbf{u} _i
 \end{equation}
 
-The final version of the algorithm is reported in \cref{alg:rotaba}, utilizes the term  ${}^i\mathbf{X} _{\lambda (i)}$ to denote the transformation from the parent link to the child link, which was necessary in the implementation in \jaxsim.
+The final version of the algorithm is reported in \cref{alg:rotaba}, utilizes the term  ${}^i\mathbf{X} _{\lambda (i)}$ to denote the transformation from the parent link to the child link, which was necessary in the implementation in \jaxsim as they are not necessarily coincident as in the case of \citet{featherstone_rigid_2008} hypotheses.
 
 \begin{algorithm}
     \caption{Rotor-conditioned Articulated-Body Algorithm.}
@@ -359,7 +359,7 @@ The final version of the algorithm is reported in \cref{alg:rotaba}, utilizes th
 
 \section{Comparison between the Motor-Conditioned ABA and Inertia-Matrix Based Forward Dynamics}
 
-The main difference between the \ac{ABA} approach and the approach adopted in the Inertia-Based method regards the concretization of the rotors. In fact, the former considers the rotors as extra links in the kinematic chain, with their spatial inertia and dynamics, conditioned by the presence of viscous friction and subject to a torque proportionally greater respect to the torque perceived by the parent link as shown in \cref{fig:ABA_comparison}.
+The main difference between the \ac{ABA} approach and the approach adopted in the Inertia-Based method regards the concretization of the rotors. In fact, \ac{ABA} considers the rotors as extra links in the kinematic chain, with their spatial inertia and dynamics, conditioned by the presence of viscous friction and subject to a torque proportionally greater respect to the torque perceived by the parent link as shown in \cref{fig:ABA_comparison}. The Inertia-Matrix Based method instead, considers the rotor inertias as lumped to the parent link, considering that the torque perceived by the parent link is also proportionally greater than the one in output from the motors.
 
 % === FIG: ABA vs IMB rotors === %
 \begin{figure}
@@ -376,8 +376,6 @@ The main difference between the \ac{ABA} approach and the approach adopted in th
         }}
 \end{figure}
 
-The Inertia-Matrix-Based method instead, considers the rotor inertias as lumped to the parent link, considering that the torque perceived by the parent link is also proportionally greater than the one in output from the motors.
+The recursive approach allows therefore to consider a much greater variety of kinematic chains and also it is more computationally efficient. As a consequence, there is a significant difference between the accelerations computed by the two methods, as the inertia-matrix-based method is leverages the hypotheses for which the rotor is lumped to the parent link, which lead to a much different result when the motor inertia increases.
 
-The recursive approach allows therefore to consider a much greater variety of kinematic chains and also it is more computationally efficient. As a consequence, there is a significant difference between the accelerations computed by the two methods, as while the modified ABA method is exact, the inertia-matrix-based method is only an approximation of the actual dynamics.
-
-The motor conditioned ABA has been also tested against \texttt{iDynTree} \citep{10.3389/frobt.2015.00006} imposing the absence of motors, in order to verify the correctness of the implementation when the rotor is not present, showing that the two algorithms are equivalent in this case.
+The motor conditioned ABA has been also tested against the forward dynamics implementation of \texttt{iDynTree} \citep{10.3389/frobt.2015.00006} imposing the absence of motors, in order to verify the correctness of the computed accelerations when the rotor is not present, showing that the two algorithms are equivalent in this case.
