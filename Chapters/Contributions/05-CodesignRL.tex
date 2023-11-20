@@ -1,7 +1,7 @@
-\chapter{Codesigning Humanoid Robots with Deep Reinforcement Learning}
+\chapter{Codesigning Robots with Deep Reinforcement Learning}
 \label{chp:contrib_CodesignRL}
 
-This chapter will describe the process of designing the codesign loop, exploiting the theoretical foundation regarding deep reinforcement learning and evolutionary algorithms presented in \cref{chp:back_RLGA} and the conditioning of \ac{RBDA}s presented in \cref{chp:contrib_ABA} via a hardware accelerated physics simulator. In particular, in the first section, three reinforcement learning case studies will be presented, which will be used to test the framework. Then, the implementation details of the optimization based on the genetic algorithm will be discussed, together with an overview of the codesign loop.
+This chapter will describe the process of designing the codesign loop, exploiting the theoretical foundation regarding deep reinforcement learning and evolutionary algorithms presented in \cref{chp:back_RLGA} and the conditioning of \ac{RBDA}s presented in \cref{chp:contrib_ABA} via a hardware accelerated physics simulator. In particular, each new individual created by the genetic algorithm will be evaluated by training a reinforcement learning agent with that set of parameters, for a predetermined task. The reward obtained will be interpreted as the fitness by the evolutionary algorithm, which will then select the best individuals and generate new ones, until the maximum number of generations is reached. In the first section, three reinforcement learning case studies will be presented, which will be used to test the framework. Then, the implementation details of the optimization based on the genetic algorithm will be discussed, together with an overview of the codesign loop. The resulting outcomes will be presented in \cref{chp:contrib_ResultsDiscussion}.
 
 \section{Reinforcement Learning Problem Definition}
 
@@ -9,7 +9,14 @@ In reinforcement learning scenarios, a crucial task is represented by the defini
 
 \subsection{Cartpole swingup task}
 
-The problem of codesign could easily become exponentially complex and computationally expensive, for this reason, the main focus of this work was to develop a scalable framework that could be customized in order to adapt to the complexity of the task as the computation resources increase in power. For this reason, the first task that has been used to test the \ac{RL} framework is the cartpole swingup task. In this task, the aim is to find a policy $\pi$ that is able to balance a pole attached to the cart, which is moving on a rail, and balance it to the upright position while minimizing the torques applied to the joints. In this case, the reward function is defined as a function of the state of the system, which is composed of the position of the cart $x$, the velocity of the cart $\dot{x}$, the angle of the pole $\theta$ and the angular velocity of the pole $\dot{\theta}$:
+\begin{figure}
+    \centering
+    \caption{JAXsim -- CartPole RL Training Visualization}
+    \label{fig:cartpole}
+    \includegraphics[width=0.7\textwidth]{Images/cartpole.png}
+\end{figure}
+
+The problem of codesign could easily become exponentially complex and computationally expensive, for this reason, the main focus of this work was to develop a scalable framework that could be customized in order to adapt to the complexity of the task as the computation resources increase in power. For this reason, the first task that has been used to test the \ac{RL} framework together with the \jaxsim simulator is the cartpole swingup task. In this task, the aim is to find a policy $\pi$ that is able to balance a pole attached to the cart, which is moving on a rail, and balance it to the upright position while minimizing the torques applied to the joints. In this case, the reward function is defined as a function of the state of the system, which is composed of the $x$-component of the position of the cart $x$, the velocity of the cart $\dot{x}$, the angle of the pole $\theta$ and the angular velocity of the pole $\dot{\theta}$:
 
 \begin{equation}
     r _t = \begin{cases}
@@ -27,7 +34,7 @@ where $\theta_{\text{max}}$ and $x _{\text{max}}$ are respectively the imposed m
     \label{fig:cartpolereward}
 \end{figure}
 
-The reward space is then defined to have a clear bound between positive and null reward, in order to make the learning process more stable the robot will have zero rewards when outside of the space defined by $\theta_{\text{max}}$ and $x _{\text{max}}$ and a reward that maximizes to the number of joints if the balance is achieved following a quadratic function dependent on the torques applied, as shown in \cref{fig:cartpolereward}. The penalty associated with the torques has a dual purpose, on the one hand, it allows minimizing the torques applied to the joints, on the other hand, it allows to effectively find an equilibrium position, which is not trivial in the case of a simple reward function based on the angle of the pole.
+The reward space is then defined to have a clear bound between positive and null reward, in order to make the learning process more stable the robot will have zero rewards when outside of the space defined by $\theta_{\text{max}}$ and $x _{\text{max}}$ and a reward that maximizes to the number of joints if the balance is achieved following a quadratic function dependent on the torques applied, as shown in \cref{fig:cartpolereward}. A penalty associated with the torques is also taken into account. It has a dual purpose, on the one hand, it allows minimizing the torques applied to the joints, on the other hand, it allows to effectively find an equilibrium position, which is not trivial in the case of a simple reward function based on the angle of the pole.
 
 With that in mind, the action space will be defined as the set of torques applied to the joints, the observation space will be defined as the set of position and velocity of the cart and the pole, and the reward space will be a positive real number in the range $[0,2]$. The \cref{tab:cartpoleswinguptaskspacedef} summarizes the definition of the spaces used in this task.
 
@@ -91,7 +98,7 @@ All the \ac{RL} trainings for the humanoid walking task in this work have been p
     \end{tabular}
 \end{table}
 
-\subsection{Tentative JAXsim Implementation}
+\subsubsection{Tentative JAXsim Implementation}
 
 \begin{figure}
     \centering
@@ -102,7 +109,7 @@ All the \ac{RL} trainings for the humanoid walking task in this work have been p
 
 The possibility to accelerate simulations using \ac{GPU}s on \jaxsim, makes it ideal in a reinforcement learning scenario. In fact, together with the possibility to precompile the Python code, it can speed up the training. The \ac{RL} framework has been implemented using the \texttt{Stable Baselines 3} library \citep{raffin_stable-baselines3_2021}, which supports the environment architecture by OpenAI Gym \citep{brockman_openai_2016}. In order to create an interface between the reinforcement learning baseline and \jaxsim, a custom class has been implemented so that at each agent step, the action is passed to the simulator, which then computes the next state and the reward, which are then returned to the agent.
 
-At the aim of this task, the ErgoCub robot model, developed by the Italian Institute of Technology, has been used as the agent. This robot is composed of $23$ main joints, which are actuated by $23$ motors as shown in \cref{fig:ergocubtraining}.
+At the aim of this task, the ErgoCub robot model, developed by the Italian Institute of Technology and shown in \cref{fig:ergocubtraining}, has been used as the agent. The model \ac{URDF} file used, is an accurate representation of the real structure reported in \cref{fig:ergocub}, yet as not all the joints are relevant for the walking task, some of them were fixed and lumped together. The resulting model presents $6$ joints for each leg, $4$ for each arm and $3$ in the torso, for a total of $23$ joints actuated by $23$ motors.
 
 \begin{equation}
     \label{eqn:ergocub_action_space}
@@ -142,7 +149,7 @@ Hyperparameter tuning is a crucial part of the \ac{RL} framework, and it is ofte
     \label{tab:ppohyperparameters_jaxsim}
 \end{table}
 
-Given the high complexity of the problem, the network architecture composed of two separate networks, one for the policy and one for the value function, has been enlarged in order to increase the capacity of the network to learn the task and to avoid the need of a large number of training iterations. In particular, the policy network is composed of two hidden layers of size $64$ and $64$ respectively, with a \ac{ReLU} activation function. The value function network is composed of three hidden layers of size $1024$, $512$, and $128$ respectively, with a \ac{ReLU} activation function, while the critic network has an architecture similar to the policy network, with the removal of the last hidden layer. The input of the policy network is then a vector of size $80$ composed of the observation space and the output is a vector of size $23$, equal to the action space size.
+Given the high complexity of the problem, the network architecture composed of two separate networks, one for the policy and one for the value function, has been enlarged respect to the one used for the cartpole, in order to increase the capacity of the network to learn the task and to avoid the need of a large number of training iterations. In particular, the policy network is composed of two hidden layers of size $64$ and $64$ respectively, with a \ac{ReLU} activation function. The value function network is composed of three hidden layers of size $1024$, $512$, and $128$ respectively, with a \ac{ReLU} activation function, while the critic network has an architecture similar to the policy network, with the removal of the last hidden layer. The input of the policy network is then a vector of size $80$ composed of the observation space and the output is a vector of size $23$, equal to the action space size.
 The output of the value network is a scalar, which is then used to compute the advantage function.
 
 A tentative implementation has been performed using \textit{Long Short-Term Memory} (LSTM) neural networks, instead of simple \textit{Feed Forward} (FF) neural networks for the actor and the critic. \ac{LSTM} are a particular type of \textit{Recurrent Neural Networks} (RNNs) that, with the use of a \textit{forget gate}, are able to learn the temporal dependencies of the task avoiding the common issue of \ac{RNN}s of vanishing gradients. However, the results obtained with the \ac{LSTM} networks were not satisfactory, which is why the \ac{FF} networks have been used for the final implementation.
@@ -160,13 +167,13 @@ where $\gamma _{prior}$ and $\gamma _{control}$ are the weights of the prior and
     \label{eqn:err_function}
     \mathcal{E} =
     \begin{cases}
-        \varepsilon _{\text{orientation}}    := \lVert \mathbb{I}_3 - R_{robot}^T R_{prior}  \rVert _{\mathcal{F}}        \\
-        \varepsilon _{\text{base position}}  := \lVert {}^wP _B {} _{robot} - {}^w P _B {}_{prior}  \rVert _{\mathcal{F}} \\
-        \varepsilon _{\text{joint positions}}:= \lVert s _{robot} - s _{prior}  \rVert _{\mathcal{F}}                     \\
+        \varepsilon _{\text{orientation}}    := \lVert \mathbb{I}_3 - \mathbf{R}_{robot}^T \mathbf{R}_{prior}  \rVert _{\mathcal{F}}        \\
+        \varepsilon _{\text{base position}}  := \lVert {}^w \mathbf{p}_B {} _{robot} - {}^w  \mathbf{p}_B {}_{prior}  \rVert _{\mathcal{F}} \\
+        \varepsilon _{\text{joint positions}}:= \lVert s _{robot} - s _{prior}  \rVert _{\mathcal{F}}                                       \\
     \end{cases}
 \end{equation}
 
-where $\mathcal{F}$ is the Frobenius norm $\in \mathbb{R}$, $R$ is an orientation represented as \textit{direction cosine matrix} of a unit quaternion, ${}^wP _B$ is the base position $\in \mathbb{R} ^3$, $s$ is the vector of joint positions $\in \mathbb{R} ^{n}$, and $w$ is the world frame.
+where $\mathcal{F} \in \mathbb{R}$ is the Frobenius norm, $\mathbf{R}$ is an orientation represented as \textit{direction cosine matrix} of a unit quaternion, ${}^w \mathbf{p}_B$ is the base position $\in \mathbb{R} ^3$, $s$ is the vector of joint positions $\in \mathbb{R} ^{n}$, and $w$ is the world frame.
 The orientation error $\mathcal{E} _{\text{orientation}} : \mathrm{SO}(3) \times \mathrm{SO}(3) \rightarrow [0, 2\sqrt{2}] \in \mathbb{R} ^+$ comes from \citep{huynh_metrics_2009}.
 
 The \ac{RL} framework has been trained for $10^7$ steps, which given the episodic length, corresponds to $1024$ epochs. Thanks to the high number of available cores, the training took approximately $90$ minutes on the \texttt{IITBMP014SRV001} machine.
@@ -189,7 +196,7 @@ The \ac{RL} framework has been trained for $10^7$ steps, which given the episodi
     \caption{JAXsim -- ErgoCub Locomotion Observation Space}
 \end{table}
 
-Throughout this project, the primary challenge in the Reinforcement Learning (\ac{RL}) framework was twofold. Firstly, the development of a contact model capable of accurately simulating the interaction between the robot and its environment. Simultaneously, it was crucial for this contact model to facilitate the algorithm's ability to forecast the agent's behavior, which could be difficult in the case of simple soft contact models as elucidated in \cref{sec:back_contacts}. Unfortunately, the \jaxsim simulator was in an early developmental stage for the walking task, i.e. for the contact model, which was not the central focus of this work. Given the constraints of time available for thesis composition, we eventually opted to abandon this path and instead employed the more developed and readily available simulator, \textsc{Isaac Gym}, provided by NVIDIA.
+Throughout this project, the primary challenge in the Reinforcement Learning (\ac{RL}) framework was twofold. Firstly, the development of a contact model capable of accurately simulating the interaction between the robot and its environment. Simultaneously, it was crucial for this contact model to facilitate the algorithm's ability to forecast the agent's behavior, which could be difficult in the case of simple soft contact models as elucidated in \cref{sec:back_contacts}. Unfortunately, the \jaxsim simulator was in an early developmental stage for the walking task, i.e. for the contact model, which was not the central focus of this work. This made impossible to use the \jaxsim simulator for the humanoid walking task as the agent could not learn in an environment in which the contact dynamics was not predictable. Given the constraints of time available for thesis composition, we eventually opted to abandon this path and instead employed the more developed and readily available simulator, \textsc{Isaac Gym}, provided by NVIDIA.
 
 \subsubsection{Isaac Gym Implementation}
 
@@ -200,7 +207,7 @@ Throughout this project, the primary challenge in the Reinforcement Learning (\a
     \includegraphics[width=.9\textwidth]{Images/stickbot_training_1.png}
 \end{figure}
 
-The humanoid walking task described in the following paragraphs has been achieved using \ac{PPO} together with the \ac{AMP} implementation from \texttt{rl\_games}. With this technique, there are two more networks involved to enhance the learning process and a dataset of trajectories that resembles the intended behaviour, in this case represented by a bipedal locomotion, is required. In this context, the AMP framework employs a generator network that creates data trying to imitate the prior the and a discriminator network, whose task is to distinguish between the dummy trajectories generated and the actual samples from the prior dataset. The discriminator network is then used as a critic network to estimate the quality of the action taken.
+The humanoid walking task described in the following paragraphs has been achieved using \ac{PPO} together with the \ac{AMP} implementation from \texttt{rl\_games}. With this technique, there are two more networks involved to enhance the learning process and a dataset of trajectories that resembles the intended behaviour, in this case represented by a bipedal locomotion, is required. In this context, the AMP framework employs a generator network that creates data trying to imitate the prior and a discriminator network, whose task is to distinguish between the dummy trajectories generated and the actual samples from the prior dataset. The discriminator network is then used as a critic network to estimate the quality of the action taken.
 
 As in the \jaxsim implementation, the ErgoCub model has been used, yet the meshes have been simplified to primitive shapes such as boxes, cylinders, and spheres, in order to reduce the computational cost of the simulation while maintaining the same dynamics of the original model. The observation space is then defined as per \cref{tab:walkingobs_isaacgym}, while the action space is formed as per \cref{eqn:ergocub_action_space}. With respect to the observation space defined in the \jaxsim implementation \cref{tab:walkingobs_jaxsim}, as this implementation uses \ac{AMP}, it is usually beneficial to include some reference frames position in the observation space, in order to allow the algorithm to learn the task faster.
 
@@ -245,7 +252,7 @@ Rewards, actions, and observations are then normalized to the range $[0,1]$ in o
 
 The evolutionary algorithm has been used in the codesign loop to select three main motor parameters from a discrete search space. The evolutionary algorithm has been based on the \texttt{deap} library \citep{DEAP_JMLR2012}.
 
-The motor set of parameters is composed of three main components: motor inertia, motor viscous friction, and gear ratio. At each iteration, the fitness is computed using the \ac{RL} framework, which returns the reward associated with the individual. The reward is then used as the fitness function of the evolutionary algorithm. The evolutionary algorithm then selects the best individuals, which are then used to update the population. The process is then repeated until the robot reaches the desired target fitness or when it reaches the maximum number of generations. The total number of combination are given by the following equation:
+The motor set of parameters is composed of three main components: motor inertia $\mathbb{M}^M$, motor viscous friction $\mathbf{K}_v$, and gear ratio $\boldsymbol{\Gamma}$. At each iteration, the fitness is computed using the \ac{RL} framework, which returns the reward associated with the individual. The reward is then used as the fitness function of the evolutionary algorithm. The evolutionary algorithm then selects the best individuals, which are then used to update the population. The process is then repeated until it reaches the maximum number of generations. The total number of combination are given by the following equation:
 
 \begin{equation}
     H = n^k = 2^9 = 512
@@ -294,10 +301,10 @@ Considering the computation-expensive nature of the \ac{RL} framework, the hyper
     \caption{Evolutionary Algorithm Hyperparameters.}
 \end{table}
 
-\section{Humanoid Robots Codesign Loop}
+\section{Robot Codesign Loop}
 \label{sec:Codesign}
 
-The codesign loop starts in the evolutionary algorithm core, where the initial population is generated with a cardinality of $10$ individuals by sampling from a uniform distribution. Each individual is composed of a set of integers, each one representing an encoding of the motors available according to the \cref{tab:motorparams} as $\mathbf{0}: \text{Motor \textbf{XXXS}}, \mathbf{1}:\text{Motor \textbf{M}}, \dots, \mathbf{4}:\text{Motor \textbf{XXXL}}$. The initial population is then evaluated using the \ac{RL} framework, which runs in parallel with multiple agents having the same motor set and sharing the experience. Then, the sum of the rewards of the agents is associated with the fitness of that particular individual. Once the initial population has been evaluated, the evolutionary algorithm keeps the best individual in a process known as \textit{elitism} and mates the rest of the chromosomes. The mating process is performed using the \textit{one-point crossover} operator, which selects a random point in the chromosome and swaps the genes of the two parents. Then, the offspring is mutated using the \textit{uniform mutation} operator, which selects a random gene and mutates it with a probability of $0.2$. The process is then repeated for $20$ generations, after which the best individual is selected and its parameters are used to update the robot design, as represented in \cref{fig:codesignloop}.
+The codesign loop starts in the evolutionary algorithm core, where the initial population is generated with a cardinality of $10$ individuals by sampling from a uniform distribution. Each individual is composed of a set of integers, each one representing an encoding of the motors available according to the \cref{tab:motorparams} as $\mathbf{0}: \text{Motor \textbf{XXXS}}, \mathbf{1}:\text{Motor \textbf{XXS}}, \dots, \mathbf{4}:\text{Motor \textbf{XXXL}}$. The initial population is then evaluated using the \ac{RL} framework, which runs in parallel with multiple agents having the same motor set and sharing the experience. Then, the sum of the rewards of the agents is associated with the fitness of that particular individual. Once the initial population has been evaluated, the evolutionary algorithm keeps the best individual in a process known as \textit{elitism} and mates the rest of the chromosomes. The mating process is performed using the \textit{one-point crossover} operator, which selects a random point in the chromosome and swaps the genes of the two parents. Then, the offspring is mutated using the \textit{uniform mutation} operator, which selects a random gene and mutates it with a probability of $0.2$. The process is then repeated for $20$ generations, after which the best individual is selected and its parameters are used to update the robot design, as represented in \cref{fig:codesignloop}.
 
 \begin{figure}
     \centering
