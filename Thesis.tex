@@ -168,16 +168,14 @@
 
 % ABSTRACT IN ENGLISH
 \chapter*{Abstract}
-As the humanoid robotics field is rapidly expanding, robots are becoming more and more standardized and the growing number of applications
-make the hardware design an immutable component in the development of a control strategy, which is usually the main focus of the research.
-Moreover, the intricacy of the control systems and the complexity of the tasks that the robots are required to perform, make the control design
-challenging, with potential limitation on the adaptability to new scenarios. In order to maximize the performance respect to a given task,
+The hardware design is often treated as an immutable component in the development of a control strategy, which is usually the main focus of the research.
+Moreover, the intricacy of the control systems and the complexity reached by certain tasks that the robots are required to perform, make the control design
+challenging, with potential limitation on the adaptability to new scenarios. In order to maximize the performance with respect to a given task,
 designing the robot morphology together with its control systems in an extensive approach is a promising solution.
 The thesis aims to target the problem of a synergic design of humanoid robots and their control systems. In particular, the present work aims
 to develop a framework for the codesign of humanoid robots that combines the use of deep reinforcement learning and evolutionary algorithms.
-As the simulation required during the generation of synthetic data in the reinforcement learning phase is computationally expensive, it
-emerges the need for an architecture that allows to speed up the simulation, therefore involving the use of hardware accelerations via the use
-of simulators that exploit the use of Graphical Processing Units (GPUs) and Tensor Processing Units (TPUs). At this scope, the thesis tackles the
+The simulation required during the generation of synthetic data in the reinforcement learning phase is computationally expensive, hence it
+emerges the need for an architecture that allows to speed up the simulation, involving the use of hardware accelerations via simulators that exploit the use of Graphical Processing Units (GPUs) and Tensor Processing Units (TPUs). The thesis tackles the
 problem of having an algorithm able to compute the dynamics taking into account the presence of the motors, which represent the optimization
 variables of interest in this scenario, with their gear ratio, inertia and internal friction. Then, a framework for the codesign of humanoid robots,
 supported by hardware accelerations, is developed and thouroughly tested on a simple, yet easily scalable, task. The results show that the proposed
