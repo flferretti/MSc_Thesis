@@ -1,7 +1,11 @@
 \chapter{Experiments and Benchmarking}
 \label{chp:contrib_ResultsDiscussion}
 
+In the following sections, we present the results obtained with the modified \ac{ABA} algorithm, the reinforcement learning framework, and the robot codesign process. In particular, we present the results obtained with the modified \ac{ABA} algorithm in \cref{sec:results_fd_aba}, supported by the theory presented in \cref{chp:contrib_ABA},
+and the results obtained with the robot codesign process in \cref{sec:codesign_results}, which are the outcomes of the work presented in \cref{chp:contrib_CodesignRL}.
+
 \section{Modified Forward Dynamics Benchmark}
+\label{sec:results_fd_aba}
 
 The introduction of motor dynamics in the context of a recursive forward dynamics algorithm like \ac{ABA}, involves additional computations that are not present in the original algorithm. In this section, we present a benchmark that compares the performance of the modified \ac{ABA} algorithm with the original one, in order to evaluate the impact of the additional computations on the performance of the algorithm. Furthermore, the accuracy of the modified \ac{ABA} algorithm is evaluated by comparing the results with the ones obtained with the modified Inertia-Matrix method.
 
@@ -14,7 +18,8 @@ Regarding the computational performance, the modified \ac{ABA} algorithm is expe
     \includegraphics[width=0.5\textwidth]{Images/Results/placeholder.png}
 \end{figure}
 
-When evaluating the difference between the results obtained with the modified \ac{ABA} algorithm and the modified Inertia-Matrix method, it is possible to see that the difference depends on the motor inertia values. In particular, the difference is larger for the joints with a smaller motor inertia, while it is smaller for the joints with a larger motor inertia, as can be seen in \cref{fig:fd_comparison}. This is due to the fact that \dots
+When evaluating the difference between the results obtained with the modified \ac{ABA} algorithm and the modified Inertia-Matrix method, it is possible to see that the difference depends on the motor inertia values. In particular, the difference is larger for the joints with a larger motor inertia, while it is smaller for the joints with smaller motor inertia, as can be seen in \cref{fig:fd_comparison}. This is due to the fact that as the motor inertia increases, the gyroscopic effects of the spinning rotors,
+expressed in the algorithm as contributions on the bias forces $\mathbf{p}^M _i = {}^M \mathbf{v}_i \times ^* \mathbb{M}_i ^M \mathbf{v}_i + \dots$ which is not considered in the Inertia-Matrix method, become more relevant.
 
 \begin{figure}
     \centering
@@ -24,6 +29,7 @@ When evaluating the difference between the results obtained with the modified \a
 \end{figure}
 
 \section{Robot Codesign Results}
+\label{sec:codesign_results}
 
 The usage of genetic algorithms together with reinforcement learning involves the tuning of several hyperparameters, which can have a significant impact on the performance of the algorithm. Moreover, given the computational cost of the reinforcement learning training, the choice of parameters is bounded by the available computational resources. As an example, the number of generations of the genetic algorithm is strictly related to the number of reinforcement learning training that can be performed, yet reducing its value can lead to a smaller explored space of solutions, bringing therefore to suboptimal results.
 
@@ -51,7 +57,7 @@ In particular, if the algorithm is converging, the explained variance should get
 
 The results obtained during the training are reported in \cref{fig:cartpoleresults}. As expected, the explained variance gets closer to $1$ as the training progresses, while the approximated KL divergence remains small, which means that the policy update is not too large. The value loss decreases as the training progresses, which means that the value function is getting better at predicting the return. The rollout metrics show that the mean reward and the mean episode length increase as the training progresses, which means that the policy is getting better at solving the task.
 
-For what concerns the genetic algorithm, the hyperparameters had been tuned in order to expand the search space as much as possible. As the dimensionality and the discrete nature of the problem allow us to represent the search space as a grid, we could easily verify its extension as in \cref{fig:searchspace}.
+For what concerns the genetic algorithm, the hyperparameters had been tuned in order to expand the search space as much as possible. As the dimensionality and the discrete nature of the problem allow us to represent the search space as a grid, we could easily verify its extension as in \cref{fig:searchspace}, which the possible combinations for the two joints are represented in a 2D grid, and a color scale is used to represent the normalized fitness of the evaluated chromosomes.
 
 \begin{figure}
     \centering
