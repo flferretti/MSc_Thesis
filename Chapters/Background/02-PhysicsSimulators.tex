@@ -44,7 +44,7 @@ The backend implementation of the simulator is written in \cpp while offering a 
 
 Amongst the variety of framework that offers a high-level interface to make it easier for the user to write code that can be run on \ac{GPU}s, \jax \footnote{\url{https://github.com/google/jax}} \citep{bradbury_jax_2018,47008} is rapidly becoming one of the most popular choices. It exploits the power of \ac{XLA} \citep{50530}, which is a domain-specific, \textit{Just-In-Time} (\ac{JIT}), graph-based compiler for linear algebra that leverages efficient kernel fusion and lazy tensor materialization, firstly developed for TensorFlow \citep{tensorflow2015-whitepaper} and then extended to PyTorch and \jax itself.
 Computations on \textit{Central Processing Units} (\ac{CPU}) also benefit from the use of \ac{JIT} compilation and fused operations \citep{wang_kernel_2010,snider_operator_2023}. \ac{JIT} compilation allows to compile the code at runtime, while fused operations combine multiple algebraic operations into a single \textit{Fused Multiply-Add} operation(\ac{FMA}), reducing the overhead of the compilation process and avoiding intermediate results by rounding the result of the multiplication to the nearest representable number in the given precision.
-Moreover, \jax supports back and forward \textit{Automatic Differentiation} (\ac{AD}), which is a key feature for the implementation of deep learning algorithms, physical system modeling, and optimization.
+Moreover, \jax supports back and forward \textit{Automatic Differentiation} (\ac{AD}), which is a key feature for the implementation of deep learning (DL) algorithms, physical system modeling, and optimization.
 
 A fresh and interesting alternative to \jax, that allows one to easily write \ac{GPU}-accelerated Python code is NVIDIA Warp \citep{warp2022}, which uses a kernel-based programming model that triggers \ac{JIT} compilation of Python code. The compilation generates \textit{Parallel Thread Execution}s (\ac{PTX}) as an intermediate representation, which is then transformed into \textit{CUDA} code. With Omniverse integration, as a key feature, it supports the simulation of mesh grids, cloths, particles, and fluids, as well as the simulation of rigid bodies. Nevertheless, it is still in its early stages of development and it is not yet widely used in robotics research.
 
@@ -90,7 +90,7 @@ Furthermore, \jax introduces a new optimized structure for convenient simple ope
     \includegraphics[width=\textwidth]{Images/pytree_example.png}
 \end{figure}
 
-\section{JAXSim}
+\section{JAXsim}
 
 It is immediate to think of the possibility of combining the power of \jax with the flexibility and ease of use of Python to create a physics simulator that can be easily extended and customized. This was the main idea behind \texttt{brax} \footnote{\url{https://github.com/google/brax}} \citep{freeman_brax_2021}, a differentiable rigid body physics simulator in maximal with the most recent $v2$ release, reduced coordinates. Nevertheless, the absence of a high-level interface to immediately get the mechanical system quantities of the Euler-Poincare equation, as well as the lack of support for \ac{SDF} files, often used in model-based robotics research, led to the development of \jaxsim \footnote{\url{https://github.com/ami-iit/jaxsim}} \citep{ferigo_jaxsim_2022}, a hardware-accelerated physics simulator that exploits the strong parallelization capabilities and the \ac{JIT} compilation of \jax to speed up the simulation process.
 
