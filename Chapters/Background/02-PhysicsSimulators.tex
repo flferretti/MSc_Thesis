@@ -34,7 +34,7 @@ The backend implementation of the simulator is written in \cpp while offering a 
 
 \section{JAX: High-Performance Array Computing}
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \caption{JAX Overview.}
     \label{fig:jax_logo}
@@ -73,7 +73,7 @@ For example, the usage of \texttt{for}-loops and \texttt{if}-statements is not s
 
 Using \texttt{jax.lax.scan} and \texttt{jax.lax.cond} requires writing the code in a functional programming style, which is not always the most immediate choice for the user. In the examples reported in \cref{fig:jax_python_forloop}, a \texttt{body} function will get executed at each iteration which will have an initial value for the variable \texttt{carry} of \texttt{0} and will iterate through \texttt{arr}. The \texttt{cond} function will instead execute the \texttt{true\_fun} function if the condition \texttt{cond} is met, otherwise, it will execute the \texttt{false\_fun} function, as reported in \cref{fig:jax_python_if}. Note that with respect to the Python implementation, the \jax implementation requires declaring the type of the variable \texttt{x} as a \texttt{jax.numpy.ndarray}, this will ensure the creation of a \textit{PyTree} object.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \caption{JAX vs Native Python If Statement.}
     \label{fig:jax_python_if}
@@ -83,7 +83,7 @@ Using \texttt{jax.lax.scan} and \texttt{jax.lax.cond} requires writing the code 
 
 Furthermore, \jax introduces a new optimized structure for convenient simple operation on heterogeneous data structures, called \textit{PyTree}s, which is an object with a tree-like structure that can be used to represent nested data structures. The main advantage of using \textit{PyTree}s is that they can be used to represent and perform operations on heterogeneous data structures. In the example shown in \cref{fig:pytree_example} in fact, the \texttt{pytree} variable is an object containing four different data structures, thus being the \textit{leaves}, i.e. the outermost elements of the tree, compatible among each other, by calling \texttt{jax.tree\_map} on the \texttt{pytree} object, the function \texttt{x+1} can be applied to each leaf of the tree, returning a new \textit{PyTree} object with the same structure of the original one, but with the leaves modified by the function.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \caption{Example Operation on a JAX PyTree.}
     \label{fig:pytree_example}

@@ -132,7 +132,7 @@ in which the product ${}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B$ is an elemen
     {}^A\omega_{A,B} = {}^A\mathbf{R}_B^\top {}^A\mathbf{R}_B = {}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B
 \end{align}
 
-and therefore we can serialize the two components obtaining the \textit{left-trivialized} $6$D velocity vector in \textit{body representation}:
+and therefore we can serialize the two components obtaining the \textit{left trivialized} $6$D velocity vector in \textit{body representation}:
 
 \begin{equation}
     \label{eqn:left_trivialized}
@@ -208,10 +208,10 @@ When dealing with multibody systems, the configuration is described by a configu
 
 \subsection{Joints and Links}
 
-A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links correspond to the rigid bodies composing the inertial properties of the system, while the joints are usually modeled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
+A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links compose the inertial properties of the system, while the joints are usually modeled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
 
-For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be easily extended to multidimensional cases. Furthermore, the system will be considered \textit{acyclic}, i.e. it will not contain any closed loop, as the presence of loops would make the system kinematically redundant.
-Given a joint we can define a \textit{joint axis} $\mathbf{a} \in \mathbb{R}^3, |\mathbf{a}| = 1$ with $\mathbf{a}^\wedge \mathbf{a} = \mathbbm{0}_{3 \times 1}$, in this case, if we recall the definition of the spatial subspace, we can define a joint motion subspace base $\boldsymbol{\Phi} _j \in \mathcal{M} ^6$ as:
+For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be extended to multidimensional cases. Furthermore, the system will be considered \textit{acyclic}, i.e. it will not contain any closed loop, as the presence of loops would make the system kinematically redundant.
+Given a joint we can define a \textit{joint axis} $\mathbf{a} \in \mathbb{R}^3, |\mathbf{a}| = 1$, in this case, if we recall the definition of the spatial subspace, we can define a joint motion subspace base $\boldsymbol{\Phi} _j \in \mathbb{R} ^6$ as:
 
 \begin{equation}
     \boldsymbol{\Phi} _j =
@@ -250,17 +250,17 @@ The first variation of the action functional can be written as:
     \delta \mathcal{A} = \int _{t _0} ^{t _1} \delta \mathcal{L} (\mathbf{q}(t), \mathbf{\dot{q}}(t))dt = \int _{t _0} ^{t _1} \left( \frac{\partial \mathcal{L}}{\partial \mathbf{q}} \delta \mathbf{q} + \frac{\partial \mathcal{L}}{\partial \mathbf{\dot{q}}} \delta \mathbf{\dot{q}} \right) dt
 \end{equation}
 
-where $\delta \mathbf{q}$ and $\delta \mathbf{\dot{q}}$ are the variations of the generalized coordinates and velocities, respectively. The first variation of the action functional is zero if and only if the integrand is zero. In the case of Euclidean spaces, i.e. $\mathbb{Q} = \mathbb{T} _{\mathbb{G}}\mathbb{Q} =\mathbb{R} ^n$, this yields the Euler-Lagrange equation:
+where $\delta \mathbf{q}$ and $\delta \mathbf{\dot{q}}$ are the variations of the generalized coordinates and velocities, respectively. The first variation of the action functional is zero if and only if the integrand is zero. In the case of Euclidean spaces, i.e. $\mathbb{Q} = \mathbb{T} _{\mathbb{Q}} =\mathbb{R} ^n$, this yields the Euler-Lagrange equation:
 
 \begin{equation}
     \frac{d}{dt} \frac{\partial \mathcal{L}}{\partial \mathbf{\dot{q}}} - \frac{\partial \mathcal{L}}{\partial \mathbf{q}} = 0
     \label{eqn:lagrangian}
 \end{equation}
 
-The following chapters will always consider a rigid body pose and body-fixed velocities, thus yielding the \textit{left-trivialized Lagrangian} \citep{traversaro_modelling_2019}:
+The following chapters will always consider a rigid body pose and body-fixed velocities, thus yielding the \textit{left trivialized Lagrangian} \citep{traversaro_modelling_2019}:
 
 \begin{equation}
-    l(\mathbf{H}, \boldsymbol{\nu}) = \mathcal{L}(\mathbf{H}, \mathbf{H}\boldsymbol{\nu}^\wedge) = \mathcal{T}(\boldsymbol{\nu}) - \mathcal{U}(\mathbf{H})
+    l(\mathbf{H}, \mathbf{v}) = \mathcal{L}(\mathbf{H}, \mathbf{H}\mathbf{v}^\wedge) = \mathcal{T}(\mathbf{v}) - \mathcal{U}(\mathbf{H})
 \end{equation}
 
 Once defined a map $\mathbb{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a bias forces vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of Coriolis and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, the stacked flaoting-base Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the external forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{6n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{siciliano_handbook_2008}:
@@ -286,7 +286,7 @@ The forward dynamics problem consists of computing the joint accelerations of a 
 As anticipated, the inversion of the mass matrix for a multi-body system with a high number of links is computationally expensive, in fact, even using \citet{coppersmith_matrix_1990} algorithm or its optimized version by \citet{vassilevska-williams2012breaking}, which reached a complexity of $\mathcal{O}(n^{2.373})$, the computation of the inverse of the mass matrix is still too expensive for real-time scenarios. That is why recursive methods results are more suitable for applications where a fast computation of the dynamics is required. In recursive algorithms, as the problem is unsolvable for a single body of the system, the usual approach is to define the constraints that the links must satisfy, write the equation for each link, calculate the local coefficient, and then propagate them in the kinematic tree until a point in which the problem becomes solvable, usually the base of the tree in backpropagation or the end-effector in forward propagation.
 
 % === FIG: Kinematic Chain === %
-\begin{figure}[h]
+\begin{figure}
     \centering
     \caption{Kinematic subtree visualization.}
     \label{fig:kin_tree}

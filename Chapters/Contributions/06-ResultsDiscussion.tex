@@ -13,9 +13,9 @@ Regarding the computational performance, the modified \ac{ABA} algorithm is expe
 
 \begin{figure}
     \centering
-    \caption{PLACEHOLDER -- Modified Forward Dynamics Benchmark.}
+    \caption{Modified Forward Dynamics Computation Time Benchmark.}
     \label{fig:fd_benchmark}
-    \includegraphics[width=0.5\textwidth]{Images/Results/placeholder.png}
+    \includegraphics[width=0.5\textwidth]{Images/Results/time_comparison_aba.png}
 \end{figure}
 
 When evaluating the difference between the results obtained with the modified \ac{ABA} algorithm and the modified Inertia-Matrix method, it is possible to see that the difference depends on the motor inertia values. In particular, the difference is larger for the joints with a larger motor inertia, while it is smaller for the joints with smaller motor inertia, as can be seen in \cref{fig:fd_comparison}. This is due to the fact that as the motor inertia increases, the gyroscopic effects of the spinning rotors,
@@ -68,7 +68,7 @@ For what concerns the genetic algorithm, the hyperparameters had been tuned in o
 
 The results obtained with the genetic algorithm are reported in \cref{fig:codesignresults}. As expected, the fitness increases as the training progresses, indicating that the genetic algorithm is able to update the population with increasingly more individuals with higher fitness, as shown in \cref{fig:fitness}. Moreover, the diversity, reported in \cref{fig:diversity}, had been tracked in order to verify that the standard deviation from one generation to the other decreases, indicating a convergence of the population toward an optimal solution.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \caption{Cartpole Codesign Results.}
     \label{fig:codesignresults}

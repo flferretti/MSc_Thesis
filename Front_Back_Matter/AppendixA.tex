@@ -20,7 +20,7 @@ we get to a damping coefficient of $c_{crit} = 0.2$ Ns/m. The ground stiffness h
 
 For the choice of integrators and integration step size, multiple tests have been performed. Two main integrators have been tested: \textit{semi-implicit Euler}, which consists of a first-order integrator, and \textit{Runge-Kutta 4}, which is a fourth-order integrator. The integration step size has been varied between $5$ and $0.5$ milliseconds. The contact parameters have been kept constant during the simulations.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \caption{Runge-Kutta 4 integration with different step sizes.}
     \label{fig:rk4}
@@ -30,7 +30,7 @@ For the choice of integrators and integration step size, multiple tests have bee
 
 As can be noticed from \cref{fig:rk4}, the Runge-Kutta 4 integrator is stable only for the smallest step size, which is $0.5$ milliseconds. For the largest step size, the integrator is not stable and the simulation stopped after only $30$ seconds as it started to produce \textit{Not-a-Number} (NaN) values.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \caption{Semi-implicit Euler integration with different step sizes.}
     \label{fig:sie}
