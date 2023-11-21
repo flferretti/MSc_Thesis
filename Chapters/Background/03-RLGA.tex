@@ -5,7 +5,7 @@ This chapter presents the theoretical background of reinforcement learning and g
 
 \section{Fundamentals of Reinforcement Learning}
 
-Reinforcement learning comes from a fusion of optimal control theory and the theory of machine learning and consists of guiding agents in dynamic environments to maximize cumulative rewards. Unlike supervised learning, \ac{RL} doesn't require labeled input/output pairs, and it focuses on striking a balance between exploring uncharted territory, and exploiting existing knowledge, from which come ideas of \textit{exploration} and \textit{exploitation}. Reinforcement learning's versatility extends to a wide range of disciplines like game theory, control theory, and swarm intelligence. Contrary to optimal control theory's emphasis on exact solutions, \ac{RL} addresses problems without a known mathematical model. Assessing an agent's performance against an optimally acting agent introduces the concept of regret, a measure from decision theory of the disparity between what the agent achieves and the best possible outcome, prompting a deeper understanding of the effectiveness and improvement potential within the learning process. For that, \ac{RL} excels in scenarios involving a trade-off between long-term and short-term rewards, requiring agents to consider the extended consequences of their actions. Overall, its adaptability makes it a powerful tool for complex problems that are difficult to model mathematically, such as multibody dynamics.
+Reinforcement learning comes from a fusion of optimal control theory and the theory of machine learning and consists of guiding agents in dynamic environments to maximize cumulative rewards. Unlike supervised learning, \ac{RL} doesn't require labeled input/output pairs, and it focuses on striking a balance between exploring uncharted territory, and exploiting existing knowledge, from which come ideas of \textit{exploration} and \textit{exploitation}. Reinforcement learning's versatility extends to a wide range of disciplines like game theory, control theory, and swarm intelligence. Contrary to optimal control theory's emphasis on exact solutions, \ac{RL} addresses problems without a known mathematical model of the environment's dynamics. Assessing an agent's performance against an optimally acting agent introduces the concept of regret, a measure from decision theory of the disparity between what the agent achieves and the best possible outcome, prompting a deeper understanding of the effectiveness and improvement potential within the learning process. For that, \ac{RL} excels in scenarios involving a trade-off between long-term and short-term rewards, requiring agents to consider the extended consequences of their actions. Overall, its adaptability makes it a powerful tool for complex problems that are difficult to model mathematically, such as multibody dynamics.
 
 \begin{figure}
     \centering
@@ -21,8 +21,8 @@ Reinforcement learning comes from a fusion of optimal control theory and the the
 \begin{itemize}
     \item $\mathcal{S}$ is the set of environment states $\mathbf{s} \in \mathcal{S}$, which may be either discrete or continuous
     \item $\mathcal{A}$ is the set of agent actions $\mathbf{a} \in \mathcal{A}$ which in a similar fashion may be continuous or discrete
-    \item $\mathcal{F} (\mathbf{s}^\prime | \mathbf{s}, \mathbf{a}): \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathcal{S}$ is the state-transition function space that describes a conditional probability distribution $\mathcal{F}(\mathbf{s} _{t+1}|\mathbf{s}_t, \mathbf{a} _t)$ that describes the dynamics of the system
-    \item $\mathcal{R} (\mathbf{s}^\prime, \mathbf{a}, \mathbf{s}): \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ is the reward function
+    \item $\mathcal{F} (\mathbf{s}_{t+1} | \mathbf{s}_t, \mathbf{a}): \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathcal{S}$ is the state-transition function space, i.e. a conditional probability distribution representing the dynamics of the system
+    \item $\mathcal{R} (\mathbf{s}_{t+1}, \mathbf{a}_t, \mathbf{s}_t): \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ is the reward function
     \item $\gamma \in [0,1]$ is the discount factor that determines the weight of future rewards
 \end{itemize}
 
@@ -31,7 +31,7 @@ If the environment is \textit{deterministic}, state transitions can be expressed
 As a reinforcement learning scenario has no prior knowledge regarding the data used for training, the state-transition map and the reward function are unknown.
 
 
-\paragraph{Kullback-Leibler Divergence} The \ac{KL} divergence is a measure of how one probability distribution is different from a second, reference probability distribution. In other words, the \ac{KL} divergence measures the expected number of extra bits required to code samples from one distribution, given that we are using a code based on the reference distribution. The \ac{KL} divergence is defined as:
+\paragraph{Kullback-Leibler Divergence} The \ac{KL} divergence is a measure of how one probability distribution is different from a reference probability distribution. In other words, it is a measure of how much information is lost when one probability distribution is used to approximate another. The \ac{KL} divergence is defined as:
 
 \begin{equation}
     \mathrm{KL}(P||Q) = \mathbb{E} _{x \sim P} \left[ \log \frac{P(x)}{Q(x)} \right] \qquad \in \left[0, \infty \right]
@@ -93,13 +93,13 @@ By defining the \textit{trajectory} generated by a policy $\pi$ a sequence of tu
 in which the initial state $\mathbf{s} _0$ gets sampled from the initial state distribution $p(\mathbf{s} _0)$.
 In \textit{on-policy} method the policy is updated on the trajectory generated by the current policy, while in \textit{off-policy} methods the policy is updated on a trajectory generated by a different policy, therefore while on-policy methods like \ac{PPO} and \ac{TRPO} result in more stable training, off-policy methods like \ac{TD3} and \ac{SAC} are more sample efficient as they can sample from a \textit{replay buffer} of past trajectories.
 
-Since the agent has no apriori knowledge on future rewards, it will try to learn a \textit{state-value function} $V(\mathbf{s})$ that estimates the expected return from a given state $\mathbf{s}$, where $\boldsymbol{\phi}$ is the set of parameters of the value function:
+Since the agent has no apriori knowledge on future rewards, it will try to learn a \textit{state-value function} $V(\mathbf{s})$ that estimates the expected return from a given state $\mathbf{s}$:
 
 \begin{equation}
     V(\mathbf{s}) = \mathbb{E} _{h^{\pi}} \left[ G _t | \mathbf{s} _t = \mathbf{s} \right] = \mathbb{E} _{h^{\pi}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k r _{t+k+1} | \mathbf{s} _t = \mathbf{s} \right]
 \end{equation}
 
-and will be then used to estimate the advantage of an action $\mathbf{a}$, e.g. a measure of how much an action can improve the expected return from a given state in the future.
+and will be then used to estimate the advantage of an action $\mathbf{a}$, i.e. a measure of how much an action can improve the expected return from a given state in the future.
 If we define the \textit{action-value} function $Q(\mathbf{s}, \mathbf{a})$ as the expected return from a given state $\mathbf{s}$ and action $\mathbf{a}$:
 
 \begin{equation}
@@ -122,15 +122,15 @@ Recalling the recursive definition of the return presented in \cref{eqn:recursiv
 
 \begin{flalign}
     V (\mathbf{s}) & = \mathbb{E} _{h^{\pi}} \left[ G _t \mid \mathbf{s} \right] = \mathbb{E} _{h^{\pi}} \left[ r _t + \gamma G _{t+1} \mid \mathbf{s} \right]                                                                                                                         \\
-                   & = \sum _{\mathbf{a}} \pi(\mathbf{a} \mid \mathbf{s})  \sum _{\mathbf{s} ^\prime \in \mathcal{S}} \mathcal{F}(\mathbf{s} ^\prime \mid \mathbf{s}) \left[\mathcal{R}(\mathbf{s} ^\prime, \mathbf{s}) + \gamma \mathbb{E} _{h^{\pi}} \right]  V (\mathbf{s} ^\prime)
+                   & = \sum _{\mathbf{a}} \pi(\mathbf{a} \mid \mathbf{s})  \sum _{\mathbf{s} _{t+1} \in \mathcal{S}} \mathcal{F}(\mathbf{s} _{t+1} \mid \mathbf{s}_t) \left[\mathcal{R}(\mathbf{s} _{t+1}, \mathbf{s}_t) + \gamma \mathbb{E} _{h^{\pi}} \right]  V (\mathbf{s} _{t+1})
 \end{flalign}
 
 and similarly for the action-value function:
 
 \begin{flalign}
-    Q (\mathbf{s}, \mathbf{a}) & = \mathbb{E} _{h^{\pi}} \left[ G_t \mid \mathbf{s}, \mathbf{a} \right]                                                                                                                                                                                                   \\
-                               & = \mathbb{E} _{h^{\pi}} \left[ r _t + \gamma G_{t+1} \mid \mathbf{s}, \mathbf{a} \right]                                                                                                                                                                                 \\
-                               & = \sum _{\mathbf{s} ^\prime \in \mathcal{S}} \mathcal{F}(\mathbf{s} ^\prime \mid \mathbf{s}, \mathbf{a}) \left[ \mathcal{R}(\mathbf{s} ^\prime, \mathbf{a}, \mathbf{s}) + \gamma \mathbb{E} _{h^{\pi}} \right] \left[ Q (\mathbf{s} ^\prime, \mathbf{a} ^\prime) \right]
+    Q (\mathbf{s}, \mathbf{a}) & = \mathbb{E} _{h^{\pi}} \left[ G_t \mid \mathbf{s}, \mathbf{a} \right]                                                                                                                                                                                              \\
+                               & = \mathbb{E} _{h^{\pi}} \left[ r _t + \gamma G_{t+1} \mid \mathbf{s}, \mathbf{a} \right]                                                                                                                                                                            \\
+                               & = \sum _{\mathbf{s} _{t+1} \in \mathcal{S}} \mathcal{F}(\mathbf{s} _{t+1} \mid \mathbf{s}, \mathbf{a}) \left[ \mathcal{R}(\mathbf{s} _{t+1}, \mathbf{a}, \mathbf{s}) + \gamma \mathbb{E} _{h^{\pi}} \right] \left[ Q (\mathbf{s} _{t+1}, \mathbf{a} _{t+1}) \right]
 \end{flalign}
 
 \subsection{Policy Gradient Methods}
