@@ -65,7 +65,7 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
           \end{equation}
 \end{itemize}
 
-\section{Floating Base Multibody System Modelling}
+\section{Robot Modelling}
 
 \subsection{Frames, Rotation and Transformation Matrices}
 
@@ -200,11 +200,7 @@ in which ${}_{A}\mathbf{X}_B = {}^A\mathbf{X}_B ^{-\top}$ is the $6$D forces tra
     \end{bmatrix}
 \end{equation}
 
-\section{Multibody Kinematics}
-
-\subsection{Poses and Velocities}
-
-When dealing with multibody systems, the configuration is described by a configuration belonging to a smooth manifold $\mathbf{H} \in \mathbb{Q} : \mathrm{SE}(3) \times \mathbb{R}^n$ where $n$ is the number of degrees of freedom of the system. The velocity of the system is described by the time derivative of the pose $\mathbf{H}$, which belongs to the tangent space of the manifold $\mathbb{Q}$, i.e. $\dot{\mathbf{H}} \in \mathbb{T}_{\mathbb{Q}}$.
+\section{Floating Base Multibody System Modelling}
 
 \subsection{Joints and Links}
 
@@ -222,6 +218,22 @@ Given a joint we can define a \textit{joint axis} $\mathbf{a} \in \mathbb{R}^3, 
         [\mathbbm{0}_{1 \times 3}, \mathbf{a}] ^\top & \text{if the joint is revolute}
     \end{cases}
 \end{equation}
+
+
+\subsection{Poses and Velocities}
+
+When dealing with multibody systems, the configuration is described by a configuration belonging to a smooth manifold $\mathbf{H} \in \mathbb{Q} : \mathrm{SE}(3) \times \mathbb{R}^n$ where $n$ is the number of degrees of freedom of the system. The velocity of the system is described by the time derivative of the pose $\mathbf{H}$, which belongs to the tangent space of the manifold $\mathbb{Q}$, i.e. $\dot{\mathbf{H}} \in \mathbb{T}_{\mathbb{Q}}$. In the case of a floating-base multibody system, we should take into account the presence of joints, therefore we can reformulate the generalized velocity by stacking the joint velocities $\dot{\mathbf{s}} \in \mathbb{R}^n$ and the velocity of the base respect to an inertial frame $\mathcal{I}$, i.e. ${}^C\mathbf{v}_{\mathcal{I},\mathcal{B}} \in \mathbb{R}^6$, as:
+
+\begin{equation}
+    {}^C \boldsymbol{\nu} =
+    \begin{bmatrix}
+        {}^C \mathbf{v}_{\mathcal{I},\mathcal{B}} \\
+        \dot{\mathbf{s}}
+    \end{bmatrix} \in \mathbb{R}^{6+n}
+\end{equation}
+
+in which ${}^C \mathbf{v}_{\mathcal{I},B}$ is the velocity of the base link, $\dot{\mathbf{s}}$ is the vector of joint velocities, and $C$ is the generic frame in which the velocity is expressed.
+
 
 \section{Equation of Motion}
 \label{sec:back_eom}
