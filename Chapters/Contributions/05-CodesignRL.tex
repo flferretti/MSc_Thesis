@@ -3,11 +3,24 @@
 
 This chapter will describe the process of designing the codesign loop, exploiting the theoretical foundation regarding deep reinforcement learning and evolutionary algorithms presented in \cref{chp:back_RLGA} and the conditioning of \ac{RBDA}s presented in \cref{chp:contrib_ABA} via a hardware accelerated physics simulator. In particular, each new individual created by the genetic algorithm will be evaluated by training a reinforcement learning agent with that set of parameters, for a predetermined task. The reward obtained will be interpreted as the fitness by the evolutionary algorithm, which will then select the best individuals and generate new ones, until the maximum number of generations is reached. In the first section, three reinforcement learning case studies will be presented, which will be used to test the framework. Then, the implementation details of the optimization based on the genetic algorithm will be discussed, together with an overview of the codesign loop. The resulting outcomes will be presented in \cref{chp:contrib_ResultsDiscussion}.
 
-\section{Reinforcement Learning Problem Definition}
+
+\section{Robot Codesign Framework}
+\label{sec:Codesign}
+
+The codesign loop starts in the evolutionary algorithm core, where the initial population is generated with a cardinality of $10$ individuals by sampling from a uniform distribution. Each individual is composed of a set of integers, each one representing an encoding of the motors available according to the \cref{tab:motorparams} as $\mathbf{0}: \text{Motor \textbf{XXXS}}, \mathbf{1}:\text{Motor \textbf{XXS}}, \dots, \mathbf{4}:\text{Motor \textbf{XXXL}}$. The initial population is then evaluated using the \ac{RL} framework, which runs in parallel with multiple agents having the same motor set and sharing the experience. Then, the sum of the rewards of the agents is associated with the fitness of that particular individual. Once the initial population has been evaluated, the evolutionary algorithm keeps the best individual in a process known as \textit{elitism} and mates the rest of the chromosomes. The mating process is performed using the \textit{one-point crossover} operator, which selects a random point in the chromosome and swaps the genes of the two parents. Then, the offspring is mutated using the \textit{uniform mutation} operator, which selects a random gene and mutates it with a probability of $0.2$. The process is then repeated for $20$ generations, after which the best individual is selected and its parameters are used to update the robot design, as represented in \cref{fig:codesignloop}.
+
+\begin{figure}
+    \centering
+    \caption{Codesign Loop Flowchart.}
+    \label{fig:codesignloop}
+    \includegraphics[width=.9\textwidth]{Images/codesign_loop.png}
+\end{figure}
+
+\section{Reinforcement Learning Case Studies}
 
 In reinforcement learning scenarios, a crucial task is represented by the definition of the reward function, which is used to evaluate the performance of the agent. This process is usually called \textit{reward shaping}. The reward function is usually defined as a function of the state of the system, labeling it to be more or less desirable in order to achieve the intended behavior.
 
-\subsection{Cartpole swingup task}
+\subsection{Cartpole Swingup Task}
 
 \begin{figure}
     \centering
@@ -74,7 +87,7 @@ The trainings involving the cartpole swingup task and the codesign process have 
     \end{tabular}
 \end{table}
 
-\subsection{Humanoid locomotion task}
+\subsection{Humanoid Locomotion Task}
 The humanoid walking task is without a doubt one of the most challenging tasks in the field of robotics. The task aims to find a policy $\pi$ that is able to make the robot walk forward in a possibly \textit{human-like} motion. Its high complexity is mainly constituted by the necessity of controlling a large number of joints, which drastically increases the dimensionality of the problem, both in terms of action space and in observation space, from which it could be difficult to select the most relevant features for the algorithm.
 
 All the \ac{RL} trainings for the humanoid walking task in this work have been performed on the \texttt{IITBMP014SRV001} machine whose specifications are reported in \cref{tab:srv001}.
@@ -98,18 +111,19 @@ All the \ac{RL} trainings for the humanoid walking task in this work have been p
     \end{tabular}
 \end{table}
 
-\subsubsection{Tentative JAXsim Implementation}
+\subsubsection{JAXsim Implementation}
 
 \begin{figure}
     \centering
     \caption{JAXsim -- ErgoCub RL Training Visualization}
     \label{fig:ergocubtraining}
-    \includegraphics[width=.9\textwidth]{Images/ergocub_training.png}
+    \subfloat[ErgoCub Model \label{fig:ergocubmodel}]{\includegraphics[width=.5\textwidth]{Images/ergocub_training.png}}
+    \subfloat[ErgoCub Robot \label{fig:ergocub}]{\includegraphics[width=.3\textwidth]{Images/ergocub.png}}
 \end{figure}
 
 The possibility to accelerate simulations using \ac{GPU}s on \jaxsim, makes it ideal in a reinforcement learning scenario. In fact, together with the possibility to precompile the Python code, it can speed up the training. The \ac{RL} framework has been implemented using the \texttt{Stable Baselines 3} library \citep{raffin_stable-baselines3_2021}, which supports the environment architecture by OpenAI Gym \citep{brockman_openai_2016}. In order to create an interface between the reinforcement learning baseline and \jaxsim, a custom class has been implemented so that at each agent step, the action is passed to the simulator, which then computes the next state and the reward, which are then returned to the agent.
 
-At the aim of this task, the ErgoCub robot model, developed by the Italian Institute of Technology and shown in \cref{fig:ergocubtraining}, has been used as the agent. The model \ac{URDF} file used, is an accurate representation of the real structure reported in \cref{fig:ergocub}, yet as not all the joints are relevant for the walking task, some of them were fixed and lumped together. The resulting model presents $6$ joints for each leg, $4$ for each arm and $3$ in the torso, for a total of $23$ joints actuated by $23$ motors.
+At the aim of this task, the ErgoCub robot model, developed by the Italian Institute of Technology and shown in \cref{fig:ergocub}, has been used as the agent. The model \ac{URDF} file used reported in \cref{fig:ergocubmodel}, is an accurate representation of the real structure reported in \cref{fig:ergocub}, yet as not all the joints are relevant for the walking task, some of them were fixed and lumped together. The resulting model presents $6$ joints for each leg, $4$ for each arm and $3$ in the torso, for a total of $23$ joints actuated by $23$ motors.
 
 \begin{equation}
     \label{eqn:ergocub_action_space}
@@ -300,16 +314,3 @@ Considering the computation-expensive nature of the \ac{RL} framework, the hyper
     \end{tabular}
     \caption{Evolutionary Algorithm Hyperparameters.}
 \end{table}
-
-\section{Robot Codesign Loop}
-\label{sec:Codesign}
-
-The codesign loop starts in the evolutionary algorithm core, where the initial population is generated with a cardinality of $10$ individuals by sampling from a uniform distribution. Each individual is composed of a set of integers, each one representing an encoding of the motors available according to the \cref{tab:motorparams} as $\mathbf{0}: \text{Motor \textbf{XXXS}}, \mathbf{1}:\text{Motor \textbf{XXS}}, \dots, \mathbf{4}:\text{Motor \textbf{XXXL}}$. The initial population is then evaluated using the \ac{RL} framework, which runs in parallel with multiple agents having the same motor set and sharing the experience. Then, the sum of the rewards of the agents is associated with the fitness of that particular individual. Once the initial population has been evaluated, the evolutionary algorithm keeps the best individual in a process known as \textit{elitism} and mates the rest of the chromosomes. The mating process is performed using the \textit{one-point crossover} operator, which selects a random point in the chromosome and swaps the genes of the two parents. Then, the offspring is mutated using the \textit{uniform mutation} operator, which selects a random gene and mutates it with a probability of $0.2$. The process is then repeated for $20$ generations, after which the best individual is selected and its parameters are used to update the robot design, as represented in \cref{fig:codesignloop}.
-
-\begin{figure}
-    \centering
-    \caption{Codesign Loop Flowchart.}
-    \label{fig:codesignloop}
-    \includegraphics[width=.9\textwidth]{Images/codesign_loop.png}
-\end{figure}
-
