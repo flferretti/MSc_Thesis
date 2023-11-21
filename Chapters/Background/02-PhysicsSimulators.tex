@@ -63,7 +63,7 @@ A fresh and interesting alternative to \jax, that allows one to easily write \ac
 Creating \jax code requires following a set of rules ensuring that the code can be compiled and potentially auto-differentiated. In fact, \ac{JIT} compilation requires the code to have static bounds on memory requirements and statically-typed, which is not trivial in a dynamically-typed language as Python.
 For example, the usage of \texttt{for}-loops and \texttt{if}-statements is not so straightforward, as the former involves dynamic iteration, which can disrupt the static nature of the code and will get unrolled during the compilation process, leading to a potentially huge computation graph causing memory issues, long compilation times and the impossibility to be forward and backward differentiated. The latter instead introduces conditional branches in the computation graph which cannot be managed by the \ac{XLA} compiler in a static way at runtime. Nevertheless, \jax offers a set of functions that allows to perform static iteration and conditional branching while being forward and backward differentiable and automatically compiled in \textit{Just-In-Time}, namely, \texttt{jax.lax.scan} and \texttt{jax.lax.cond}. Similarly, \texttt{while}-loops do not support reverse differentiation, but they can be implemented using \texttt{jax.lax.scan}, in which the termination condition is checked at each iteration, and when it is met, the loop is not stopped, but the iteration simply does not update the state, ensuring that the number of iterations is static and known at compile time.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \caption{JAX vs Native Python For Loop.}
     \label{fig:jax_python_forloop}
