@@ -1,7 +1,7 @@
 \chapter{Reinforcement Learning and Genetic Algorithms}
 \label{chp:back_RLGA}
 
-This chapter presents the theoretical background of reinforcement learning and genetic algorithms. A particular focus is given to the \ac{PPO} algorithm, which is the main algorithm used in the \ac{RL} framework of the codesign process implemented in this thesis. Finally, some novel approaches in the field of \ac{RL} are presented. This chapter are based on the work of \citet{sutton_reinforcement_1998,li_deep_2018,agarwal_deep_2022,holland_1992_ga}
+This chapter presents the theoretical background of reinforcement learning and genetic algorithms. A particular focus is given to the \ac{PPO} algorithm \citep{schulman_proximal_2017}, which is the main algorithm used in the \ac{RL} framework of the codesign process implemented in this thesis. Finally, some novel approaches in the field of \ac{RL} are presented. This chapter are based on the work of \citet{sutton_reinforcement_1998,li_deep_2018,agarwal_deep_2022,holland_1992_ga}
 
 \section{Fundamentals of Reinforcement Learning}
 
@@ -96,14 +96,15 @@ In \textit{on-policy} method the policy is updated on the trajectory generated b
 Since the agent has no apriori knowledge on future rewards, it will try to learn a \textit{state-value function} $V(\mathbf{s})$ that estimates the expected return from a given state $\mathbf{s}$:
 
 \begin{equation}
-    V(\mathbf{s}) = \mathbb{E} _{h^{\pi}} \left[ G _t | \mathbf{s} _t = \mathbf{s} \right] = \mathbb{E} _{h^{\pi}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k r _{t+k+1} | \mathbf{s} _t = \mathbf{s} \right]
+    V(\mathbf{s}_t) = \mathbb{E} _{h^{\pi}} \left[ G _t | \mathbf{s} _t \right] = \mathbb{E} _{h^{\pi}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k r _{t+k+1} | \mathbf{s} _t \right]
 \end{equation}
 
-and will be then used to estimate the advantage of an action $\mathbf{a}$, i.e. a measure of how much an action can improve the expected return from a given state in the future.
+and will be then used to estimate the advantage of an action $\mathbf{a}$, i.e. a measure of how much an action can improve the expected return from a given state in the future. In this study, we address the variability in literature regarding the time subscript of the immediate reward $r_{(\cdot)}$ by adopting a data-generating process that assigns, at the transition from time $t$ to $t+1$, the data $(s_t, a_t) \rightarrow (r_t, s_{t+1})$.
+
 If we define the \textit{action-value} function $Q(\mathbf{s}, \mathbf{a})$ as the expected return from a given state $\mathbf{s}$ and action $\mathbf{a}$:
 
 \begin{equation}
-    Q (\mathbf{s}, \mathbf{a}) = \mathbb{E} _{h^{\pi}} \left[ G _t | \mathbf{s} _t = \mathbf{s}, \mathbf{a} _t = \mathbf{a} \right] = \mathbb{E} _{h^{\pi}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k r _{t+k+1} | \mathbf{s} _t = \mathbf{s}, \mathbf{a} _t = \mathbf{a} \right]
+    Q(\mathbf{s}_t, \mathbf{a}_t) = \mathbb{E} _{h^{\pi}} \left[ G _t | \mathbf{s} _t, \mathbf{a} _t \right] = \mathbb{E} _{h^{\pi}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k r _{t+k+1} | \mathbf{s} _t, \mathbf{a} _t \right]
 \end{equation}
 
 then the advantage function can be defined as the difference between the action-value function and the state-value function, i.e. if an action $\mathbf{a}$ induces a state $\mathbf{s}$ producing a greater expected return, then the advantage will be negative, otherwise it will be positive:
@@ -135,28 +136,28 @@ and similarly for the action-value function:
 
 \subsection{Policy Gradient Methods}
 
-In continuous action spaces, as the optimal policy function $Q ^*(\mathbf{s}, \mathbf{a})$ is unknown, it is usually modeled as an optimized parametric function $\pi _{\theta}(\mathbf{a} | \mathbf{s})$ that outputs the probability of taking an action $\mathbf{a}$ in a state $\mathbf{s}$, where $\theta$ is the set of parameters of the policy. Therefrom, we can define a stochastic objective function $J(\theta)$ as the expected return of the policy $\pi _{\theta}$, being the return a random variable. Defining also the probability of a trajectory $h ^{\pi}$ as the probability of the initial state $s _0$ times the probability of the action $a _0$ times the probability of the next state $s _1$ and so on, e.g.
+In continuous action spaces, as the optimal policy function $Q ^*(\mathbf{s}, \mathbf{a})$ is unknown, it is usually modeled as an optimized parametric function $\pi _{\boldsymbol{\theta}}(\mathbf{a} | \mathbf{s})$ that outputs the probability of taking an action $\mathbf{a}$ in a state $\mathbf{s}$, where $\boldsymbol{\theta}$ is the set of parameters of the policy. Therefrom, we can define a stochastic objective function $J(\boldsymbol{\theta})$ as the expected return of the policy $\pi _{\boldsymbol{\theta}}$, being the return a random variable. Defining also the probability of a trajectory $h ^{\pi}$ as the probability of the initial state $s _0$ times the probability of the action $a _0$ times the probability of the next state $s _1$ and so on, e.g.
 
 \begin{equation}
-    \mathbb{P}(h ^{\pi}) = \mathbb{P}(s _0) \mathbb{P}(a _0 | s _0) \mathbb{P}(s _1 | s _0, a _0) \dots = \mathbb{P}(s _0) \prod ^{\infty} _{t = 0} \pi _{\theta} (a _t | s _t) \mathbb{P}(s _{t+1} | s _t, a _t)
+    \mathbb{P}(h ^{\pi}) = \mathbb{P}(s _0) \mathbb{P}(a _0 | s _0) \mathbb{P}(s _1 | s _0, a _0) \dots = \mathbb{P}(s _0) \prod ^{\infty} _{t = 0} \pi _{\boldsymbol{\theta}} (a _t | s _t) \mathbb{P}(s _{t+1} | s _t, a _t)
 \end{equation}
 
 we can define the objective function as:
 
 \begin{equation}
-    J(\theta) = \mathbb{E} _{\pi _{\theta}} \left[ G _t \right] = \mathbb{E} _{\pi _{\theta}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k r _{t+k+1} \right]
+    J(\boldsymbol{\theta}) = \mathbb{E} _{\pi _{\boldsymbol{\theta}}} \left[ G _t \right] = \mathbb{E} _{\pi _{\boldsymbol{\theta}}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k r _{t+k+1} \right]
 \end{equation}
 
 from which we can derive the policy update rule once defined the policy gradient:
 
 \begin{equation}
-    \theta _{t+1} = \theta _t + \alpha \nabla _{\theta} J(\pi)
+    \boldsymbol{\theta} _{t+1} = \boldsymbol{\theta} _t + \alpha \nabla _{\boldsymbol{\theta}} J(\pi)
 \end{equation}
 
 where $\alpha \in \mathbb{R} ^+$ is the learning rate. The policy gradient is then defined as:
 
 \begin{equation}
-    \nabla _{\theta} J(\pi) = \nabla _{\theta} \int _{h ^{\pi}} \mathbb{P}(h ^{\pi})G(h ^{\pi})dh ^{\pi} = \dots = \mathbb{E} _{h^{\pi}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k \nabla _{\theta} \log \pi _{\theta} (a _t | s _t) G _t \right]
+    \nabla _{\boldsymbol{\theta}} J(\pi) = \nabla _{\boldsymbol{\theta}} \int _{h ^{\pi}} \mathbb{P}(h ^{\pi})G(h ^{\pi})dh ^{\pi} = \dots = \mathbb{E} _{h^{\pi}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k \nabla _{\boldsymbol{\theta}} \log \pi _{\boldsymbol{\theta}} (a _t | s _t) G _t \right]
 \end{equation}
 
 \subsubsection{Proximal Policy Optimization}
@@ -177,30 +178,6 @@ resulting in the following formulation:
 \end{equation}
 
 in which the $\text{clip}$ operator bounds the first argument in the interval $[1-\varepsilon, 1+\varepsilon]$, $\varepsilon$ is the clipping coefficient, $\hat{\mathbb{E}}$ is the empirical expectation, $\hat{A}_t$ is the advantage estimate at time $t$ and $\beta$ is the penalty coefficient for the KL divergence.
-
-
-% The most common optimizer for \ac{NN} parameters is the first-order gradient-based optimization of stochastic objective function update ADAM \citep{kingma_adam_2017}, reported in \cref{alg:adam}, which
-% updates exponential moving averages of the two gradients, where $\beta_1$ and $\beta_2$ control the decay rates of the moving averages, which are then estimates of the first and second raw moment, corresponding respectively to the mean and uncentered variance.
-
-% \begin{algorithm}[H]
-%     \caption{ADAM}
-%     \label{alg:adam}
-%     \begin{algorithmic}[1]
-%         \Require learning rate $\gamma$, exponential decay rates for the moment estimates $\beta_1, \beta_2$, initial parameter vector $\theta_0$, stochastic objective $f(\theta)$, weight decay $\lambda$
-%         \Require $m_0 \leftarrow 0, v_0 \leftarrow 0$
-%         \For{$t = 1$ \textbf{to} convergence}
-%         \If{$\lambda \neq 0$}
-%         \State $g_t \leftarrow g_t + \lambda\theta_{t-1}$
-%         \EndIf
-%         \State $g_t \leftarrow \nabla _{\theta} f_t (\theta_{t-1}$)
-%         \State $m_t \leftarrow \beta_1 m_{t-1} + (1-\beta_1)g_t$
-%         \State $\hat{m_t} \leftarrow \beta_1 m_{t-1} + (1-\beta_1)g_t$
-%         \State $\hat{v_t} \leftarrow v_t / (1-\eta_2 ^\top)$
-%         \State $\theta_t \leftarrow \theta_t - \gamma \hat{m_t} / (\sqrt{\hat{v}} + \varepsilon)$
-%         \EndFor
-%         \Return $\theta_t$
-%     \end{algorithmic}
-% \end{algorithm}
 
 \begin{algorithm}[H]
     \caption{Clipped Proximal Policy Optimization.}
@@ -232,10 +209,10 @@ in which the $\text{clip}$ operator bounds the first argument in the interval $[
 
 \paragraph{State Dependent Exploration} Likelihood ratio methods such as \ac{PPO} suffer from high variance due to random exploration at every time step of each training episode, used to introduce some \textit{domain randomization} and produce more stable policies. Yet, an alternative is represented by \ac{SDE} \citep{daelemans_state-dependent_2008, raffin_smooth_2021} which adds a \textit{state-dependent offset} to actions at each timestep that will the same value in the state state within an episode, but it will vary between episodes.
 
-Given a pseudo-random function $\hat{\varepsilon}(\mathbf{x}, \hat{\theta})$ where $\hat{\theta} \sim \mathcal{N}(0, \hat{\sigma} _j ^2)$, the action is computed as:
+Given a pseudo-random function $\hat{\varepsilon}(\mathbf{x}, \hat{\boldsymbol{\theta}})$ where $\hat{\boldsymbol{\theta}} \sim \mathcal{N}(0, \hat{\sigma} _j ^2)$, the action is computed as:
 
 \begin{equation}
-    \mathbf{a} = f(\mathbf{x}, \boldsymbol{\theta}) + \hat{\varepsilon}(\mathbf{x}, \hat{\theta})
+    \mathbf{a} = f(\mathbf{x}, \boldsymbol{\theta}) + \hat{\varepsilon}(\mathbf{x}, \hat{\boldsymbol{\theta}})
 \end{equation}
 
 % Should I explain how this gets updated?
@@ -245,13 +222,6 @@ Therefore the usual approximation with finite differences of the gradient cannot
 \begin{equation}
     \nabla _{\boldsymbol{\theta}} J(\pi) = \frac{1}{N} \sum _{h^{\pi}} \sum ^{T-1} _{t = 0} \nabla _{\boldsymbol{\theta}} \log \pi(a _t | h _t ^{\pi}) R(h ^{\pi})
 \end{equation}
-
-% Yet, as perturbed action leads to a stochastic policy which in general is not differentiable due to the high variance in the gradient estimation, therefore it is usually approximated with the finite difference method:
-
-% \begin{equation}
-%     \label{eqn:finitediff}
-%     \frac{\partial J(\boldsymbol{\theta})}{\partial \theta _i} \approx \frac{J(\boldsymbol{\theta} + \delta \boldsymbol{\theta}) - J(\boldsymbol{\theta})}{\delta \theta _i}
-% \end{equation}
 
 \paragraph{Generalized Advantage Estimate}
 By defining the \textit{generalized advantage estimator} (\ac{GAE}) or \textit{temporal difference estimate} as in \cite{schulman_high-dimensional_2018}:
@@ -272,7 +242,6 @@ A potentially good solution might be to take the exponential average as input to
 
 \begin{align}
     \hat{A} _t ^{\text{GAE} (\gamma, \lambda)} & := (1 - \lambda)(\hat{A} _t ^{(1)} + \lambda \hat{A} _t ^{(2)} + \lambda ^2 \hat{A} _t ^{(3)} + \dots) \\
-                                               & = \dots \nonumber                                                                                      \\
                                                & = \sum ^{ \infty } _{l = 0} (\gamma \lambda) ^\top \delta ^V _{t+l} \nonumber
 \end{align}
 
