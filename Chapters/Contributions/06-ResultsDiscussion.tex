@@ -19,7 +19,7 @@ Regarding the computational performance, the modified \ac{ABA} algorithm is expe
 \end{figure}
 
 When evaluating the difference between the results obtained with the modified \ac{ABA} algorithm and the modified Inertia-Matrix method, it is possible to see that the difference depends on the motor inertia values. In particular, the difference is larger for the joints with a larger motor inertia, while it is smaller for the joints with smaller motor inertia, as can be seen in \cref{fig:fd_comparison}. This is due to the fact that as the motor inertia increases, the gyroscopic effects of the spinning rotors,
-expressed in the algorithm as contributions on the bias forces $\mathbf{p}^M _i = {}^M \mathbf{v}_i \times ^* \mathbb{M}_i ^M \mathbf{v}_i + \dots$ which is not considered in the Inertia-Matrix method, become more relevant.
+expressed in the algorithm as contributions on the bias forces $\mathbf{p}^M _i = {}^M \mathbf{v}_i \times ^* \mathbb{I} _i ^M \mathbf{v}_i + \dots$ which is not considered in the Inertia-Matrix method, become more relevant.
 
 \begin{figure}
     \centering

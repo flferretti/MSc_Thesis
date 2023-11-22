@@ -188,13 +188,13 @@ Beginning with the Gaussian principle of least constraint, the objective is to d
     \label{eqn:aba_optim}
     \begin{aligned}
          & \underset{\ddot{\mathbf{s}}}{\text{minimize}}
-         &                                               & \sum _{i \in \mathbb{L}} (\mathbf{a}_i - \mathbf{a} _i ^{\text{uc} }) ^\top \mathbb{M}_i(\mathbf{a}_i - \mathbf{a} ^{\text{uc}} _i) \\
+         &                                               & \sum _{i \in \mathbb{L}} (\mathbf{a}_i - \mathbf{a} _i ^{\text{uc} }) ^\top \mathbb{I} _i(\mathbf{a}_i - \mathbf{a} ^{\text{uc}} _i) \\
          & \text{subject to}
          &                                               & \{\mathbf{a}_i\} \text{ satisfying geometric constraints}
     \end{aligned}
 \end{align}
 
-where $\mathbf{a} _i$ and $\mathbf{a} _i ^{\text{uc}}$ are respectively the costrained and the unconstrained acceleration of the $i$-th body, and $\mathbb{M}_i$ is its spatial inertia.
+where $\mathbf{a} _i$ and $\mathbf{a} _i ^{\text{uc}}$ are respectively the costrained and the unconstrained acceleration of the $i$-th body, and $\mathbb{I} _i$ is its spatial inertia.
 
 
 % === FIG: Unconstrained Motor === %
@@ -222,13 +222,13 @@ where $\mathbf{c} _i$ is the Coriolis acceleration. The equation for the rotor i
 This yields the modified version of the constrained problem of \cref{eqn:aba_optim}:
 
 \begin{align}
-    \underset{\ddot{\mathbf{s}}}{\arg \min} & \qquad (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbb{M} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbb{M} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \nonumber                         \\
+    \underset{\ddot{\mathbf{s}}}{\arg \min} & \qquad (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbb{I} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbb{M} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \nonumber                         \\
     \text{where }                           & \qquad \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \mathbf{c} _i \text{ and } {} ^M \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + {} ^M  \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + {} ^M \mathbf{c} _i \nonumber \\
 \end{align}
 
 \begin{equation}
     \begin{aligned}
-         & \underset{\ddot{\mathbf{s}}}{\arg \min} &  & (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbb{M} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbb{M} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc})                                   \\
+         & \underset{\ddot{\mathbf{s}}}{\arg \min} &  & (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbb{I} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbb{M} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc})                                   \\
          & \text{where }                           &  & \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \mathbf{c} _i \text{ and } {} ^M \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + {} ^M  \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + {} ^M \mathbf{c} _i \nonumber
     \end{aligned}
 \end{equation}
@@ -236,7 +236,7 @@ This yields the modified version of the constrained problem of \cref{eqn:aba_opt
 whose objective function can be then expanded as:
 
 \begin{flalign}
-    J = & \ \mathbf{a} ^\top _i \mathbb{M} ^A _i \mathbf{a} _i - 2\mathbf{a} ^\top _i \mathbb{M} ^A _i \mathbf{a} ^{uc} _i + (\mathbf{a} ^{uc} _i) ^\top \mathbb{M} ^A _i \mathbf{a} ^{uc} _i +                             \\
+    J = & \ \mathbf{a} ^\top _i \mathbb{I} ^A _i \mathbf{a} _i - 2\mathbf{a} ^\top _i \mathbb{I} ^A _i \mathbf{a} ^{uc} _i + (\mathbf{a} ^{uc} _i) ^\top \mathbb{I} ^A _i \mathbf{a} ^{uc} _i +                             \\
         & + {} ^M \mathbf{a} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} _i - 2\mathbf{a} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} ^{uc} _i + ({} ^M \mathbf{a} ^{uc} _i) ^\top \mathbb{M} ^M _i {} ^M \mathbf{a} ^{uc} _i
 \end{flalign}
 
@@ -244,7 +244,7 @@ as any term that is not quadratic in $\ddot{\mathbf{s}}$ is zero when computing 
 
 \begin{equation}
     \begin{aligned}
-        J _1 & = \mathbf{a} ^\top _i \mathbb{M} ^A _i \mathbf{a} _i - 2\mathbf{a} ^\top _i \mathbb{M} ^A _i \mathbf{a} ^{uc} _i                          \\
+        J _1 & = \mathbf{a} ^\top _i \mathbb{I} ^A _i \mathbf{a} _i - 2\mathbf{a} ^\top _i \mathbb{I} ^A _i \mathbf{a} ^{uc} _i                          \\
         J _2 & = {} ^M \mathbf{a} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} _i - 2 {} ^M \mathbf{a} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} ^{uc} _i
     \end{aligned}
 \end{equation}
@@ -252,52 +252,52 @@ as any term that is not quadratic in $\ddot{\mathbf{s}}$ is zero when computing 
 substituting the constraints in the objective function, removing terms not depending on $\ddot{\mathbf{s}}$ and taking the gradient, the following equation is obtained:
 
 \begin{align}
-    \frac{\partial J _1}{\partial \ddot{\mathbf{s}} _i} & = 2 \boldsymbol{\Phi} ^\top _i \mathbb{M} ^A _i \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + 2 \boldsymbol{\Phi} ^\top _i \mathbb{M} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i) - 2 \boldsymbol{\Phi} ^\top _i \mathbb{M} ^A _i \mathbf{a} ^{uc} _i \nonumber                                        \\
+    \frac{\partial J _1}{\partial \ddot{\mathbf{s}} _i} & = 2 \boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + 2 \boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i) - 2 \boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i \mathbf{a} ^{uc} _i \nonumber                                        \\
     \frac{\partial J _2}{\partial \ddot{\mathbf{s}} _i} & = 2 {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i {} ^M \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + 2 {} ^M  \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i (\mathbf{a} _{\lambda (i)} + {} ^M  \mathbf{c} _i) - 2 {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} ^{uc} _i  \nonumber
 \end{align}
 
 Adding up the two terms and defining for compactness:
 
 \begin{equation}
-    \mathbf{D} _i = \boldsymbol{\Phi} ^\top _i \mathbb{M} ^A _i \boldsymbol{\Phi} _i + {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i {} ^M \boldsymbol{\Phi} _i
+    \mathbf{D} _i = \boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i \boldsymbol{\Phi} _i + {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i {} ^M \boldsymbol{\Phi} _i
 \end{equation}
 
 we get to:
 
 \begin{equation}
     \label{eqn:aba_jointacc}
-    \ddot{\mathbf{s}} _i = \mathbf{D} _i ^{-1} (\boldsymbol{\Phi} ^\top _i \mathbb{M} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i - \mathbf{a} ^{uc} _i) + {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i ( \mathbf{a} _{\lambda (i)} + {} ^M \mathbf{c} _i - {} ^M \mathbf{a} ^{uc} _i))
+    \ddot{\mathbf{s}} _i = \mathbf{D} _i ^{-1} (\boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i - \mathbf{a} ^{uc} _i) + {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i ( \mathbf{a} _{\lambda (i)} + {} ^M \mathbf{c} _i - {} ^M \mathbf{a} ^{uc} _i))
 \end{equation}
 
 from which we can derive the recursive relations for the accelerations, which is independent from the rest of the kinematic chain. Considering an external force on the parent link $\lambda (i)$, it will be propagated to the child link $i$ resulting in the following balance of forces:
 
 \begin{equation}
-    \mathbf{f} _i = \mathbf{f} _{\lambda (i)} + \mathbb{M} ^A _i \mathbf{a} _i + \mathbf{v} _i \times ^* \mathbb{M} ^A _i \mathbf{v} _i
+    \mathbf{f} _i = \mathbf{f} _{\lambda (i)} + \mathbb{I} ^A _i \mathbf{a} _i + \mathbf{v} _i \times ^* \mathbb{I} ^A _i \mathbf{v} _i
 \end{equation}
 
 where $\mathbf{f} _i$ is the force acting on the link $i$ and $\mathbf{f} _{\lambda (i)}$ is the force acting on the parent link $\lambda (i)$. Yet, recalling the definition of bias force introduced in \cref{eqn:biasforce}, the equation can be rewritten as:
 
 \begin{equation}
     \label{eqn:aba_mpA}
-    \mathbb{M} _{\lambda(i)} ^A \mathbf{p} _{\lambda(i)} ^A = \mathbb{M} _{\lambda (i)} \mathbf{a} _{\lambda (i)} + \mathbf{p} _{\lambda (i)} + \mathbb{M} _i ^A \mathbf{a} _i + \mathbf{p} _i ^A + \mathbb{M} _i ^M \mathbf{a} _i ^M + \mathbf{p} _i ^M
+    \mathbb{I} _{\lambda(i)} ^A \mathbf{p} _{\lambda(i)} ^A = \mathbb{I} _{\lambda (i)} \mathbf{a} _{\lambda (i)} + \mathbf{p} _{\lambda (i)} + \mathbb{I} _i ^A \mathbf{a} _i + \mathbf{p} _i ^A + \mathbb{I} _i ^M \mathbf{a} _i ^M + \mathbf{p} _i ^M
 \end{equation}
 
 and recalling \cref{eqn:aba_jointacc} we can expand the inertia-related terms as:
 
 \begin{align}
-    \mathbb{M} _i ^A \mathbf{a} _i = \mathbb{M} _i ^A (\mathbf{a} _{\lambda (i)} - \boldsymbol{\Phi} _i \ddot{\mathbf{s}} + \mathbf{c}_i) & \qquad \text{ and } & \mathbb{M} _i ^M \mathbf{a} _i ^M = \mathbb{M} _i ^M (\mathbf{a} _{\lambda (i)} - {} ^M \boldsymbol{\Phi} _i \ddot{\mathbf{s}} + {} ^M \mathbf{c}_i)
+    \mathbb{I} _i ^A \mathbf{a} _i = \mathbb{I} _i ^A (\mathbf{a} _{\lambda (i)} - \boldsymbol{\Phi} _i \ddot{\mathbf{s}} + \mathbf{c}_i) & \qquad \text{ and } & \mathbb{I} _i ^M \mathbf{a} _i ^M = \mathbb{I} _i ^M (\mathbf{a} _{\lambda (i)} - {} ^M \boldsymbol{\Phi} _i \ddot{\mathbf{s}} + {} ^M \mathbf{c}_i)
 \end{align}
 
 which can be substituted in \cref{eqn:aba_mpA} to obtain the two recursive relations:
 
 \begin{equation}
-    \mathbb{M} _{\lambda(i)} ^A = \mathbb{M} _{\lambda (i)} + \mathbb{M} _i ^A + \mathbb{M} _i ^M - \mathbb{M} _i ^A \boldsymbol{\Phi} _i \mathbf{D}^{-1} \boldsymbol{\Phi} _i ^\top  \mathbb{M} _i ^A - \mathbb{M} _i ^M {} ^M \boldsymbol{\Phi} _i \mathbf{D}^{-1} {} ^M \boldsymbol{\Phi} _i ^\top  \mathbb{M} _i ^M
+    \mathbb{I} _{\lambda(i)} ^A = \mathbb{I} _{\lambda (i)} + \mathbb{I} _i ^A + \mathbb{I} _i ^M - \mathbb{I} _i ^A \boldsymbol{\Phi} _i \mathbf{D}^{-1} \boldsymbol{\Phi} _i ^\top  \mathbb{I} _i ^A - \mathbb{I} _i ^M {} ^M \boldsymbol{\Phi} _i \mathbf{D}^{-1} {} ^M \boldsymbol{\Phi} _i ^\top  \mathbb{I} _i ^M
 \end{equation}
 
 and
 
 \begin{equation}
-    \mathbf{p} ^A _{\lambda (i)} = \mathbf{p} ^A _{\lambda (i)} + \mathbf{p} ^A_i + \mathbf{p} ^M_i  + \mathbb{M} ^A _{\lambda (i)}  \mathbf{c}_i + \mathbb{M} {} ^M _i \mathbf{c} ^M _i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i + {} ^M \mathbf{U} _i \mathbf{D} ^{-1} _i {} ^M\mathbf{u} _i
+    \mathbf{p} ^A _{\lambda (i)} = \mathbf{p} ^A _{\lambda (i)} + \mathbf{p} ^A_i + \mathbf{p} ^M_i  + \mathbb{I} ^A _{\lambda (i)}  \mathbf{c}_i + \mathbb{M} {} ^M _i \mathbf{c} ^M _i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i + {} ^M \mathbf{U} _i \mathbf{D} ^{-1} _i {} ^M\mathbf{u} _i
 \end{equation}
 
 The final version of the algorithm is reported in \cref{alg:rotaba}, utilizes the term  ${}^i\mathbf{X} _{\lambda (i)}$ to denote the transformation from the parent link to the child link, which was necessary in the implementation in \jaxsim as they are not necessarily coincident as in the case of \citet{featherstone_rigid_2008} hypotheses.
@@ -323,23 +323,23 @@ The final version of the algorithm is reported in \cref{alg:rotaba}, utilizes th
         \State $\mathbf{c}_i = \mathrm{\mathbf{v}}_i \times ^* \mathrm{\mathbf{v}}_J$
         \State $\color{webgreen}{{}^M\mathbf{c}_i = {}^M\mathrm{\mathbf{v}}_i \times ^* {}^M\mathrm{\mathbf{v}}_J}$
         \EndIf
-        \State $\mathbb{M}_i ^A = \mathbb{M}_i$
-        \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbb{M}_i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
-        \State $\color{webgreen}{\mathbf{p}_i ^M = {} ^M\mathrm{\mathbf{v}}_i \times^* \mathbb{M}_i ^M\mathrm{\mathbf{v}}_i - \boldsymbol{\Gamma} ^{-T}\mathbf{K}_v \boldsymbol{\Gamma} ^{-1} \mathbf{\dot{s}}}$
+        \State $\mathbb{I} _i ^A = \mathbb{I} _i$
+        \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbb{I} _i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
+        \State $\color{webgreen}{\mathbf{p}_i ^M = {} ^M\mathrm{\mathbf{v}}_i \times^* \mathbb{I} _i ^M\mathrm{\mathbf{v}}_i - \boldsymbol{\Gamma} ^{-T}\mathbf{K}_v \boldsymbol{\Gamma} ^{-1} \mathbf{\dot{s}}}$
         \EndFor
 
         % Pass 2
         \item[]
         \For{$i = n \text{ to } 1$}
         \Comment{Forward Pass}
-        \State $\mathbf{U}_i = \mathbb{M}_i ^A \boldsymbol{\Phi}_i$
-        \State $\color{webgreen}{{}^M\mathbf{U}_i = \mathbb{M}_i ^M {}^M\boldsymbol{\Phi}_i}$
+        \State $\mathbf{U}_i = \mathbb{I} _i ^A \boldsymbol{\Phi}_i$
+        \State $\color{webgreen}{{}^M\mathbf{U}_i = \mathbb{I} _i ^M {}^M\boldsymbol{\Phi}_i}$
         \State $\mathbf{D} _i = \boldsymbol{\Phi} ^\top _i  {} \mathbf{U} _i \boldsymbol{\Phi} _i \textcolor{webgreen}{+ {} ^M\boldsymbol{\Phi} ^\top _i  {} ^M\mathbf{U} _i {} ^M\boldsymbol{\Phi} _i}$
         \State $\mathbf{u}_i = \boldsymbol{\tau}_i - \boldsymbol{\Phi}_i\mathbf{p}_i^A$
         \State $\color{webgreen}{{}^M\mathbf{u}_i = \boldsymbol{\Gamma}^{-T}\boldsymbol{\tau}_i - {}^M\boldsymbol{\Phi}_i\mathbf{p}_i^M}$
         \If{$\lambda_i \neq 0$}
-        \State $\mathbb{M} ^A = \mathbb{M} ^A _{\lambda (i)} + {}^i\mathbf{X} _{\lambda (i)} ^\top (\mathbb{M} _i ^A + \textcolor{webgreen}{\mathbb{M} _i ^M } - {}  \mathbf{U} _i  \mathbf{D} ^{-1} _i  {}  \mathbf{U} ^\top _i \textcolor{webgreen}{- {} ^M \mathbf{U} _i  \mathbf{D} ^{-1} _i {} ^M \mathbf{U} ^\top _i}) {} ^i \mathbf{X} _{\lambda (i)} $
-        \State $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {}^i\mathbf{X} _{\lambda (i)} ^\top (\mathbf{p} ^A_i + \textcolor{webgreen}{\mathbf{p} ^M_i } + \mathbb{M} ^A _{\lambda (i)}  \mathbf{c}_i + \textcolor{webgreen}{\mathbb{M} {} ^M _i \mathbf{c} ^M _i }+ {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i + \textcolor{webgreen}{{} ^M \mathbf{U} _i \mathbf{D} ^{-1} _i {} ^M\mathbf{u} _i}) $
+        \State $\mathbb{I} ^A = \mathbb{I} ^A _{\lambda (i)} + {}^i\mathbf{X} _{\lambda (i)} ^\top (\mathbb{I} _i ^A + \textcolor{webgreen}{\mathbb{I} _i ^M } - {}  \mathbf{U} _i  \mathbf{D} ^{-1} _i  {}  \mathbf{U} ^\top _i \textcolor{webgreen}{- {} ^M \mathbf{U} _i  \mathbf{D} ^{-1} _i {} ^M \mathbf{U} ^\top _i}) {} ^i \mathbf{X} _{\lambda (i)} $
+        \State $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {}^i\mathbf{X} _{\lambda (i)} ^\top (\mathbf{p} ^A_i + \textcolor{webgreen}{\mathbf{p} ^M_i } + \mathbb{I} ^A _{\lambda (i)}  \mathbf{c}_i + \textcolor{webgreen}{\mathbb{M} {} ^M _i \mathbf{c} ^M _i }+ {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i + \textcolor{webgreen}{{} ^M \mathbf{U} _i \mathbf{D} ^{-1} _i {} ^M\mathbf{u} _i}) $
         \EndIf
         \EndFor
 

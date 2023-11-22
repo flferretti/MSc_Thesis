@@ -313,16 +313,16 @@ As anticipated, the inversion of the mass matrix for a multi-body system with a 
         }}
 \end{figure}
 
-The \textit{Articulated-Body Algorithm} \citep{featherstone_rigid_2008} finds its roots by initially considering a subdivision of the kinematic structure in subtrees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going down to the root. 
+The \textit{Articulated-Body Algorithm} \citep{featherstone_rigid_2008} finds its roots by initially considering a subdivision of the kinematic structure in subtrees as shown in \cref{fig:kin_tree}, i.e. starting from the leaves and going down to the root.
 Note that in the following discussion, we will use the index $i$ to indicate a subtree, which will then have its motion subspace $\boldsymbol{\Phi}_i$ given by the motion subspace of the child joint connecting the subtree with the rest of the chain, its acceleration $\mathbf{a}_i$ and the acceleration of the child joint  $\ddot{\mathbf{s}} _i$ i.
 If we consider a subtree $i$ interacting with the rest of the kinematic chain, it will be subject to an unknown force $\mathbf{f} _i$ defined as:
 
 \begin{equation}
     \label{eqn:biasforce}
-    \mathbf{f} _i = \mathbb{M} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
+    \mathbf{f} _i = \mathbb{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i
 \end{equation}
 
-where $\mathbb{M} _i ^A$ is the articulated body inertia, i.e. the inertia expressed at the base of the subtree when all its joints are fixed, and $\mathbf{p} ^A _i$ is the associated bias force.
+where $\mathbb{I} _i ^A$ is the articulated body inertia, i.e. the inertia expressed at the base of the subtree when all its joints are fixed, and $\mathbf{p} ^A _i$ is the associated bias force.
 
 In ABA, first, a forward pass is performed to compute the initial articulated body inertia, the initial bias forces, and the link velocities, then a backward pass is performed to finalize the computation of the articulated body inertia and the bias force at each joint and finally a forward pass computes the acceleration of each body in the kinematic chain.
 
@@ -330,17 +330,17 @@ By indicating with $\lambda(i)$ the parent link of subtree $i$, we can express t
 
 \begin{equation}
     \label{eqn:aba_torque}
-    \boldsymbol{\tau} _i = \boldsymbol{\Phi} ^\top _i \mathbf{f} _i = \boldsymbol{\Phi} ^\top _i (\mathbb{M} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i) = \boldsymbol{\Phi} ^\top _i (\mathbb{M} _i ^A (\mathbf{a} _{\lambda(i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \partial_i \boldsymbol{\Phi} _i \dot{\mathbf{s}} _i)+ \mathbf{p} ^A _i)
+    \boldsymbol{\tau} _i = \boldsymbol{\Phi} ^\top _i \mathbf{f} _i = \boldsymbol{\Phi} ^\top _i (\mathbb{I} _i ^A \mathbf{a} _i + \mathbf{p} ^A _i) = \boldsymbol{\Phi} ^\top _i (\mathbb{I} _i ^A (\mathbf{a} _{\lambda(i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \partial_i \boldsymbol{\Phi} _i \dot{\mathbf{s}} _i)+ \mathbf{p} ^A _i)
 \end{equation}
 
 where $\mathbf{a} _{\lambda(i)}$ is the acceleration of the parent link and $\partial_i \boldsymbol{\Phi} _i$ is the derivative of the motion subspace of the $i$-th subtree with respect to the child joint axis coordinate. This last term will be equal to zero in the case of 1-\ac{DoF} joint.
 By solving \cref{eqn:aba_torque} for $\ddot{\mathbf{s}}$ the following results is obtained:
 
 \begin{equation}
-    \ddot{\mathbf{s}} _i = \mathbb{M} _i ^{-1} (\boldsymbol{\tau} _i - \boldsymbol{\Phi} ^\top _i \mathbf{p} ^A _i - \boldsymbol{\Phi} ^\top _i \mathbb{M} _i ^A \mathbf{a} _{\lambda(i)})
+    \ddot{\mathbf{s}} _i = \mathbb{I} _i ^{-1} (\boldsymbol{\tau} _i - \boldsymbol{\Phi} ^\top _i \mathbf{p} ^A _i - \boldsymbol{\Phi} ^\top _i \mathbb{I} _i ^A \mathbf{a} _{\lambda(i)})
 \end{equation}
 
-This yields that once the articulated body inertias $\mathbb{M}_i ^A$ and the bias forces $\mathbf{p}_i ^A$ are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints, constituting the main advantage of the articulated-body algorithm.
+This yields that once the articulated body inertias $\mathbb{I} _i ^A$ and the bias forces $\mathbf{p}_i ^A$ are known, it is possible to compute the acceleration of each joint independently from the dynamics of the other joints, constituting the main advantage of the articulated-body algorithm.
 
 In \cref{alg:aba}, we will make use of some addition symbols and model properties needed for the computation:
 
@@ -349,7 +349,7 @@ In \cref{alg:aba}, we will make use of some addition symbols and model propertie
         \item[$\mathcal{M}$] the model for which the forward dynamics is computed
         \item[$\text{jtype}(i)$] the type of the child joint of subtree $i$
         \item[$\text{jcalc}(\cdot)$] a function returning the motion subspace of the child joint connecting the subtree with the rest of the kinematic chain $\boldsymbol{\Phi}_i$ and its velocity transform $\mathbf{X}_J$ corresponding to its position
-        \item[$\textbf{X}_T(i)$] the velocity transformation from the subtree $i$ with the rest of the tree 
+        \item[$\textbf{X}_T(i)$] the velocity transformation from the subtree $i$ with the rest of the tree
         \item[${}^i\mathbf{X}_{\lambda(i)} = {}^{\lambda(i)}\mathbf{X}_{i}^\top$] the velocity transform from the $i$-th subtree to the rest of the kinematic chain
         \item[$\mathbf{a}_g$] the world gravity acceleration
         \item[$\mathbf{c}_i$] the Coriolis acceleration associated to the $i$-th subtree
@@ -375,8 +375,8 @@ In \cref{alg:aba}, we will make use of some addition symbols and model propertie
         \State $\mathrm{\mathbf{v}}_i = {}^i\mathbf{X} _{\lambda(i)}\mathrm{\mathbf{v}}_{\lambda(i)} + \mathrm{\mathbf{v}}_J$
         \State $\mathbf{c}_i = \mathrm{\mathbf{v}}_i \times ^* \mathrm{\mathbf{v}}_J$
         \EndIf
-        \State $\mathbb{M}_i ^A = \mathbb{M}_i$
-        \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbb{M}_i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
+        \State $\mathbb{I} _i ^A = \mathbb{I} _i$
+        \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbb{I} _i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
         \EndFor
 
         \item[]
@@ -384,12 +384,12 @@ In \cref{alg:aba}, we will make use of some addition symbols and model propertie
         % Pass 2
         \For{$i = n \text{ to } 1$}
         \Comment{Forward Pass}
-        \State $\mathbf{U}_i = \mathbb{M}_i ^A \boldsymbol{\Phi}_i$
+        \State $\mathbf{U}_i = \mathbb{I} _i ^A \boldsymbol{\Phi}_i$
         \State $\mathbf{D} _i = \boldsymbol{\Phi} ^\top _i  {} \mathbf{U} _i \boldsymbol{\Phi} _i $
         \State $\mathbf{u}_i = \boldsymbol{\tau}_i - \boldsymbol{\Phi}_i\mathbf{p}_i^A$
         \If{$\lambda_i \neq 0$}
-        \State $\mathbb{M} ^A = \mathbb{M} ^A _{\lambda (i)} + {} ^i \mathbf{X} _{\lambda (i)} ^\top (\mathbb{M} _i ^A - {}  \mathbf{U} _i  \mathbf{D} ^{-1} _i  {}  \mathbf{U} ^\top _i) {} ^i \mathbf{X} _{\lambda (i)} $
-        \State $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {} ^i \mathbf{X} _{\lambda (i)} ^\top (\mathbf{p} ^A_i + \mathbb{M} ^A _{\lambda (i)}  \mathbf{c}_i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i) $
+        \State $\mathbb{I} ^A = \mathbb{I} ^A _{\lambda (i)} + {} ^i \mathbf{X} _{\lambda (i)} ^\top (\mathbb{I} _i ^A - {}  \mathbf{U} _i  \mathbf{D} ^{-1} _i  {}  \mathbf{U} ^\top _i) {} ^i \mathbf{X} _{\lambda (i)} $
+        \State $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {} ^i \mathbf{X} _{\lambda (i)} ^\top (\mathbf{p} ^A_i + \mathbb{I} ^A _{\lambda (i)}  \mathbf{c}_i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i) $
         \EndIf
         \EndFor
 
