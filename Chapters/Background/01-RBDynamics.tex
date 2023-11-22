@@ -63,6 +63,17 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
                   \mathbbm{0} _{1 \times 3} & 0
               \end{bmatrix}
           \end{equation}
+          
+    \item Given the skew-symmetric matrix $\mathbf{V} = \mathbf{v}^\wedge$, we can define the inverse of the \textit{wedge} $^\wedge$ operator as:
+
+          \begin{equation}
+              \mathbf{V} ^\vee =
+              \begin{bmatrix}
+                  \omega ^\wedge            & v \\
+                  \mathbbm{0} _{1 \times 3} & 0
+              \end{bmatrix}^\vee = \mathbf{v} \in \mathbb{R}^6
+          \end{equation}
+          
 \end{itemize}
 
 \section{Robot Modelling}
@@ -75,21 +86,21 @@ Considering two frames sharing the same origin $A, B \in \mathbb{R}^3$ and assum
     {}^A\mathbf{p} = \begin{bmatrix} {}^Ab_1 & {}^Ab_2 & {}^Ab_3 \end{bmatrix} {}^B \mathbf{p} = {}^A \mathbf{R}_B {}^B\mathbf{p}
 \end{equation}
 
-in which ${}^A\mathbf{R}_B$ is a rotation matrix belonging to $\mathrm{SO}(3)$ as per \cref{eqn:SO3}. Let us now consider an external frame $F$ that \textit{does not} share the origin with $A$ and $B$, by defining ${}^A\mathbf{o}_F$ the position of the frame $F$ in the origin measured in frame $A$ and by defining the transform of coordinates of a point ${}^F\mathbf{q}$ into $A$ as follows:
+in which ${}^A\mathbf{R}_B$ is a rotation matrix belonging to $\mathrm{SO}(3)$ as per \cref{eqn:SO3}. Let us now consider an external frame $F$ that \textit{does not} share the origin with $A$ and $B$, by defining ${}^A\mathbf{o}_F$ the position of the frame $F$ in the origin measured in frame $A$ and by defining the transform of coordinates of a point ${}^F\mathbf{p}$ into $A$ as follows:
 
 \begin{equation}
-    {}^A \mathbf{q} = {}^A \mathbf{R}_F {}^F \mathbf{q} + {}^A \mathbf{o}_F
+    {}^A \mathbf{p} = {}^A \mathbf{R}_F {}^F \mathbf{p} + {}^A \mathbf{o}_F
 \end{equation}
 
 we can get to a more compact form by defining the \textit{homogeneous transformation} matrix ${}^A\mathbf{H}_F \in \mathrm{SE}(3)$ as:
 
 \begin{equation}
     \begin{bmatrix}
-        {}^A \mathbf{q} \\ 1
+        {}^A \mathbf{p} \\ 1
     \end{bmatrix} =
     \begin{bmatrix}
         {}^A \mathbf{R}_F & {}^A \mathbf{o}_F \\ 0 & 1
-    \end{bmatrix} \qquad \rightarrow \qquad {}^A\mathbf{q} = {}^A \mathbf{H}_F {}^F \mathbf{q}
+    \end{bmatrix} \qquad \rightarrow \qquad {}^A\mathbf{p} = {}^A \mathbf{H}_F {}^F \mathbf{p}
 \end{equation}
 
 Thus in the hypothesis of frame rigidly attached to a body, the homogeneous transformation can be used to describe their relative pose.
@@ -128,31 +139,36 @@ A more compact notation can be obtained by multiplying it on the left by the inv
 in which the product ${}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B$ is an element of $\mathrm{SO}(3)$. The \cref{eqn:transformation_derivative} can be described by two three-dimensional velocity vectors representing the linear and the angular components:
 
 \begin{align}
-    {}^A\mathbf{v}_{A,B} = {}^A\mathbf{R}_B^\top = {}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{o}}_B \\
-    {}^A\omega_{A,B} = {}^A\mathbf{R}_B^\top {}^A\mathbf{R}_B = {}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B
+    {}^B\bm{v}_{A,B} &= {}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{o}}_B \\
+    {}^B\omega_{A,B} &= \left({}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B \right)^\vee \nonumber 
 \end{align}
 
 and therefore we can serialize the two components obtaining the \textit{left trivialized} $6$D velocity vector in \textit{body representation}:
 
 \begin{equation}
     \label{eqn:left_trivialized}
-    {}^A\mathbf{v}_{A,B} = \begin{bmatrix}
-        {}^A\mathbf{v}_{A,B} \\
-        {}^A\omega_{A,B}
+    {}^B\mathbf{v}_{A,B} = \begin{bmatrix}
+        {}^B\bm{v}_{A,B} \\
+        {}^B\omega_{A,B}
     \end{bmatrix}
 \end{equation}
 
-Similarly, by defining the $6$D velocity vector such that the linear component is equal to the time derivative of the relative position of the two frames, we obtain the \textit{mixed representation} of the velocity \citep{traversaro_modelling_2019}:
+Similarly, by defining the $6$D velocity vector such that the linear component is equal to the time derivative of the relative position of the two frames ${}^A\dot{\mathbf{o}}_B$, we obtain the \textit{mixed representation} of the velocity \citep{traversaro_modelling_2019}:
 
 \begin{equation}
-    {}^{B[A]}\mathbf{v} _{C,D} =
+    {}^{B[A]}\mathbf{v} _{A,B} =
     \begin{bmatrix}
-        {}^B \dot{\mathbf{o}} _B \\
-        {}^B \dot{\omega}_{C,D}
+        {}^A \dot{\mathbf{o}} _B \\
+        {}^A \omega_{A,B}
     \end{bmatrix} =
-    {}^{C[A]}_B {}^B\mathbf{v}_{A,B} = \begin{bmatrix}
-        {}^{C[A]}_B {}^B\mathbf{v}_{A,B} \\
-        {}^{C[A]}_B {}^B\omega_{A,B}
+    {}^{B[A]} \mathbf{X}_{B} {}^B\mathbf{v}_{A,B}= 
+    \begin{bmatrix}
+        {}^A \mathbf{R}_B & \mathbbm{0}_3 \\
+        \mathbbm{0}_3 & {}^A\mathbf{R}_B
+    \end{bmatrix}
+    \begin{bmatrix}
+        {}^A\mathbf{R}_B ^\top {}^A\dot{\mathbf{o}}_B \\
+        {}^B\omega_{A,B}
     \end{bmatrix}
 \end{equation}
 
