@@ -18,7 +18,7 @@ Starting from the equation of motion of a robot manipulator, as expressed in \cr
     \mathbb{M}(q)\dot{\boldsymbol{\nu}} + \mathbf{h}(q,\boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J} ^\top \mathbf{f}
 \end{equation}
 
-where $\mathbf{h}(q,\boldsymbol{\nu})$ is the Coriolis vector taking into account also gravity effects, $\mathbf{B}$ is the selector matrix for the joint torques, $\boldsymbol{\tau}$ is actuation torques vector, $\mathbf{J}$ is the Jacobian matrix and $\mathbf{f}$ is the external wrenches vector, we can isolate the terms related to the base link from the rest of the kinematic chain:
+where $\mathbf{h}(q,\boldsymbol{\nu})$ is the bias forces vector taking into account Coriolis forces and gravity effects, $\mathbf{B}$ is the selector matrix for the joint torques, $\boldsymbol{\tau}$ is actuation torques vector, $\mathbf{J}$ is the Jacobian matrix and $\mathbf{f}$ is the external wrenches vector, we can isolate the terms related to the base link from the rest of the kinematic chain:
 
 \begin{align}
     \boldsymbol{\nu} =
@@ -87,7 +87,7 @@ Therefore, the \ac{EoM} of the multibody system can be reformulated as:
     \underbrace{\begin{bmatrix}
             \mathbb{M} _{\mathcal{B}}(q)        & \mathbb{M} _{\mathcal{B}S}(q)                                                      \\
             \mathbb{M} _{\mathcal{B}S} ^\top(q) & \mathbb{M} _s(q) + \boldsymbol{\Gamma} ^{-T}\mathbb{M} ^M\boldsymbol{\Gamma} ^{-1}
-        \end{bmatrix}} _{\mathbf{\bar{M}}(q)}
+        \end{bmatrix}} _{\bar{\mathbb{M}}(q)}
     \begin{bmatrix}
         \dot{\mathrm{\mathbf{v}}} \\
         \ddot{\mathbf{s}}
@@ -180,7 +180,6 @@ An unconstrained system refers to a system where the links are geometrically fix
 \end{equation}
 
 where $\mathbb{M} ^M _i$ is the rotor inertia matrix, $\mathbf{p} ^M _i$ is the bias force of the rotor defined recalling \cref{eqn:biasforce} as  $\mathbf{p} ^M _i = {} ^M \mathbf{v} _i\times ^* \mathbb{M} ^M _i {} ^M \mathbf{v} _i$, where ${} ^M \mathbf{v} = \mathbf{v} _{\lambda (i)} + {} ^M \boldsymbol{\Phi} _i \dot{\mathbf{s}} _i$ and $\boldsymbol{\Gamma} _i$ is the gear ratio.
-
 
 Beginning with the Gaussian principle of least constraint, the objective is to determine the joint accelerations $\ddot{\mathbf{s}}$ that fulfill the equation of motion as described in \cref{eqn:equation_of_motion}. This task can be framed as a constrained optimization problem:
 

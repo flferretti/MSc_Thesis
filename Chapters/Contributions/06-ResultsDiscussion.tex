@@ -66,7 +66,7 @@ For what concerns the genetic algorithm, the hyperparameters had been tuned in o
     \includegraphics[width=0.5\textwidth]{Images/search_space.png}
 \end{figure}
 
-The results obtained with the genetic algorithm are reported in \cref{fig:codesignresults}. As expected, the fitness increases as the training progresses, indicating that the genetic algorithm is able to update the population with increasingly more individuals with higher fitness, as shown in \cref{fig:fitness}. Moreover, the diversity, reported in \cref{fig:diversity}, had been tracked in order to verify that the standard deviation from one generation to the other decreases, indicating a convergence of the population toward an optimal solution.
+The results obtained with the genetic algorithm are reported in \cref{fig:codesignresults}. As expected, the fitness increases as the training progresses, indicating that the genetic algorithm is able to update the population with increasingly more individuals with higher fitness, as shown in \cref{fig:fitness}. Moreover, the diversity, reported in \cref{fig:diversity}, had been tracked in order to verify that the standard deviation from one generation to the other decreases, indicating a convergence of the population toward an optimal solution. Interestingly enough, the codesign framework seems to generally converge to small motors, yet for the prismatic joint, the one corresponding to the sliding cart, the chosen motor has a higher viscous friction and inertia.
 
 \begin{figure}
     \centering

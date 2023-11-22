@@ -7,7 +7,7 @@ This chapter will describe the process of designing the codesign loop, exploitin
 \section{Robot Codesign Framework}
 \label{sec:Codesign}
 
-The codesign loop starts in the evolutionary algorithm core, where the initial population is generated with a cardinality of $10$ individuals by sampling from a uniform distribution. Each individual is composed of a set of integers, each one representing an encoding of the motors available according to the \cref{tab:motorparams} as $\mathbf{0}: \text{Motor \textbf{XXXS}}, \mathbf{1}:\text{Motor \textbf{XXS}}, \dots, \mathbf{4}:\text{Motor \textbf{XXXL}}$. The initial population is then evaluated using the \ac{RL} framework, which runs in parallel with multiple agents having the same motor set and sharing the experience. Then, the sum of the rewards of the agents is associated with the fitness of that particular individual. Once the initial population has been evaluated, the evolutionary algorithm keeps the best individual in a process known as \textit{elitism} and mates the rest of the chromosomes. The mating process is performed using the \textit{one-point crossover} operator, which selects a random point in the chromosome and swaps the genes of the two parents. Then, the offspring is mutated using the \textit{uniform mutation} operator, which selects a random gene and mutates it with a probability of $0.2$. The process is then repeated for $20$ generations, after which the best individual is selected and its parameters are used to update the robot design, as represented in \cref{fig:codesignloop}.
+The codesign loop starts in the evolutionary algorithm core, where the initial population is generated with a cardinality of $10$ individuals by sampling from a uniform distribution. Each individual is composed of a set of integers, each one representing an encoding of the motors available according to the \cref{tab:motorparams} as $\mathbf{0}: \text{Motor \textbf{XXXS}}, \mathbf{1}:\text{Motor \textbf{XXS}}, \dots, \mathbf{9}:\text{Motor \textbf{XXXL}}$. The initial population is then evaluated using the \ac{RL} framework, which runs in parallel with multiple agents having the same motor set and sharing the experience. Then, the sum of the rewards of the agents is associated with the fitness of that particular individual. Once the initial population has been evaluated, the evolutionary algorithm keeps the best individual in a process known as \textit{elitism} and mates the rest of the chromosomes. The mating process is performed using the \textit{one-point crossover} operator, which selects a random point in the chromosome and swaps the genes of the two parents. Then, the offspring is mutated using the \textit{uniform mutation} operator, which selects a random gene and mutates it with a probability of $0.2$. The process is then repeated for $20$ generations, after which the best individual is selected and its parameters are used to update the robot design, as represented in \cref{fig:codesignloop}.
 
 \begin{figure}
     \centering
@@ -17,27 +17,28 @@ The codesign loop starts in the evolutionary algorithm core, where the initial p
 \end{figure}
 
 \section{Reinforcement Learning Case Studies}
+\label{sec:codesign_results}
+
+\begin{table}
+    \centering
+    \begin{tabular}{l c c c}
+        \toprule
+        \multicolumn{4}{c}{\textsc{Training Setups}}                             \\
+        \midrule
+        Model              & ErgoCub   & ErgoCub            & CartPole           \\
+        Simulator          & Isaac Gym & JAXsim             & JAXsim             \\
+        Simulation Device  & GPU       & CPU                & CPU                \\
+        Training Device    & GPU       & GPU                & GPU                \\
+        Training Framework & RL Games  & Stable Baselines 3 & Stable Baselines 3 \\
+        Used with Codesign & No        & No                 & Yes                \\
+        \bottomrule
+    \end{tabular}
+    \caption{RL Training Setups.}
+\end{table}
 
 In reinforcement learning scenarios, a crucial task is represented by the definition of the reward function, which is used to evaluate the performance of the agent. This process is usually called \textit{reward shaping}. The reward function is usually defined as a function of the state of the system, labeling it to be more or less desirable in order to achieve the intended behavior.
 
 \subsection{Cartpole Swingup Task}
-
-\begin{table}
-    \centering
-    \begin{tabular}{l c}
-        \toprule
-        \multicolumn{2}{c}{\textsc{Training Setup}} \\
-        \midrule
-        Model              & CartPole               \\
-        Simulator          & JAXsim                 \\
-        Simulation Device  & CPU                    \\
-        Training Device    & GPU                    \\
-        Training Framework & Stable Baselines 3     \\
-        Used with Codesign & Yes                    \\
-        \bottomrule
-    \end{tabular}
-    \caption{Cartpole Swingup Task -- Training Setup.}
-\end{table}
 
 \begin{figure}
     \centering
@@ -129,23 +130,6 @@ All the \ac{RL} trainings for the humanoid walking task in this work have been p
 \end{table}
 
 \subsubsection{JAXsim Implementation}
-
-\begin{table}
-    \centering
-    \begin{tabular}{l c}
-        \toprule
-        \multicolumn{2}{c}{\textsc{Training Setup}} \\
-        \midrule
-        Model              & ErgoCub                \\
-        Simulator          & JAXsim                 \\
-        Simulation Device  & CPU                    \\
-        Training Device    & GPU                    \\
-        Training Framework & Stable Baselines 3     \\
-        Used with Codesign & No                     \\
-        \bottomrule
-    \end{tabular}
-    \caption{ErgoCub Locomotion Task -- JAXsim Training Setup.}
-\end{table}
 
 \begin{figure}
     \centering
@@ -247,23 +231,6 @@ The \ac{RL} framework has been trained for $10^7$ steps, which given the episodi
 Throughout this project, the primary challenge in the Reinforcement Learning (\ac{RL}) framework was twofold. Firstly, the development of a contact model capable of accurately simulating the interaction between the robot and its environment. Simultaneously, it was crucial for this contact model to facilitate the algorithm's ability to forecast the agent's behavior, which could be difficult in the case of simple soft contact models as elucidated in \cref{sec:back_contacts}. Unfortunately, the \jaxsim simulator was in an early developmental stage for the walking task, i.e. for the contact model, which was not the central focus of this work. This made impossible to use the \jaxsim simulator for the humanoid walking task as the agent could not learn in an environment in which the contact dynamics was not predictable. Given the constraints of time available for thesis composition, we eventually opted to abandon this path and instead employed the more developed and readily available simulator, \textsc{Isaac Gym}, provided by NVIDIA.
 
 \subsubsection{Isaac Gym Implementation}
-
-\begin{table}
-    \centering
-    \begin{tabular}{l c}
-        \toprule
-        \multicolumn{2}{c}{\textsc{Training Setup}} \\
-        \midrule
-        Model              & ErgoCub                \\
-        Simulator          & Isaac Gym              \\
-        Simulation Device  & GPU                    \\
-        Training Device    & GPU                    \\
-        Training Framework & RL Games               \\
-        Used with Codesign & No                     \\
-        \bottomrule
-    \end{tabular}
-    \caption{ErgoCub Locomotion Task -- Isaac Gym Training Setup.}
-\end{table}
 
 \begin{figure}
     \centering

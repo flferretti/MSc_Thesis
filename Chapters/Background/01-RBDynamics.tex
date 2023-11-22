@@ -292,7 +292,7 @@ The following chapters will always consider a rigid body pose and body-fixed vel
     l(\mathbf{H}, \mathbf{v}) = \mathcal{L}(\mathbf{H}, \mathbf{H}\mathbf{v}^\wedge) = \mathcal{T}(\mathbf{v}) - \mathcal{U}(\mathbf{H})
 \end{equation}
 
-Once defined a map $\mathbb{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a bias forces vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of Coriolis and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, the stacked flaoting-base Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the external forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{6n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{siciliano_handbook_2008}:
+Once defined a map $\mathbb{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a bias forces vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of Coriolis and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, the stacked floating-base Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the external forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{6n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{siciliano_handbook_2008}:
 
 \begin{equation}
     \label{eqn:equation_of_motion}
