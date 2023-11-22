@@ -207,7 +207,7 @@ in which ${}_{A}\mathbf{X}_B = {}^A\mathbf{X}_B ^{-\top}$ is the $6$D forces tra
 A multibody kinematic tree can be described as a contiguous assembly of two main physical elements: links and joints. The links compose the inertial properties of the system, while the joints are usually modeled as massless elements connecting two links, allowing relative motion between them. They are classified according to the number of \ac{DoF} they allow, which is the number of independent coordinates needed to describe the relative motion between the two links, usually assuming values between 0 (fixed joint) and 6 (free joint).
 
 For the sake of simplicity and without loss of generality, in this work, only 1-\ac{DoF} joint will be considered, as their properties can be extended to multidimensional cases. Furthermore, the system will be considered \textit{acyclic}, i.e. it will not contain any closed loop, as the presence of loops would make the system kinematically redundant.
-Given a joint we can define a \textit{joint axis} $\mathbf{a} \in \mathbb{R}^3, |\mathbf{a}| = 1$, in this case, if we recall the definition of the spatial subspace, we can define a joint motion subspace base $\boldsymbol{\Phi} _j \in \mathbb{R} ^6$ as:
+Given a joint we can define a \textit{joint axis} $\mathbf{a} \in \mathbb{R}^3, |\mathbf{a}| = 1$, in this case, we can define a joint motion subspace base $\boldsymbol{\Phi} _j \in \mathbb{R} ^6$ with the origin on the joint axis $\mathbf{a}$ as:
 
 \begin{equation}
     \label{eqn:subspace}
