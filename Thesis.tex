@@ -179,7 +179,7 @@ The simulation required during the generation of synthetic data in the reinforce
 emerges the need for an architecture that allows to speed up the simulation, involving the use of hardware accelerations via simulators that exploit the use of Graphical Processing Units (GPUs) and Tensor Processing Units (TPUs). The thesis tackles the
 problem of having an algorithm able to compute the dynamics taking into account the presence of the motors, which represent the optimization
 variables of interest in this scenario, with their gear ratio, inertia and internal friction. Then, a framework for the codesign of humanoid robots,
-supported by hardware accelerations, is developed and thouroughly tested on a simple, yet easily scalable, task. The results show that the proposed
+supported by hardware accelerations, is developed and thoroughly tested on a simple, yet easily scalable, task. The results show that the proposed
 framework is able to generate a motor set that is able to maximize the performance of the robot in the given task.
 \\
 \\
@@ -187,21 +187,7 @@ framework is able to generate a motor set that is able to maximize the performan
 
 % ABSTRACT IN ITALIAN
 \chapter*{Abstract in lingua italiana}
-Nel campo della robotica umanoide, i robot stanno diventando sempre più standardizzati a causa della rapida espansione del settore e dell'aumento
-delle applicazioni. Questa tendenza rende il design hardware un elemento cruciale nello sviluppo della strategia di controllo, che spesso rappresenta
-il fulcro della ricerca. La complessità sia dei sistemi di controllo sia dei compiti che i robot devono affrontare rende la progettazione di tali
-sistemi un'impresa impegnativa, con possibili limitazioni nell'adattabilità a nuovi scenari. Per ottenere prestazioni ottimali in determinati compiti,
-un approccio promettente consiste nel progettare la morfologia del robot in modo integrato insieme ai suoi sistemi di controllo.
-
-La tesi si pone l'obiettivo di affrontare la sfida del design sinergico dei robot umanoidi insieme ai loro sistemi di controllo. In questo lavoro, si
-intende sviluppare un framework per il co-design dei robot umanoidi, unendo l'utilizzo del deep reinforcement learning con gli algoritmi evolutivi.
-Dato che la simulazione richiesta per generare dati sintetici nell'apprendimento tramite rinforzo è computazionalmente dispendiosa, è necessaria
-un'architettura che acceleri tale processo, coinvolgendo l'utilizzo di accelerazioni hardware tramite simulatori che sfruttino le Unità di Elaborazione Grafica
-(GPU) e Tensoriale (TPU). A questo scopo, la tesi si concentra dapprima sullo sviluppo di un algoritmo in grado di calcolare la dinamica considerando la
-presenza dei motori, variabili ottimizzabili in questo contesto, in riferimento al loro rapporto di trasmissione, inerzia e attrito viscoso interno.
-Successivamente, verrà sviluppato e testato un framework per il co-design di robot umanoidi, supportato da accelerazioni hardware, concentrandosi su un
-compito relativamente semplice, ma facilmente scalabile. I risultati evidenzieranno la capacità del framework proposto nel generare un set di motori
-che massimizzano le prestazioni del robot nel compito assegnato.
+Il design hardware dei robot è spesso considerato come un componente immutabile nello sviluppo di una strategia di controllo, che di solito è il principale focus della ricerca. Inoltre, l'intricatezza dei sistemi di controllo e la complessità raggiunta da determinati compiti che i robot devono eseguire rendono la progettazione dell'architettura di controllo una sfida, con potenziali limitazioni nell'adattabilità a nuovi scenari. Al fine di massimizzare le prestazioni rispetto a un determinato compito, progettare la morfologia del robot insieme ai suoi sistemi di controllo in un approccio estensivo è una soluzione promettente. La tesi mira ad affrontare il problema di un design sinergico di robot umanoidi e dei loro sistemi di controllo. In particolare, il presente lavoro si pone l'obiettivo di sviluppare un framework per il codesign di robot umanoidi che combini l'utilizzo di apprendimento per rinforzo e algoritmi genetici. La simulazione richiesta durante la generazione di dati sintetici nella fase di apprendimento per rinforzo è computazionalmente dispendiosa, quindi emerge la necessità di un'architettura che consenta di accelerare la simulazione, coinvolgendo l'uso di acceleratori hardware tramite simulatori che sfruttano l'uso di Unità di Elaborazione Grafica (GPU) e Unità di Elaborazione Tensoriale (TPU). La tesi affronta inoltre il problema di avere un algoritmo in grado di calcolare la dinamica tenendo conto della presenza dei motori, che rappresentano le variabili di ottimizzazione di interesse in questo scenario, con il loro rapporto di trasmissione, inerzia e attrito interno. Successivamente, viene sviluppato e testato approfonditamente un framework per il codesign di robot supportato da acceleratori hardware su un caso studio semplice, ma facilmente scalabile. I risultati mostrano che il framework proposto è in grado di generare un set di motori in grado di massimizzare le prestazioni del robot nel compito assegnato.
 \\
 \\
 \textbf{Parole chiave:} codesign, accelerazione hardware, apprendimento per rinforzo, algoritmi evolutivi, dinamica diretta % Keywords (italian)

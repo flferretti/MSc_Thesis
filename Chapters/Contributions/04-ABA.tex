@@ -15,10 +15,10 @@ This chapter describes the formalism and the algorithms involved in the multibod
 Starting from the equation of motion of a robot manipulator, as expressed in \cref{sec:back_eom}:
 
 \begin{equation}
-    \mathbb{M}(q)\dot{\boldsymbol{\nu}} + \mathbf{h}(q,\boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J} ^\top \mathbf{f}
+    \mathbb{M}(\mathbf{q})\dot{\boldsymbol{\nu}} + \mathbf{h}(\mathbf{q},\boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J} ^\top \mathbf{f}
 \end{equation}
 
-where $\mathbf{h}(q,\boldsymbol{\nu})$ is the bias forces vector taking into account Coriolis forces and gravity effects, $\mathbf{B}$ is the selector matrix for the joint torques, $\boldsymbol{\tau}$ is actuation torques vector, $\mathbf{J}$ is the Jacobian matrix and $\mathbf{f}$ is the external wrenches vector, we can isolate the terms related to the base link from the rest of the kinematic chain:
+where $\mathbf{h}(\mathbf{q},\boldsymbol{\nu})$ is the bias forces vector taking into account Coriolis forces and gravity effects, $\mathbf{B}$ is the selector matrix for the joint torques, $\boldsymbol{\tau}$ is actuation torques vector, $\mathbf{J}$ is the Jacobian matrix and $\mathbf{f}$ is the external wrenches vector, we can isolate the terms related to the base link from the rest of the kinematic chain by recalling that:
 
 \begin{align}
     \boldsymbol{\nu} =
@@ -37,8 +37,8 @@ Therefore, the equation of motion can be rewritten in its matrix form as:
 
 \begin{equation}
     \begin{bmatrix}
-        \mathbb{M} _{\mathcal{B}}(q)        & \mathbb{M} _{\mathcal{B}S}(q) \\
-        \mathbb{M} _{\mathcal{B}S} ^\top(q) & \mathbb{M} _s(q)
+        \mathbb{M} _{\mathcal{B}}(\mathbf{q})        & \mathbb{M} _{\mathcal{B}S}(\mathbf{q}) \\
+        \mathbb{M} _{\mathcal{B}S} ^\top(\mathbf{q}) & \mathbb{M} _s(\mathbf{q})
     \end{bmatrix}
     \begin{bmatrix}
         \dot{\mathrm{\mathbf{v}}} \\
@@ -68,7 +68,7 @@ Given that the dynamics of the set of $N _M = n$ motors, each of which is connec
     \label{eqn:mot_dyn}
 \end{equation}
 
-where $\mathbf{K}_v \in \mathbb{R}^n$ is the diagonal matrix of motor viscous friction coefficients and $\mathbb{M}^M \in \mathbb{R}^{n \times n}$ is the matrix of motors' inertias. Considering that given the set of transmission ratios $\boldsymbol{\Gamma} \in \mathbb{R}^n$, the relation between the joints' velocities and the motors' velocities is:
+where $\mathbf{K}_v \in \mathbb{R}^{n\times n}$ is the diagonal matrix of motor viscous friction coefficients and $\mathbb{M}^M \in \mathbb{R}^{n \times n}$ is the matrix of motors' inertias. Considering that given the set of transmission ratios $\boldsymbol{\Gamma} \in \mathbb{R}^n$, the relation between the joints' velocities and the motors' velocities is:
 
 \begin{align}
     \mathbf{s} = \boldsymbol{\theta} \boldsymbol{\Gamma} &  & \dot{\mathbf{s}} = \frac{d}{dt} \mathbf{s} = \dot{\boldsymbol{\theta}} \boldsymbol{\Gamma} &  & \ddot{\mathbf{s}} = \frac{d^2}{dt^2} \mathbf{s} = \ddot{\boldsymbol{\theta}} \boldsymbol{\Gamma}

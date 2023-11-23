@@ -316,18 +316,19 @@ The evolutionary algorithm has been used to select the motor parameters from the
 \end{table}
 
 
-Considering the computation-expensive nature of the \ac{RL} framework, the hyperparameters for the evolutionary algorithm have been tuned to prefer a more explorative approach, in order to avoid the need for a large number of generations. In particular, the following hyperparameters have been selected:
+Considering the computation-expensive nature of the \ac{RL} framework, the hyperparameters for the evolutionary algorithm have been tuned to prefer a more explorative approach, in order to avoid the need for a large number of generations. In particular, the hyperparameters reported in \cref{tab:ga_hyperparams} have been selected.
 
 \begin{table}
     \centering
+    \label{tab:ga_hyperparams}
     \begin{tabular}{ll}
         \toprule
         \textsc{Parameter}    & \textsc{Value} \\
         \midrule
         Population Size       & $10$           \\
         Number of Generations & $20$           \\
-        Crossover Probability & $0.5$          \\
-        Mutation Probability  & $0.2$          \\
+        Crossover Probability & $0.4$          \\
+        Mutation Probability  & $0.5$          \\
         \bottomrule
     \end{tabular}
     \caption{Evolutionary Algorithm Hyperparameters.}

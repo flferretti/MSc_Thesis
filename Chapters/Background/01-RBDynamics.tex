@@ -55,11 +55,11 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
               \end{bmatrix}
           \end{equation}
 
-    \item Similarly, for a $6$D vector $\mathbf{v} = (v, \omega) \in \mathbb{R}^6$, where $v \in \mathbb{R}^3$ and $\omega \in \mathbb{R}^3$, we can define its skew-symmetric matrix $\mathbf{v} ^\wedge \in \mathfrak{se}(3)$ as:
+    \item Similarly, for a $6$D vector $\mathbf{v} = (v, \boldsymbol{\omega}) \in \mathbb{R}^6$, where $v \in \mathbb{R}^3$ and $\boldsymbol{\omega} \in \mathbb{R}^3$, we can define its skew-symmetric matrix $\mathbf{v} ^\wedge \in \mathfrak{se}(3)$ as:
 
           \begin{equation}
               \mathbf{v} ^\wedge = \begin{bmatrix}
-                  \omega ^\wedge            & v \\
+                  \boldsymbol{\omega} ^\wedge            & v \\
                   \mathbbm{0} _{1 \times 3} & 0
               \end{bmatrix}
           \end{equation}
@@ -69,7 +69,7 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
           \begin{equation}
               \mathbf{V} ^\vee =
               \begin{bmatrix}
-                  \omega ^\wedge            & v \\
+                  \boldsymbol{\omega} ^\wedge            & v \\
                   \mathbbm{0} _{1 \times 3} & 0
               \end{bmatrix}^\vee = \mathbf{v} \in \mathbb{R}^6
           \end{equation}
@@ -100,7 +100,7 @@ we can get to a more compact form by defining the \textit{homogeneous transforma
     \end{bmatrix} =
     \begin{bmatrix}
         {}^A \mathbf{R}_F & {}^A \mathbf{o}_F \\ 0 & 1
-    \end{bmatrix} \qquad \rightarrow \qquad {}^A\mathbf{p} = {}^A \mathbf{H}_F {}^F \mathbf{p}
+    \end{bmatrix} {}^F \mathbf{p} \qquad \rightarrow \qquad {}^A\mathbf{p} = {}^A \mathbf{H}_F {}^F \mathbf{p}
 \end{equation}
 
 Thus in the hypothesis of a frame rigidly attached to a body, the homogeneous transformation can be used to describe their relative pose.
@@ -140,7 +140,7 @@ in which the product ${}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B$ is an elemen
 
 \begin{align}
     {}^B\bm{v}_{A,B} & = {}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{o}}_B                              \\
-    {}^B\omega_{A,B} & = \left({}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B \right)^\vee \nonumber
+    {}^B\boldsymbol{\omega}_{A,B} & = \left({}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B \right)^\vee \nonumber
 \end{align}
 
 and therefore we can serialize the two components obtaining the \textit{left trivialized} $6$D velocity vector in \textit{body representation}:
@@ -149,7 +149,7 @@ and therefore we can serialize the two components obtaining the \textit{left tri
     \label{eqn:left_trivialized}
     {}^B\mathbf{v}_{A,B} = \begin{bmatrix}
         {}^B\bm{v}_{A,B} \\
-        {}^B\omega_{A,B}
+        {}^B\boldsymbol{\omega}_{A,B}
     \end{bmatrix}
 \end{equation}
 
@@ -159,7 +159,7 @@ Similarly, by defining the $6$D velocity vector such that the linear component i
     {}^{B[A]}\mathbf{v} _{A,B} =
     \begin{bmatrix}
         {}^A \dot{\mathbf{o}} _B \\
-        {}^A \omega_{A,B}
+        {}^A \boldsymbol{\omega}_{A,B}
     \end{bmatrix} =
     {}^{B[A]} \mathbf{X}_{B} {}^B\mathbf{v}_{A,B}=
     \begin{bmatrix}
@@ -168,7 +168,7 @@ Similarly, by defining the $6$D velocity vector such that the linear component i
     \end{bmatrix}
     \begin{bmatrix}
         {}^A\mathbf{R}_B ^\top {}^A\dot{\mathbf{o}}_B \\
-        {}^B\omega_{A,B}
+        {}^B\boldsymbol{\omega}_{A,B}
     \end{bmatrix}
 \end{equation}
 
@@ -192,12 +192,12 @@ In case in which the measurement frame $C$ corresponds to either $A$ or $B$, the
     {}^C\mathbf{a}_{A,B} = {}^C \mathbf{X}_B \dot{\mathbf{v}}_{A,B}
 \end{equation}
 
-The force acting on a rigid body is defined as a stacking of the linear component $f \in \mathbb{R}^3$ and the angular component $\tau \in \mathbb{R}^3$ of the wrench acting on the body, in particular, we can defined $\mathbf{f} \in \mathbb{R}^6$ respect to a frame $B$ as:
+The force acting on a rigid body is defined as a stacking of the linear component $f \in \mathbb{R}^3$ and the angular component $\boldsymbol{\tau} \in \mathbb{R}^3$ of the wrench acting on the body, in particular, we can defined $\mathbf{f} \in \mathbb{R}^6$ respect to a frame $B$ as:
 
 \begin{equation}
     {}_{B}\mathbf{f} = \begin{bmatrix}
-        {}_{B}f \\
-        {}_{B}\tau
+        {}_{B}\boldsymbol{f} \\
+        {}_{B}\boldsymbol{\tau}
     \end{bmatrix}
 \end{equation}
 
@@ -238,12 +238,12 @@ Given a joint we can define a \textit{joint axis} $\mathbf{a} \in \mathbb{R}^3, 
 
 \subsection{Poses and Velocities}
 
-When dealing with multibody systems, the configuration is described by a configuration belonging to a smooth manifold $\mathbf{H} \in \mathbb{Q} : \mathrm{SE}(3) \times \mathbb{R}^n$ where $n$ is the number of degrees of freedom of the system. The velocity of the system is described by the time derivative of the pose $\mathbf{H}$, which belongs to the tangent space of the manifold $\mathbb{Q}$, i.e. $\dot{\mathbf{H}} \in \mathbb{T}_{\mathbb{Q}}$. In the case of a floating-base multibody system, we should take into account the presence of joints, therefore we can reformulate the generalized velocity by stacking the joint velocities $\dot{\mathbf{s}} \in \mathbb{R}^n$ and the velocity of the base respect to an inertial frame $\mathcal{I}$, i.e. ${}^C\mathbf{v}_{\mathcal{I},\mathcal{B}} \in \mathbb{R}^6$, as:
+When dealing with multibody systems, the configuration is described by a configuration belonging to a smooth manifold $\mathbf{H} \in \mathbb{Q} : \mathrm{SE}(3) \times \mathbb{R}^n$ where $n$ is the number of degrees of freedom of the system. The velocity of the system is described by the time derivative of the pose $\mathbf{H}$, which belongs to the tangent space of the manifold $\mathbb{Q}$, i.e. $\dot{\mathbf{H}} \in \mathbb{T}_{\mathbb{Q}}$. In the case of a floating-base multibody system, we should take into account the presence of joints, therefore we can reformulate the generalized velocity by stacking the joint velocities $\dot{\mathbf{s}} \in \mathbb{R}^n$ and the velocity of the base respect to an inertial frame $\mathcal{I}$, i.e. ${}^C\mathbf{v}_{\mathcal{I},B} \in \mathbb{R}^6$, as:
 
 \begin{equation}
     {}^C \boldsymbol{\nu} =
     \begin{bmatrix}
-        {}^C \mathbf{v}_{\mathcal{I},\mathcal{B}} \\
+        {}^C \mathbf{v}_{\mathcal{I},B} \\
         \dot{\mathbf{s}}
     \end{bmatrix} \in \mathbb{R}^{6+n}
 \end{equation}
@@ -254,7 +254,7 @@ in which ${}^C \mathbf{v}_{\mathcal{I},B}$ is the velocity of the base link, $\d
 \section{Equation of Motion}
 \label{sec:back_eom}
 
-The equation of motion of a generic multibody mechanical system can be derived starting from the Principle of Least Action, which states that in a time interval $[t _0, t _1]$ the motion of a system is such that the action functional $\mathcal{A}$ is stationary, i.e. the first variation of the action functional is zero:
+The equation of motion of a generic multibody mechanical system can be derived starting from the Principle of Least Action, which states that in a time interval $[t _0, t _1]$ the motion of a system is such that the action functional $\mathcal{A}$ is stationary, i.e. the first variation of the action functional is zero. In Euclidean spaces, e.g. when $\mathbf{q} \in \mathbb{R}^n$, it holds:
 
 \begin{equation}
     \mathcal{A} = \int _{t _0} ^{t _1} \mathcal{L} (\mathbf{q}(t), \mathbf{\dot{q}}(t)) dt \quad \text{with } \delta \mathcal{A} = 0
@@ -289,14 +289,14 @@ where $\delta \mathbf{q}$ and $\delta \mathbf{\dot{q}}$ are the variations of th
 The following chapters will always consider a rigid body pose and body-fixed velocities, thus yielding the \textit{left trivialized Lagrangian} \citep{traversaro_modelling_2019}:
 
 \begin{equation}
-    l(\mathbf{H}, \mathbf{v}) = \mathcal{L}(\mathbf{H}, \mathbf{H}\mathbf{v}^\wedge) = \mathcal{T}(\mathbf{v}) - \mathcal{U}(\mathbf{H})
+    \mathcal{L}(\mathbf{H}, \mathbf{v}) = \mathcal{L}(\mathbf{H}, \mathbf{H}\mathbf{v}^\wedge) = \mathcal{T}(\mathbf{v}) - \mathcal{U}(\mathbf{H})
 \end{equation}
 
-Once defined a map $\mathbb{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a bias forces vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of Coriolis and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, the stacked floating-base Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6+n_c)}$ for the external forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{6n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{siciliano_handbook_2008}:
+Once defined a map $\mathbb{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the generalized inertia matrix for the kinetic energy $\mathcal{T}$, a bias forces vector $\mathbf{h} \in \mathbb{R} ^{6+n}$ including the contribution of Coriolis and gravitational forces, a selection matrix $\mathbf{B} = \begin{bmatrix} \mathbbm{0}_{n\times6} & \mathbbm{1}_n \end{bmatrix}^\top$ for the actuation torques $\boldsymbol{\tau} \in \mathbb{R} ^n$, the stacked floating-base Jacobian matrix $\mathbf{J} _\text{c} \in \mathbb{R} ^{(6+n) \times (6n_c)}$ for the external forces $\mathbf{F} ^\text{ext} \in \mathbb{R} ^{6n_c}$ with $n_c$ number of contact frames, the equation of motion can be finally obtained \citep{siciliano_handbook_2008}:
 
 \begin{equation}
     \label{eqn:equation_of_motion}
-    \mathbb{M}(\mathbf{q}) \mathbf{\dot{\boldsymbol{\nu}}} + \mathbf{h} (\mathbf{q}, \boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J}^\top _\text{c} \mathbf{F} ^\text{ext}
+    \mathbb{M}(\mathbf{q}) \mathbf{\dot{\boldsymbol{\nu}}} + \mathbf{h} (\mathbf{q}, \boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J}^\top _\text{c}(\mathbf{q}) \mathbf{F} ^\text{ext}
 \end{equation}
 
 
@@ -361,13 +361,13 @@ This yields that once the articulated body inertias $\mathbb{I} _i ^A$ and the b
 In \cref{alg:aba}, we will make use of some additional symbols and model properties needed for the computation:
 
 \begin{description}
-    \begin{description}[leftmargin=!,labelwidth=\widthof{${}^i\mathbf{X}_{\lambda(i)} = {}^{\lambda(i)}\mathbf{X}_{i}^\top$}]
+    \begin{description}[leftmargin=!,labelwidth=\widthof{$\mathbf{a}_g := \begin{bmatrix} \mathbf{g} & \mathbbm{0}_{3\times1} \end{bmatrix}$}]
         \item[$\mathcal{M}$] the model for which the forward dynamics is computed
         \item[$\text{jtype}(i)$] the type of the child joint of subtree $i$
         \item[$\text{jcalc}(\cdot)$] a function returning the motion subspace of the child joint connecting the subtree with the rest of the kinematic chain $\boldsymbol{\Phi}_i$ and its velocity transform $\mathbf{X}_J$ corresponding to its position
         \item[$\textbf{X}_T(i)$] the velocity transformation from the subtree $i$ with the rest of the tree
-        \item[${}^i\mathbf{X}_{\lambda(i)} = {}^{\lambda(i)}\mathbf{X}_{i}^\top$] the velocity transform from the $i$-th subtree to the rest of the kinematic chain
-        \item[$\mathbf{a}_g$] the world gravity acceleration
+        \item[${}^i\mathbf{X}_{\lambda(i)} = {}^{\lambda(i)}\mathbf{X}_{i}^{-\top}$] the velocity transform from the $i$-th subtree to the rest of the kinematic chain
+        \item[$\mathbf{a}_g := \begin{bmatrix} \mathbf{g} & \mathbbm{0}_{3\times1} \end{bmatrix}$] the world gravity acceleration
         \item[$\mathbf{c}_i$] the Coriolis acceleration associated to the $i$-th subtree
         \item[$\mathbf{U}_i , \mathbf{D}_i, \mathbf{u}_i$] the intermediate quantities defined for compactness
     \end{description}

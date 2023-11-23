@@ -48,10 +48,10 @@ In particular, if the algorithm is converging, the explained variance should get
     \centering
     \caption{Cartpole RL Training Metrics}
     \label{fig:cartpoleresults}
-    \subfloat[Explained Variance]{\includegraphics[width=0.45\textwidth]{Images/Results/expvariance_cartpole.png}}
-    \subfloat[Approximated KL]{\includegraphics[width=0.45\textwidth]{Images/Results/kl_cartpole.png}} \\
-    \subfloat[Value Loss]{\includegraphics[width=0.45\textwidth]{Images/Results/loss_value_cartpole.png}}
-    \subfloat[Rollout Metrics]{\includegraphics[width=0.45\textwidth]{Images/Results/rollout_cartpole.png}}
+    \subfloat[Explained Variance]{\includegraphics[width=0.48\textwidth]{Images/Results/expvariance_cartpole.png}}
+    \subfloat[Approximated KL]{\includegraphics[width=0.48\textwidth]{Images/Results/kl_cartpole.png}} \\
+    \subfloat[Value Loss]{\includegraphics[width=0.48\textwidth]{Images/Results/loss_value_cartpole.png}}
+    \subfloat[Rollout Metrics]{\includegraphics[width=0.48\textwidth]{Images/Results/rollout_cartpole.png}}
 \end{figure}
 
 The results obtained during the training are reported in \cref{fig:cartpoleresults}. As expected, the explained variance gets closer to $1$ as the training progresses, while the approximated KL divergence remains small, which means that the policy update is not too large. The value loss decreases as the training progresses, which means that the value function is getting better at predicting the return. The rollout metrics show that the mean reward and the mean episode length increase as the training progresses, which means that the policy is getting better at solving the task.
@@ -62,7 +62,7 @@ For what concerns the genetic algorithm, the hyperparameters had been tuned in o
     \centering
     \caption{Evolutionary Algorithm Explored Search Space.}
     \label{fig:searchspace}
-    \includegraphics[width=0.5\textwidth]{Images/search_space.png}
+    \includegraphics[width=0.6\textwidth]{Images/search_space.png}
 \end{figure}
 
 The results obtained with the genetic algorithm are reported in \cref{fig:codesignresults}. As expected, the fitness increases as the training progresses, indicating that the genetic algorithm is able to update the population with increasingly more individuals with higher fitness, as shown in \cref{fig:fitness}. Moreover, the diversity, reported in \cref{fig:diversity}, had been tracked in order to verify that the standard deviation from one generation to the other decreases, indicating a convergence of the population toward an optimal solution. Interestingly enough, the codesign framework seems to generally converge to small motors, yet for the prismatic joint, the one corresponding to the sliding cart, the chosen motor has a higher viscous friction and inertia.
