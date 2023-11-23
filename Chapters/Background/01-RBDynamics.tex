@@ -1,7 +1,7 @@
 \chapter{Rigid Multibody Dynamics}
 \label{chp:back_RBDynamics}
 
-In this chapter, a mathematical groundwork for characterizing the dynamics of a floating-base multibody system is presented, setting a convention that is used throughout this work. The notation will be used to describe the kinematics and dynamics of a set of rigid bodies linked between each other, putting the basis for a further discussion on the derivation of computationally efficient algorithms for the computation of the dynamics. Then, a first introduction to recursive rigid body algorithms (\ac{RBDA}) for of a multibody system is presented, to give a comprehensive understanding of the state of the art in the field of rigid multibody dynamics algorithms. In the forthcoming discussion, we ignore the 6D \textit{spatial vectors} notation firstly introduced by \citet{featherstone_rigid_2008} for the original formulation of the \textit{Articulated-Body Algorithm}, preferring instead a more rich notation that includes information about the expressing frames used, which can be less confusing and less-likely error-prone when dealing with complex recursive algorithms.
+In this chapter, a mathematical groundwork for characterizing the dynamics of a floating-base multibody system is presented, setting a convention that is used throughout this work. The notation will be used to describe the kinematics and dynamics of a set of rigid bodies linked between each other, putting the basis for a further discussion on the derivation of computationally efficient algorithms for the computation of the dynamics. Then, a first introduction to recursive rigid body algorithms (\ac{RBDA}) for a multibody system is presented, to give a comprehensive understanding of the state of the art in the field of rigid multibody dynamics algorithms. In the forthcoming discussion, we ignore the 6D \textit{spatial vectors} notation firstly introduced by \citet{featherstone_rigid_2008} for the original formulation of the \textit{Articulated-Body Algorithm}, preferring instead a more rich notation that includes information about the frame in which the quantities are expressed, which can be less confusing and less-likely error-prone when dealing with complex recursive algorithms.
 
 \section{Notation and Conventions}
 
@@ -63,7 +63,7 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
                   \mathbbm{0} _{1 \times 3} & 0
               \end{bmatrix}
           \end{equation}
-          
+
     \item Given the skew-symmetric matrix $\mathbf{V} = \mathbf{v}^\wedge$, we can define the inverse of the \textit{wedge} $^\wedge$ operator as:
 
           \begin{equation}
@@ -73,7 +73,7 @@ In this chapter, a mathematical groundwork for characterizing the dynamics of a 
                   \mathbbm{0} _{1 \times 3} & 0
               \end{bmatrix}^\vee = \mathbf{v} \in \mathbb{R}^6
           \end{equation}
-          
+
 \end{itemize}
 
 \section{Robot Modelling}
@@ -103,7 +103,7 @@ we can get to a more compact form by defining the \textit{homogeneous transforma
     \end{bmatrix} \qquad \rightarrow \qquad {}^A\mathbf{p} = {}^A \mathbf{H}_F {}^F \mathbf{p}
 \end{equation}
 
-Thus in the hypothesis of frame rigidly attached to a body, the homogeneous transformation can be used to describe their relative pose.
+Thus in the hypothesis of a frame rigidly attached to a body, the homogeneous transformation can be used to describe their relative pose.
 
 \subsection{Rigid Body Velocity}
 
@@ -139,8 +139,8 @@ A more compact notation can be obtained by multiplying it on the left by the inv
 in which the product ${}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B$ is an element of $\mathrm{SO}(3)$. The \cref{eqn:transformation_derivative} can be described by two three-dimensional velocity vectors representing the linear and the angular components:
 
 \begin{align}
-    {}^B\bm{v}_{A,B} &= {}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{o}}_B \\
-    {}^B\omega_{A,B} &= \left({}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B \right)^\vee \nonumber 
+    {}^B\bm{v}_{A,B} & = {}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{o}}_B                              \\
+    {}^B\omega_{A,B} & = \left({}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B \right)^\vee \nonumber
 \end{align}
 
 and therefore we can serialize the two components obtaining the \textit{left trivialized} $6$D velocity vector in \textit{body representation}:
@@ -161,10 +161,10 @@ Similarly, by defining the $6$D velocity vector such that the linear component i
         {}^A \dot{\mathbf{o}} _B \\
         {}^A \omega_{A,B}
     \end{bmatrix} =
-    {}^{B[A]} \mathbf{X}_{B} {}^B\mathbf{v}_{A,B}= 
+    {}^{B[A]} \mathbf{X}_{B} {}^B\mathbf{v}_{A,B}=
     \begin{bmatrix}
-        {}^A \mathbf{R}_B & \mathbbm{0}_3 \\
-        \mathbbm{0}_3 & {}^A\mathbf{R}_B
+        {}^A \mathbf{R}_B & \mathbbm{0}_3    \\
+        \mathbbm{0}_3     & {}^A\mathbf{R}_B
     \end{bmatrix}
     \begin{bmatrix}
         {}^A\mathbf{R}_B ^\top {}^A\dot{\mathbf{o}}_B \\
@@ -392,7 +392,7 @@ In \cref{alg:aba}, we will make use of some additional symbols and model propert
         \State $\mathbf{c}_i = \mathrm{\mathbf{v}}_i \times ^* \mathrm{\mathbf{v}}_J$
         \EndIf
         \State $\mathbb{I} _i ^A = \mathbb{I} _i$
-        \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbb{I} _i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* f ^* _i $
+        \State $\mathbf{p}_i ^A = \mathrm{\mathbf{v}}_i \times^* \mathbb{I} _i ^A \mathrm{\mathbf{v}}_i - ^i\mathbf{X} _0 ^* \mathbf{f}_i $
         \EndFor
 
         \item[]

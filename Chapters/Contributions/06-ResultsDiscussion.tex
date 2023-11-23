@@ -56,7 +56,7 @@ In particular, if the algorithm is converging, the explained variance should get
 
 The results obtained during the training are reported in \cref{fig:cartpoleresults}. As expected, the explained variance gets closer to $1$ as the training progresses, while the approximated KL divergence remains small, which means that the policy update is not too large. The value loss decreases as the training progresses, which means that the value function is getting better at predicting the return. The rollout metrics show that the mean reward and the mean episode length increase as the training progresses, which means that the policy is getting better at solving the task.
 
-For what concerns the genetic algorithm, the hyperparameters had been tuned in order to expand the search space as much as possible. As the dimensionality and the discrete nature of the problem allow us to represent the search space as a grid, we could easily verify its extension as in \cref{fig:searchspace}, which the possible combinations for the two joints are represented in a 2D grid, and a color scale is used to represent the normalized fitness of the evaluated chromosomes.
+For what concerns the genetic algorithm, the hyperparameters had been tuned in order to expand the search space as much as possible. As the dimensionality and the discrete nature of the problem allow us to represent the search space as a grid, we could easily verify its extension as in \cref{fig:searchspace}, in which the possible combinations for the two joints are represented in a 2D grid, and a color scale is used to represent the normalized fitness of the evaluated chromosomes.
 
 \begin{figure}
     \centering

@@ -3,7 +3,7 @@
 
 This chapter describes the formalism and the algorithms involved in the multibody systems forward dynamics reformulation, taking into account motor dynamics in the framework of recursive computation methods. In particular, in the first part, the problem of considering rotor dynamics is addressed by modifying the inertia matrix of the system and introducing a new term in the Coriolis vector. This approach will be referred to as \textit{Inertia-Matrix Method}. While being relatively simple to implement, this method forces some hypotheses that can limit its range of application. An alternative approach is described in the second part of the chapter, in which the process of injecting the motor parameters in the Articulated Body Algorithm (\ac{ABA}) is discussed. In the last section, a comparison between the two approaches is presented, in order to highlight the potentialities and the drawbacks of each method.
 
-\section{Rotor-conditioned Forward Dynamics with Inertia-Matrix Method}
+\section{Rotor-conditioned Inertia-Matrix Method}
 
 \begin{figure}
     \centering
@@ -120,7 +120,7 @@ only under the following hypotheses:
     \item The axis of rotation of the motors is aligned with the axis of rotation of the joints;
     \item The gearbox inertia is negligible compared to the link inertia;
     \item The couplings do not introduce any additional friction:
-    \item The internal motor friction is modelled as viscous friction only;
+    \item The internal motor friction is modeled as viscous friction only;
     \item The \ac{CoM} of the motor is coincident with its axis of rotation, e.g. the angular momentum of the motor is only due to its spinning motion.
 \end{enumerate}
 
@@ -136,19 +136,19 @@ This yields the wanted output from the forward dynamics, the rigid body accelera
     \dot{\boldsymbol{\nu}} = \mathbf{\bar{M}}(q) ^{-1} (\mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^\top \mathbf{f} - \mathbf{h}(q,\boldsymbol{\nu}) - \bar{\mathbf{K _v}}\boldsymbol{\nu})
 \end{equation}
 
-\section{ABA with Motor Dynamics}
+\section{Rotor-conditioned Articulated Body Algorithm}
 
-In \cref{subsec:back_aba} we briefly introduced the recursive relations of the \ac{ABA} algorithm. In this section, we will describe how to modify the algorithm in order to take into account the motor dynamics. The main idea is to consider the rotor as an additional link in the kinematic chain, and to modify the inertia matrix and the Coriolis vector accordingly. In particular, we can summarizes the hypotheses behind this approach as follows:
+In \cref{subsec:back_aba} we briefly introduced the recursive relations of the \ac{ABA} algorithm. In this section, we will describe how to modify the algorithm in order to take into account the motor dynamics. The main idea is to consider the rotor as an additional link in the kinematic chain and to modify the inertia matrix and the Coriolis vector accordingly. In particular, we can summarize the hypotheses behind this approach as follows:
 
 \begin{enumerate}
     \item the gearbox inertia is negligible compared to the link inertia;
     \item the motion subspace of the rotor is the same as the motion subspace of the link to which it is attached scaled by the gear ratio, e.g. the free modes of the rotor are the same as the free modes of the link to which it is attached:
     \item The couplings do not introduce any additional friction
-    \item The internal motor friction is modelled as viscous friction only;
+    \item The internal motor friction is modeled as viscous friction only;
     \item The \ac{CoM} of the motor is coincident with its axis of rotation, e.g. the angular momentum of the motor is only due to its spinning motion.
 \end{enumerate}
 
-With these hypotheses, we can reformulate the motion subspace definition reported in \cref{eqn:subspace} for a the rotor attached to joint $i$ as:
+With these hypotheses, we can reformulate the motion subspace definition reported in \cref{eqn:subspace} for a rotor attached to joint $i$ as:
 
 \begin{equation}
     \label{eqn:motor_subspace}
@@ -358,7 +358,7 @@ The final version of the algorithm is reported in \cref{alg:rotaba}, utilizes th
 
 \section{Comparison between the Motor-Conditioned ABA and Inertia-Matrix Based Forward Dynamics}
 
-The main difference between the \ac{ABA} approach and the approach adopted in the Inertia-Based method regards the concretization of the rotors. In fact, \ac{ABA} considers the rotors as extra links in the kinematic chain, with their spatial inertia and dynamics, conditioned by the presence of viscous friction and subject to a torque proportionally greater respect to the torque perceived by the parent link as shown in \cref{fig:ABA_comparison}. The Inertia-Matrix Based method instead, considers the rotor inertias as lumped to the parent link, considering that the torque perceived by the parent link is also proportionally greater than the one in output from the motors.
+The main difference between the \ac{ABA} approach and the approach adopted in the Inertia-Based method regards the concretization of the rotors. In fact, \ac{ABA} considers the rotors as extra links in the kinematic chain, with their spatial inertia and dynamics, conditioned by the presence of viscous friction and subject to a torque proportionally greater respect to the torque perceived by the parent link as shown in \cref{fig:ABA_comparison}. The Inertia-Matrix based method instead, considers the rotor inertias as lumped to the parent link, considering that the torque perceived by the parent link is also proportionally greater than the one in output from the motors.
 
 % === FIG: ABA vs IMB rotors === %
 \begin{figure}
@@ -375,6 +375,6 @@ The main difference between the \ac{ABA} approach and the approach adopted in th
         }}
 \end{figure}
 
-The recursive approach allows therefore to consider a much greater variety of kinematic chains and also it is more computationally efficient. As a consequence, there is a significant difference between the accelerations computed by the two methods, as the inertia-matrix-based method is leverages the hypotheses for which the rotor is lumped to the parent link, which lead to a much different result when the motor inertia increases.
+The recursive approach allows therefore to consider a much greater variety of kinematic chains and also it is more computationally efficient. As a consequence, there is a significant difference between the accelerations computed by the two methods, as the inertia-matrix-based method leverages the hypotheses for which the rotor is lumped to the parent link, which leads to a much different result when the motor inertia increases.
 
-The motor conditioned ABA has been also tested against the forward dynamics implementation of \texttt{iDynTree} \citep{10.3389/frobt.2015.00006} imposing the absence of motors, in order to verify the correctness of the computed accelerations when the rotor is not present, showing that the two algorithms are equivalent in this case.
+The motor-conditioned \ac{ABA} has been also tested against the forward dynamics implementation of \texttt{iDynTree}\footnote{\url{https://github.com/robotology/idyntree}} \citep{10.3389/frobt.2015.00006} imposing the absence of motors, in order to verify the correctness of the computed accelerations when the rotor is not present, showing that the two algorithms are equivalent in this case.

@@ -1,11 +1,11 @@
 \chapter{Reinforcement Learning and Genetic Algorithms}
 \label{chp:back_RLGA}
 
-This chapter presents the theoretical background of reinforcement learning and genetic algorithms. A particular focus is given to the \ac{PPO} algorithm \citep{schulman_proximal_2017}, which is the main algorithm used in the \ac{RL} framework of the codesign process implemented in this thesis. Finally, some novel approaches in the field of \ac{RL} are presented. This chapter are based on the work of \citet{sutton_reinforcement_1998,li_deep_2018,agarwal_deep_2022,holland_1992_ga}
+This chapter presents the theoretical background of reinforcement learning and genetic algorithms. A particular focus is given to the \ac{PPO} algorithm \citep{schulman_proximal_2017}, which is the main algorithm used in the \ac{RL} framework of the codesign process implemented in this thesis. Finally, some novel approaches in the field of \ac{RL} are presented. This chapter are based on the work of \citet{sutton_reinforcement_1998,li_deep_2018,agarwal_deep_2022} for the reinforcement learning groundwork, and on \citep{holland_1992_ga} for the evolutionary algorithms theory.
 
 \section{Fundamentals of Reinforcement Learning}
 
-Reinforcement learning comes from a fusion of optimal control theory and the theory of machine learning and consists of guiding agents in dynamic environments to maximize cumulative rewards. Unlike supervised learning, \ac{RL} doesn't require labeled input/output pairs, and it focuses on striking a balance between exploring uncharted territory, and exploiting existing knowledge, from which come ideas of \textit{exploration} and \textit{exploitation}. Reinforcement learning's versatility extends to a wide range of disciplines like game theory, control theory, and swarm intelligence. Contrary to optimal control theory's emphasis on exact solutions, \ac{RL} addresses problems without a known mathematical model of the environment's dynamics. Assessing an agent's performance against an optimally acting agent introduces the concept of regret, a measure from decision theory of the disparity between what the agent achieves and the best possible outcome, prompting a deeper understanding of the effectiveness and improvement potential within the learning process. For that, \ac{RL} excels in scenarios involving a trade-off between long-term and short-term rewards, requiring agents to consider the extended consequences of their actions. Overall, its adaptability makes it a powerful tool for complex problems that are difficult to model mathematically, such as multibody dynamics.
+Reinforcement learning comes from a fusion of optimal control theory and the theory of machine learning, and consists of guiding agents in dynamic environments to maximize cumulative rewards. Unlike supervised learning, \ac{RL} doesn't require labeled input/output pairs, and it focuses on striking a balance between exploring uncharted territory, and exploiting existing knowledge, from which come ideas of \textit{exploration} and \textit{exploitation}. Reinforcement learning's versatility extends to a wide range of disciplines like game theory, control theory, and swarm intelligence. Contrary to optimal control theory's emphasis on exact solutions, \ac{RL} addresses problems without a known mathematical model of the environment's dynamics. Assessing an agent's performance against an optimally acting agent introduces the concept of \textit{regret}, a measure from decision theory of the disparity between what the agent achieves and the best possible outcome, prompting a deeper understanding of the effectiveness and improvement potential within the learning process. For that, \ac{RL} excels in scenarios involving a trade-off between long-term and short-term rewards, requiring agents to consider the extended consequences of their actions. Overall, its adaptability makes it a powerful tool for complex problems that are difficult to model mathematically, such as multibody dynamics.
 
 \begin{figure}
     \centering
@@ -37,7 +37,7 @@ As a reinforcement learning scenario has no prior knowledge regarding the data u
     \mathrm{KL}(P||Q) = \mathbb{E} _{x \sim P} \left[ \log \frac{P(x)}{Q(x)} \right] \qquad \in \left[0, \infty \right]
 \end{equation}
 
-where $P$ and $Q$ are two probability distributions. The \ac{KL} divergence is not symmetric, i.e. $\mathrm{KL}(P||Q) \neq \mathrm{KL}(Q||P)$. In the framework of reinforcement learning, it is commonly used to have a measure of how much the policy has changed from the previous iteration, in order to avoid too large policy updates, therefore what is actually seeked is the minimization of the \textit{reverse} \ac{KL} divergence $\mathrm{KL}(Q||P)$. In fact, in this mode-seeking behavior, the convergence will be achieved when the policy is close enough to the optimal policy, which is the one that maximizes the expected reward, i.e. when the \ac{KL} divergence is zero.
+where $P$ and $Q$ are two probability distributions. The \ac{KL} divergence is not symmetric, i.e. $\mathrm{KL}(P||Q) \neq \mathrm{KL}(Q||P)$. In the framework of reinforcement learning, it is commonly used to have a measure of how much the policy has changed from the previous iteration, in order to avoid too large policy updates, therefore what is actually sought is the minimization of the \textit{reverse} \ac{KL} divergence $\mathrm{KL}(Q||P)$. In fact, in this mode-seeking behavior, the convergence will be achieved when the policy is close enough to the optimal policy, which is the one that maximizes the expected reward, i.e. when the \ac{KL} divergence is zero.
 
 \subsection{Core Principles of Reinforcement Learning}
 
@@ -72,7 +72,7 @@ where $T$ is the final time step of the episode. As in continuous tasks the epis
 
 From this definition, it is clear that when the discount factor is equal to $0$, the agent will only consider the immediate reward, while if it is equal to $1$, the agent will consider the total reward. In practice, the discount factor is usually set to a value close to $1$.
 
-In \ac{DRL} the policy is described by a neural network, therefore it is modeled as a probability distribution parameterized by the set of the \ac{NN} weights and biases $\boldsymbol{\theta}$. In a standard \textit{Multi Layer Perceptron} policy, $\pi _{\boldsymbol{\theta}}(\mathbf{a} | \mathbf{s})$ is a multivariate Gaussian distribution with diagonal covariance matrix, i.e. $\pi _{\boldsymbol{\theta}}(\mathbf{a} | \mathbf{s}) = \mathcal{N}(\mu = \boldsymbol{\mu}(\mathbf{s}), \sigma = \boldsymbol{\sigma}(\mathbf{s}, \boldsymbol{\theta}))$, where $\mu$ and $\sigma$ are the mean and the standard deviation of the distribution, respectively. The policy is then defined as:
+In \ac{DRL} the policy is described by a neural network, therefore it is modeled as a probability distribution parameterized by the set of the \ac{NN} weights and biases $\boldsymbol{\theta}$. In a standard \textit{Multi Layer Perceptron} policy, $\pi _{\boldsymbol{\theta}}(\mathbf{a} | \mathbf{s})$ is a multivariate Gaussian distribution with a diagonal covariance matrix, i.e. $\pi _{\boldsymbol{\theta}}(\mathbf{a} | \mathbf{s}) = \mathcal{N}(\mu = \boldsymbol{\mu}(\mathbf{s}), \sigma = \boldsymbol{\sigma}(\mathbf{s}, \boldsymbol{\theta}))$, where $\mu$ and $\sigma$ are the mean and the standard deviation of the distribution, respectively. The policy is then defined as:
 
 \begin{equation}
     \pi _{\boldsymbol{\theta}}(\mathbf{a} \mid \mathbf{s}) = \frac{1}{\sqrt{2 \pi \boldsymbol{\sigma} ^2}} \exp \left(- \frac{(\mathbf{a} - \boldsymbol{\mu}) ^2}{2 \boldsymbol{\sigma} ^2} \right)
@@ -91,15 +91,15 @@ By defining the \textit{trajectory} generated by a policy $\pi$ a sequence of tu
 \end{equation}
 
 in which the initial state $\mathbf{s} _0$ gets sampled from the initial state distribution $p(\mathbf{s} _0)$.
-In \textit{on-policy} method the policy is updated on the trajectory generated by the current policy, while in \textit{off-policy} methods the policy is updated on a trajectory generated by a different policy, therefore while on-policy methods like \ac{PPO} and \ac{TRPO} result in more stable training, off-policy methods like \ac{TD3} and \ac{SAC} are more sample efficient as they can sample from a \textit{replay buffer} of past trajectories.
+In \textit{on-policy} method the policy is updated on the trajectory generated by the current policy, while in \textit{off-policy} methods the policy is updated on a trajectory generated by a different policy. Therefore while on-policy methods like \ac{PPO} and \ac{TRPO} result in more stable training, off-policy methods like \ac{TD3} and \ac{SAC} are more sample efficient as they can sample from a \textit{replay buffer} of past trajectories.
 
-Since the agent has no apriori knowledge on future rewards, it will try to learn a \textit{state-value function} $V(\mathbf{s})$ that estimates the expected return from a given state $\mathbf{s}$:
+Since the agent has no apriori knowledge of future rewards, it will try to learn a \textit{state-value function} $V(\mathbf{s})$ that estimates the expected return from a given state $\mathbf{s}$:
 
 \begin{equation}
     V(\mathbf{s}_t) = \mathbb{E} _{h^{\pi}} \left[ G _t | \mathbf{s} _t \right] = \mathbb{E} _{h^{\pi}} \left[ \sum ^{\infty} _{k = 0} \gamma ^k r _{t+k+1} | \mathbf{s} _t \right]
 \end{equation}
 
-and will be then used to estimate the advantage of an action $\mathbf{a}$, i.e. a measure of how much an action can improve the expected return from a given state in the future. In this study, we address the variability in literature regarding the time subscript of the immediate reward $r_{(\cdot)}$ by adopting a data-generating process that assigns, at the transition from time $t$ to $t+1$, the data $(s_t, a_t) \rightarrow (r_t, s_{t+1})$.
+and will be then used to estimate the advantage of an action $\mathbf{a}$, i.e. a measure of how much an action can improve the expected return from a given state in the future. In this study, we address the variability in the literature regarding the time subscript of the immediate reward $r_{(\cdot)}$ by adopting a data-generating process that assigns, at the transition from time $t$ to $t+1$, the data $(s_t, a_t) \rightarrow (r_t, s_{t+1})$.
 
 If we define the \textit{action-value} function $Q(\mathbf{s}, \mathbf{a})$ as the expected return from a given state $\mathbf{s}$ and action $\mathbf{a}$:
 
@@ -136,7 +136,7 @@ and similarly for the action-value function:
 
 \subsection{Policy Gradient Methods}
 
-In continuous action spaces, as the optimal policy function $Q ^*(\mathbf{s}, \mathbf{a})$ is unknown, it is usually modeled as an optimized parametric function $\pi _{\boldsymbol{\theta}}(\mathbf{a} | \mathbf{s})$ that outputs the probability of taking an action $\mathbf{a}$ in a state $\mathbf{s}$, where $\boldsymbol{\theta}$ is the set of parameters of the policy. Therefrom, we can define a stochastic objective function $J(\boldsymbol{\theta})$ as the expected return of the policy $\pi _{\boldsymbol{\theta}}$, being the return a random variable. Defining also the probability of a trajectory $h ^{\pi}$ as the probability of the initial state $s _0$ times the probability of the action $a _0$ times the probability of the next state $s _1$ and so on, e.g.
+In continuous action spaces, as the optimal policy function $Q ^*(\mathbf{s}, \mathbf{a})$ is unknown, it is usually modeled as an optimized parametric function $\pi _{\boldsymbol{\theta}}(\mathbf{a} | \mathbf{s})$ that outputs the probability of taking an action $\mathbf{a}$ in a state $\mathbf{s}$, where $\boldsymbol{\theta}$ is the set of parameters of the policy. Therefore, we can define a stochastic objective function $J(\boldsymbol{\theta})$ as the expected return of the policy $\pi _{\boldsymbol{\theta}}$, being the return of a random variable. Defining also the probability of a trajectory $h ^{\pi}$ as the probability of the initial state $s _0$ times the probability of the action $a _0$ times the probability of the next state $s _1$ and so on, e.g.
 
 \begin{equation}
     \mathbb{P}(h ^{\pi}) = \mathbb{P}(s _0) \mathbb{P}(a _0 | s _0) \mathbb{P}(s _1 | s _0, a _0) \dots = \mathbb{P}(s _0) \prod ^{\infty} _{t = 0} \pi _{\boldsymbol{\theta}} (a _t | s _t) \mathbb{P}(s _{t+1} | s _t, a _t)
@@ -163,7 +163,7 @@ where $\alpha \in \mathbb{R} ^+$ is the learning rate. The policy gradient is th
 \subsubsection{Proximal Policy Optimization}
 
 Amongst policy gradient methods, the \textit{Proximal Policy Optimization} (\ac{PPO}) is by far one of the most used and effective algorithms. It is a family of first-order methods that use a \textit{surrogate objective} in order to ensure a \textit{trust region} on the policy update.
-Moreover, being an \textit{actor-critic} method, it uses two neural networks, one for learning the policy and one for learning the value function, acting as a feedback  loop for the policy network.
+Moreover, being an \textit{actor-critic} method, it uses two neural networks, one for learning the policy and one for learning the value function, acting as a feedback loop for the policy network.
 
 The version of \ac{PPO} adopted in this work uses a clipped surrogate objective and introduces a penalization term on the \ac{KL} divergence between the new and the old policy, ensuring small policy updates that would otherwise lead to unstable training, once defined:
 
@@ -207,15 +207,13 @@ in which the $\text{clip}$ operator bounds the first argument in the interval $[
 \end{algorithm}
 
 
-\paragraph{State Dependent Exploration} Likelihood ratio methods such as \ac{PPO} suffer from high variance due to random exploration at every time step of each training episode, used to introduce some \textit{domain randomization} and produce more stable policies. Yet, an alternative is represented by \ac{SDE} \citep{daelemans_state-dependent_2008, raffin_smooth_2021} which adds a \textit{state-dependent offset} to actions at each timestep that will the same value in the state state within an episode, but it will vary between episodes.
+\paragraph{State Dependent Exploration} Likelihood ratio methods such as \ac{PPO} suffer from high variance due to random exploration at every time step of each training episode, used to introduce some \textit{domain randomization} and produce more stable policies. Yet, an alternative is represented by \ac{SDE} \citep{daelemans_state-dependent_2008, raffin_smooth_2021} which adds a \textit{state-dependent offset} to actions at each timestep that will the same value in the state within an episode, but it will vary between episodes.
 
 Given a pseudo-random function $\hat{\varepsilon}(\mathbf{x}, \hat{\boldsymbol{\theta}})$ where $\hat{\boldsymbol{\theta}} \sim \mathcal{N}(0, \hat{\sigma} _j ^2)$, the action is computed as:
 
 \begin{equation}
     \mathbf{a} = f(\mathbf{x}, \boldsymbol{\theta}) + \hat{\varepsilon}(\mathbf{x}, \hat{\boldsymbol{\theta}})
 \end{equation}
-
-% Should I explain how this gets updated?
 
 Therefore the usual approximation with finite differences of the gradient cannot be computed. Thus, the expectation is approximated e.g. by \textit{Monte-Carlo sampling}, which yields \citep{williams_simple_1992} the episodic gradient estimation:
 
@@ -230,7 +228,7 @@ By defining the \textit{generalized advantage estimator} (\ac{GAE}) or \textit{t
     \hat{A}(s,a) = r _0 + \gamma \hat{V}(s _1) - \hat{V}(s _0)
 \end{equation}
 
-this can be modified to be less biased by taking $n$ steps for each update, this will also scale the magnitude of the value estimate adding a time-sensitivity:
+this can be modified to be less biased by taking $n$ steps for each update, this will also scale the magnitude of the value estimate adding a time sensitivity:
 
 \begin{equation}
     \hat{A} ^{(n)} (s,a) = r _0 + \gamma r _1 + \dots + \gamma ^{n-1} r _{n-1} + \gamma ^n \hat{V}(s _n) - \hat{V}(s _0)
@@ -254,7 +252,7 @@ process and genetics, in which some individuals are selected to reproduce and pa
 
 The core idea behind genetic algorithms involves representing potential solutions to a problem as individuals in a population. Through successive generations, these individuals undergo genetic operations mimicking the mechanisms of biological evolution. As the algorithm progresses, the fittest individuals, those with higher adaptability or better solutions, are more likely to survive and contribute to the next generation.
 
-A generic evolutionary algorithm starts with an initial population of individuals, chosen randomly or according to some heuristic, then the first two individuals are randomly picked from the population and combined to generate a new individual in a process called \textit{crossover}. As evolutionary algorithm are prone to get stuck in local minima, filling the population with sub-optimal individuals and therefore preventing the algorithm from finding the global optimum, a certain percentage of the population is  mutated with a certain probability and added to the population if fit enough. The process is repeated until a stopping criterion is met, e.g. a maximum number of generations is reached or the fitness of the population is above a certain threshold. An overview of the evolutionary process can be found in \cref{fig:genetic_algo}.
+A generic evolutionary algorithm starts with an initial population of individuals, chosen randomly or according to some heuristic, then the first two individuals are randomly picked from the population and combined to generate a new individual in a process called \textit{crossover}. As evolutionary algorithms are prone to get stuck in local minima, filling the population with sub-optimal individuals and therefore preventing the algorithm from finding the global optimum, a certain percentage of the population is mutated with a certain probability and added to the population if fit enough. The process is repeated until a stopping criterion is met, e.g. a maximum number of generations is reached or the fitness of the population is above a certain threshold. An overview of the evolutionary process can be found in \cref{fig:genetic_algo}.
 
 \begin{figure}
     \centering
@@ -271,7 +269,7 @@ Tournament selection is a strategy to select individuals for reproduction in whi
 
 \paragraph{Mutation}
 
-Mutation is a genetic operator used to introduce new genetic information into the population. In practice, the individual characteristic is modified by applying a random perturbation to its genetic information. The mutation happens with a certain probability, called \textit{mutation rate}, which needs to be tuned as a too high mutation rate can lead to a loss of genetic information, preventing the algorithm to reach convergence, while a too low mutation rate can lead to a stagnation of the algorithm.
+Mutation is a genetic operator used to introduce new genetic information into the population. In practice, the individual characteristic is modified by applying a random perturbation to its genetic information. The mutation happens with a certain probability, called \textit{mutation rate}, which needs to be tuned as a too-high mutation rate can lead to a loss of genetic information, preventing the algorithm from reaching convergence, while a too-low mutation rate can lead to a stagnation of the algorithm.
 
 \paragraph{Elitism}
 
