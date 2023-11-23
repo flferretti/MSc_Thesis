@@ -13,7 +13,7 @@ Regarding the computational performance, the modified \ac{ABA} algorithm is expe
 
 \begin{figure}
     \centering
-    \caption{Modified Forward Dynamics Computation Time Benchmark.}
+    \caption{Modified Forward Dynamics -- Computation Time Benchmark.}
     \label{fig:fd_benchmark}
     \includegraphics[width=0.7\textwidth]{Images/Results/time_comparison_aba.png}
 \end{figure}
@@ -23,13 +23,12 @@ expressed in the algorithm as contributions on the bias forces $\mathbf{p}^M _i 
 
 \begin{figure}
     \centering
-    \caption{PLACEHOLDER -- Modified Forward Dynamics Benchmark.}
+    \caption{Modified Forward Dynamics -- Algorithm Comparison.}
     \label{fig:fd_comparison}
-    \includegraphics[width=0.5\textwidth]{Images/Results/time_comparison_aba.png}
+    \includegraphics[width=0.5\textwidth]{Images/Results/ABA_IBM.png}
 \end{figure}
 
 \section{Robot Codesign Results}
-\label{sec:codesign_results}
 
 The usage of genetic algorithms together with reinforcement learning involves the tuning of several hyperparameters, which can have a significant impact on the performance of the algorithm. Moreover, given the computational cost of the reinforcement learning training, the choice of parameters is bounded by the available computational resources. As an example, the number of generations of the genetic algorithm is strictly related to the number of reinforcement learning training that can be performed, yet reducing its value can lead to a smaller explored space of solutions, bringing therefore to suboptimal results.
 
