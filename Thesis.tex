@@ -169,25 +169,18 @@
 
 % ABSTRACT IN ENGLISH
 \chapter*{Abstract}
-Robots hardware design is often treated as an immutable component in the development of a control strategy, which is usually the main focus of the research.
-Moreover, the intricacy of the control systems and the complexity reached by certain tasks that the robots are required to perform, make the control design
+Robot hardware design is often treated as an immutable component in the development of a control strategy.
+Moreover, the complexity of the control systems and the computational effort required by certain robot maneuvers, make the control design
 challenging, with potential limitation on the adaptability to new scenarios. In order to maximize the performance with respect to a given task,
-designing the robot morphology together with its control systems in an extensive approach is a promising solution.
-The thesis aims to target the problem of a synergic design of humanoid robots and their control systems. In particular, the present work aims
-to develop a framework for the codesign of humanoid robots that combines the use of deep reinforcement learning and evolutionary algorithms.
-The simulation required during the generation of synthetic data in the reinforcement learning phase is computationally expensive, hence it
-emerges the need for an architecture that allows to speed up the simulation, involving the use of hardware accelerations via simulators that exploit the use of Graphical Processing Units (GPUs) and Tensor Processing Units (TPUs). The thesis tackles the
-problem of having an algorithm able to compute the dynamics taking into account the presence of the motors, which represent the optimization
-variables of interest in this scenario, with their gear ratio, inertia and internal friction. Then, a framework for the codesign of humanoid robots,
-supported by hardware accelerations, is developed and thoroughly tested on a simple, yet easily scalable, task. The results show that the proposed
-framework is able to generate a motor set that is able to maximize the performance of the robot in the given task.
+designing the robot body characteristics together with its control systems in an extensive approach, often referred to as \textit{codesign}, is a promising solution. The use of reinforcement learning as control system is another valid methodology. Yet, it has not been extensively applied to humanoid robotics in a codesign context. Nevertheless, the simulation required during the generation of synthetic data in reinforcement learning phase is computationally expensive, hence it emerges the need for an architecture that allows to speed up the simulation, involving the use of hardware accelerations via simulators that exploit the use of \textit{Graphical Processing Units} (GPUs) and \textit{Tensor Processing Units} (TPUs). This thesis aims at targeting the problem of a synergic design of robots and their control systems. In particular, we focus on the optimization of the electric drives characteristics, which is often crucial in the field of humanoid robotics. To this aim, we first develop an algorithm able to compute the robot dynamics taking into account the presence of the motors, with their gear ratio, inertia and internal friction. Then, we introduce a framework that combines deep reinforcement learning and evolutionary algorithms for the robot codesign, supported by hardware acceleration. Finally, we show that the proposed architecture is able to generate a motor set that is capable of maximizing the performance of the robot in a simple, yet easily scalable task.
 \\
 \\
 \textbf{Keywords:} codesign, hardware accelerations, reinforcement learning, evolutionary algorithm, forward dynamics % Keywords
 
 % ABSTRACT IN ITALIAN
 \chapter*{Abstract in lingua italiana}
-Il design hardware dei robot è spesso considerato come un componente immutabile nello sviluppo di una strategia di controllo, che di solito è il principale focus della ricerca. Inoltre, l'intricatezza dei sistemi di controllo e la complessità raggiunta da determinati compiti che i robot devono eseguire rendono la progettazione dell'architettura di controllo una sfida, con potenziali limitazioni nell'adattabilità a nuovi scenari. Al fine di massimizzare le prestazioni rispetto a un determinato compito, progettare la morfologia del robot insieme ai suoi sistemi di controllo in un approccio estensivo è una soluzione promettente. La tesi mira ad affrontare il problema di un design sinergico di robot umanoidi e dei loro sistemi di controllo. In particolare, il presente lavoro si pone l'obiettivo di sviluppare un framework per il codesign di robot umanoidi che combini l'utilizzo di apprendimento per rinforzo e algoritmi genetici. La simulazione richiesta durante la generazione di dati sintetici nella fase di apprendimento per rinforzo è computazionalmente dispendiosa, quindi emerge la necessità di un'architettura che consenta di accelerare la simulazione, coinvolgendo l'uso di acceleratori hardware tramite simulatori che sfruttano l'uso di Unità di Elaborazione Grafica (GPU) e Unità di Elaborazione Tensoriale (TPU). La tesi affronta inoltre il problema di avere un algoritmo in grado di calcolare la dinamica tenendo conto della presenza dei motori, che rappresentano le variabili di ottimizzazione di interesse in questo scenario, con il loro rapporto di trasmissione, inerzia e attrito interno. Successivamente, viene sviluppato e testato approfonditamente un framework per il codesign di robot supportato da acceleratori hardware su un caso studio semplice, ma facilmente scalabile. I risultati mostrano che il framework proposto è in grado di generare un set di motori in grado di massimizzare le prestazioni del robot nel compito assegnato.
+La progettazione hardware dei robot è spesso considerata come un componente immutabile nello sviluppo di una architettura di controllo. Inoltre, la complessità dei sistemi di controllo e lo sforzo computazionale richiesto da certi task rendono la progettazione onerosa, con potenziali limitazioni nell'adattabilità a nuovi scenari. Una soluzione promettente al fine di massimizzare le prestazioni rispetto a un dato compito consiste nella progettazione delle caratteristiche morfologiche dei robot insieme ai loro sistemi di controllo in un approccio estensivo, spesso denominato \textit{codesign}. Inoltre, una valida metodologia che non è stata ancora ampiamente applicata alla robotica umanoide in un contesto di codesign è l'uso del reinforcement learning come sistema di controllo. Tuttavia, la simulazione richiesta durante la generazione di dati sintetici nella fase di reinforcement learning è computazionalmente costosa, pertanto emerge la necessità di un'architettura che consenta di velocizzare la simulazione, coinvolgendo l'uso di accelerazioni hardware tramite simulatori che sfruttano le \textit{Unità di Elaborazione Grafica} (GPU) e le \textit{Unità di Elaborazione Tensoriale} (TPU).
+Questa tesi si propone di affrontare il problema del design sinergico di robot e dei loro sistemi di controllo. In particolare, ci concentriamo sull'ottimizzazione delle caratteristiche dei motori elettrici, che sono spesso degli elementi cruciali nel campo della robotica umanoide. A tale scopo, sviluppiamo innanzitutto un algoritmo in grado di calcolare la dinamica del robot tenendo conto della presenza dei motori, con il loro rapporto di trasmissione, inerzia e attrito interno. Successivamente, introduciamo un framework per il codesign di robot che combina l'apprendimento per rinforzo con algoritmi genetici, supportato da accelerazione hardware. Infine, dimostriamo che l'architettura proposta è in grado di generare un insieme di motori in grado di massimizzare le prestazioni del robot per un compito semplice, ma facilmente scalabile.
 \\
 \\
 \textbf{Parole chiave:} codesign, accelerazione hardware, apprendimento per rinforzo, algoritmi evolutivi, dinamica diretta % Keywords (italian)
@@ -266,8 +259,22 @@ Il design hardware dei robot è spesso considerato come un componente immutabile
 
 % ACKNOWLEDGEMENTS
 \chapter*{Acknowledgements}
-Here you might want to acknowledge someone.
 
+This thesis concludes an adventurous path began five years ago with the whole disapproval from my high school teachers. I was so enthusiastic when I first came to see Politecnico di Milano during the open day. I was studying chemistry and the idea of suddenly changing my major, in favor of mechanics was thrilling me. 
+So I moved to Lecco and met a bunch of fantastic people, which I report a small group of the one that I ended up being best friend with. Firstly, Lorenzo, who accompained me during my bachelor thesis, during lectures and in motorbike tours with pouring rain. Amongst people of honorable mention, Erica, with her I had quick walks of ten kilometers and "small" hike in which we escaled mountains.
+Saverio, trustworthy companion of bike tours together, yet unfortunately ended up studying management. Chiara, with her majestic cakes and laugh. Alessandro, a mild guy with a passion for street rules. And worth a honorable mention we find also Manuel, Marco.
+
+Ich will auch mit die Berliner bedanken. Leute die ich wuerde niemals vergessen und mit denenen habe ich warschenlich erfuert die besten Moment in meine Leben. Ich wurde nie vergessen die besten Doener, beste Techno Musik und die beste Vodka Mate meines Lebens. Ganz besonders, mochte ich mich bedanken mit Dennis, Ville, Gijs, Premek, Anna, Julia, Pieter, Filip, und Giulia.
+
+A quelli dell'Artifical Mechanical Intelligence dell' Istituto Italiano di Tecnologia. In primis a Carlotta, per la pazienza avuta ad insegnarmi le basi che mi hanno permesso di concludere questo lavoro e per le molteplici correzioni apportate a questa tesi. E ancora, a Daniele, per avermi dato l'ooprtunita; di entrare a far parte di questo meraviglioso mondo a cui ho scoperto di essere appassionato. A Silvio e Diego, per avermi salvato dai problemi e per avermi trasmesso la loro passione per la robotica. A Roberto, fedele compagno di scrivania. E ancora a Saverio, Giorgio, Stefano, Ines, Davide G., Davide B., Lorenzo M., Lorenzo R., Mohammed, Hosam, Affaf, Gianluca, Filippo, Shabarish, Akhil, Guglielmo, Evelyn, Giulio, Francesca, Dario, Marco, Gabriele, Fabio, Giuseppe.
+
+Alle persone di Livorno. A Rebecca, Eva, Tommaso, Beatrice, Rachele, Leonardo, Matteo, Luca, Elia, Federico.
+
+Ai miei genitori, per avermi sempre sostenuto nelle crisi esistenziali ed esserci sempre stati per qualunque cosa. E' grazie alla tranquillita' in cui mi sono sempre trovato che questo percorso e' stato portato a termine.
+
+Alla mia famiglia, per aver fatto da supporto ed avermi incoraggiato.
+
+Ad Alessio, che nonostante tutti i trascorsi, era semrpe li a fare il tifo per me.
 
 \cleardoublepage
 

@@ -303,10 +303,11 @@ Once defined a map $\mathbb{M} \in \mathbb{R}^{(6+n) \times (6+n)}$ as the gener
 \section{Forward Dynamics}
 \label{sec:back_fd}
 
-The forward dynamics problem consists of computing the joint accelerations of a multibody system given the joint positions, velocities, and applied forces. The computation of the acceleration of the links normally involves the inversion of the mass matrix, which can easily become huge in a multibody system with a high number of links, in fact, the mass matrix of a system with $n$ links is a $6+n \times 6+n$ matrix, as explained in \cref{sec:back_eom}. Although being algorithms involving the inertia matrix inversion much simpler to implement, propagation algorithms involving recursive backsubstition are more efficient in terms of computational cost, as they can reach the theoretical minimal complexity of $\mathcal{O}(n)$. In this work, the notation $\mathrm{FD}(\cdot)$ will be used to indicate the forward dynamics computation.
+The forward dynamics problem consists of computing the joint accelerations of a multibody system given the joint positions, velocities, and applied forces. The computation of the acceleration of the links normally involves the inversion of the mass matrix, which can easily become huge in a multibody system with a high number of links, in fact, the mass matrix of a system with $n$ links is a $6+n \times 6+n$ matrix, as explained in \cref{sec:back_eom}. Although being algorithms involving the inertia matrix inversion much simpler to implement, propagation algorithms involving recursive backsubstition are more efficient in terms of computational cost, as they can reach the theoretical minimal complexity of $\mathcal{O}(n)$. 
+In this work, the notation $\mathrm{FD}(\cdot)$ will be used to indicate the forward dynamics computation.
 
 \begin{equation}
-    \ddot{\mathbf{s}} = \mathrm{FD} (\mathcal{M}, \mathbf{s}, \dot{\mathbf{s}}, \boldsymbol{\tau}, \mathbf{F} ^{\text{ext}})
+    \dot{\boldsymbol{\nu}} = \mathrm{FD} (\mathcal{M}, \mathbf{q}, \boldsymbol{\nu}, \boldsymbol{\tau}, \mathbf{F} ^{\text{ext}})
 \end{equation}
 
 \subsection{Articulated-Body Algorithm}
