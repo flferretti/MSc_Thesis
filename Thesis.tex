@@ -164,6 +164,9 @@
 %----------------------------------------------------------------------------
 %	PREAMBLE PAGES: ABSTRACT (inglese e italiano), EXECUTIVE SUMMARY
 %----------------------------------------------------------------------------
+
+\input{Front_Back_Matter/Colophon}
+
 \startpreamble
 \setcounter{page}{1} % Set page counter to 1
 
@@ -172,7 +175,7 @@
 Robot hardware design is often treated as an immutable component in the development of a control strategy.
 Moreover, the complexity of the control systems and the computational effort required by certain robot maneuvers, make the control design
 challenging, with potential limitation on the adaptability to new scenarios. In order to maximize the performance with respect to a given task,
-designing the robot body characteristics together with its control systems in an extensive approach, often referred to as \textit{codesign}, is a promising solution. The use of reinforcement learning as control system is another valid methodology. Yet, it has not been extensively applied to humanoid robotics in a codesign context. Nevertheless, the simulation required during the generation of synthetic data in reinforcement learning phase is computationally expensive, hence it emerges the need for an architecture that allows to speed up the simulation, involving the use of hardware accelerations via simulators that exploit the use of \textit{Graphical Processing Units} (GPUs) and \textit{Tensor Processing Units} (TPUs). This thesis aims at targeting the problem of a synergic design of robots and their control systems. In particular, we focus on the optimization of the electric drives characteristics, which is often crucial in the field of humanoid robotics. To this aim, we first develop an algorithm able to compute the robot dynamics taking into account the presence of the motors, with their gear ratio, inertia and internal friction. Then, we introduce a framework that combines deep reinforcement learning and evolutionary algorithms for the robot codesign, supported by hardware acceleration. Finally, we show that the proposed architecture is able to generate a motor set that is capable of maximizing the performance of the robot in a simple, yet easily scalable task.
+designing the robot body characteristics together with its control systems in an extensive approach, often referred to as \textit{codesign}, is a promising solution. The use of reinforcement learning as control system is another valid methodology. Yet, it has not been extensively applied to humanoid robotics in a codesign context. Nevertheless, the simulation required during the generation of synthetic data in reinforcement learning phase is computationally expensive, hence it emerges the need for an architecture that allows to speed up the simulation, involving the use of hardware accelerations via simulators that exploit the use of \textit{Graphical Processing Units} (GPUs) and \textit{Tensor Processing Units} (TPUs). This thesis aims at targeting the problem of a synergic design of robots and their control systems. In particular, we focus on the optimization of the electric drives characteristics, which is often crucial in the field of humanoid robotics. To this aim, we first develop an algorithm able to compute the robot dynamics taking into account the presence of the motors, with their gear ratio, inertia and internal friction. Then, we introduce a framework that combines deep reinforcement learning and evolutionary algorithms for the robot codesign, supported by hardware acceleration. Finally, we show that the proposed architecture is able to generate a motor set capable of maximizing the performance of the robot in a simple, yet easily scalable task.
 \\
 \\
 \textbf{Keywords:} codesign, hardware accelerations, reinforcement learning, evolutionary algorithm, forward dynamics % Keywords
@@ -260,21 +263,20 @@ Questa tesi si propone di affrontare il problema del design sinergico di robot e
 % ACKNOWLEDGEMENTS
 \chapter*{Acknowledgements}
 
-This thesis concludes an adventurous path began five years ago with the whole disapproval from my high school teachers. I was so enthusiastic when I first came to see Politecnico di Milano during the open day. I was studying chemistry and the idea of suddenly changing my major, in favor of mechanics was thrilling me. 
-So I moved to Lecco and met a bunch of fantastic people, which I report a small group of the one that I ended up being best friend with. Firstly, Lorenzo, who accompained me during my bachelor thesis, during lectures and in motorbike tours with pouring rain. Amongst people of honorable mention, Erica, with her I had quick walks of ten kilometers and "small" hike in which we escaled mountains.
-Saverio, trustworthy companion of bike tours together, yet unfortunately ended up studying management. Chiara, with her majestic cakes and laugh. Alessandro, a mild guy with a passion for street rules. And worth a honorable mention we find also Manuel, Marco.
+Transitioning from a study of chemistry to a newfound passion for mechanics was thrilling. Moving to Lecco introduced me to an exceptional group of individuals, among whom I found my closest friends. Lorenzo, my steadfast companion during the bachelor thesis, lectures, and rain-soaked motorbike tours, stands out. Erica, with whom I embarked on brisk ten-kilometer walks and conquered mountains during "small" hikes. Saverio, my biking partner, and Chiara, with her remarkable baking skills and infectious laughter. Alessandro, the mild-mannered individual with a penchant for street rules. And an honorable mention goes to two of my study companions, Manuel and Marco.
 
-Ich will auch mit die Berliner bedanken. Leute die ich wuerde niemals vergessen und mit denenen habe ich warschenlich erfuert die besten Moment in meine Leben. Ich wurde nie vergessen die besten Doener, beste Techno Musik und die beste Vodka Mate meines Lebens. Ganz besonders, mochte ich mich bedanken mit Dennis, Ville, Gijs, Premek, Anna, Julia, Pieter, Filip, und Giulia.
+Ich möchte meinen Dank auch an die Berliner aussprechen. Mit diesen Menschen habe ich unvergessliche Momente erlebt, die zu den schönsten meines Lebens gehören. Die Erinnerung an den besten Döner und die großartige Techno-Musik wird stets lebendig bleiben. Insbesondere möchte ich Dennis, Ville, Gijs, P\v{r}emek, Anna, Julia, Pieter, Filip, Marte, Filip, Gian Mario, Marco, Victoria, Agnes, Camille und Giulia erwähnen. Mit ihnen fühlte ich mich so wohl und willkommen wie zu Hause.
 
-A quelli dell'Artifical Mechanical Intelligence dell' Istituto Italiano di Tecnologia. In primis a Carlotta, per la pazienza avuta ad insegnarmi le basi che mi hanno permesso di concludere questo lavoro e per le molteplici correzioni apportate a questa tesi. E ancora, a Daniele, per avermi dato l'ooprtunita; di entrare a far parte di questo meraviglioso mondo a cui ho scoperto di essere appassionato. A Silvio e Diego, per avermi salvato dai problemi e per avermi trasmesso la loro passione per la robotica. A Roberto, fedele compagno di scrivania. E ancora a Saverio, Giorgio, Stefano, Ines, Davide G., Davide B., Lorenzo M., Lorenzo R., Mohammed, Hosam, Affaf, Gianluca, Filippo, Shabarish, Akhil, Guglielmo, Evelyn, Giulio, Francesca, Dario, Marco, Gabriele, Fabio, Giuseppe.
+This thesis stands as a testament to my tenure at the Artificial Mechanical Intelligence lab of the Italian Institute of Technology. My heartfelt gratitude goes to Carlotta for her extraordinary patience and guidance, enabling me to navigate the complexities and complete this work. I am indebted to Daniele for the opportunity to explore and embrace my true passion in this remarkable field. Special appreciation extends to Silvio and Diego for their unwavering assistance and for instilling in me a fervor for robotics. Roberto, my constant desk mate, deserves recognition for his unwavering support throughout this journey. Additionally, I deeply appreciate the guidance and inspiration provided by Saverio, Giorgio, Stefano, Ines, Davide G., Davide B., Lorenzo M., Lorenzo R., Mohammed, Hosam, Affaf, Gianluca, Filippo, Shabarish, Akhil, Guglielmo, Evelyn, Giulio, Francesca, Dario, Marco, Gabriele, Fabio, and Giuseppe.
 
-Alle persone di Livorno. A Rebecca, Eva, Tommaso, Beatrice, Rachele, Leonardo, Matteo, Luca, Elia, Federico.
+Ai miei genitori e ad Alessio: esprimo il mio sincero ringraziamento. Ai miei genitori, per il loro sostegno incondizionato durante le crisi esistenziali e per essere stati al mio fianco in ogni situazione. La loro serenità ha fornito le basi che mi hanno permesso di completare questo percorso. Alla mia famiglia allargata, per il loro sostegno e incoraggiamento. E ad Alessio, che nonostante tutto, è stato sempre presente a sostenermi. La loro presenza costante e il loro affetto hanno reso questo viaggio ancora più significativo. Grazie di cuore a loro e a tutti coloro che hanno contribuito al mio cammino.
 
-Ai miei genitori, per avermi sempre sostenuto nelle crisi esistenziali ed esserci sempre stati per qualunque cosa. E' grazie alla tranquillita' in cui mi sono sempre trovato che questo percorso e' stato portato a termine.
 
-Alla mia famiglia, per aver fatto da supporto ed avermi incoraggiato.
+\noindent\textit{Milano, December 2023}
 
-Ad Alessio, che nonostante tutti i trascorsi, era semrpe li a fare il tifo per me.
+\begin{flushright}
+    \hfill F.~L.~F.
+\end{flushright}
 
 \cleardoublepage
 
