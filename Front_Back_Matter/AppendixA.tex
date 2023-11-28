@@ -18,7 +18,7 @@ If we force a critical damping condition, we can compute the damping coefficient
 
 we get to a damping coefficient of $c_{crit} = 0.2$ Ns/m. The ground stiffness has been chosen to be $k = 1000$ N/m, which is a reasonable value for a concrete floor.
 
-For the choice of integrators and integration step size, multiple tests have been performed. Two main integrators have been tested: \textit{semi-implicit Euler}, which consists of a first-order integrator, and \textit{Runge-Kutta 4}, which is a fourth-order integrator. The integration step size has been varied between $5$ and $0.5$ milliseconds. The contact parameters have been kept constant during the simulations.
+For the choice of integrators and integration step size, multiple tests have been performed. Two main integrators available in \jaxsim have been tested: \textit{semi-implicit Euler}, which consists of a first-order integrator, and \textit{Runge-Kutta 4}, which is a fourth-order integrator. The integration step size has been varied between $5$ and $0.5$ milliseconds. The contact parameters have been kept constant during the simulations.
 
 \begin{figure}
     \centering
@@ -38,4 +38,6 @@ As can be noticed from \cref{fig:rk4}, the Runge-Kutta 4 integrator is stable on
     \includegraphics[width=0.45\textwidth]{Images/sie_05ms.png}
 \end{figure}
 
-The \textit{semi-implicit Euler} integrator is also not stable for the largest step size, yet being much faster for computation with respect to the Runge-Kutta 4 integrator, it has been chosen as the integrator for the simulations.
+The \textit{semi-implicit Euler} integrator is also not stable for the largest step size, yet being much faster for computation with respect to the Runge-Kutta 4 integrator, it has been chosen as the integrator for the simulations. In fact RK4 involves computing the full robot dynamics four times, drastically increasing the overall computation time.
+
+The integration step size has been chosen to be $0.5\text{m}s$ as it represented a good tradeoff between integration stability and computational effort.

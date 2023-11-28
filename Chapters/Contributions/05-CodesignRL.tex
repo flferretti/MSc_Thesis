@@ -17,26 +17,29 @@ The codesign loop starts in the evolutionary algorithm core, where the initial p
 \end{figure}
 
 \section{Reinforcement Learning Case Studies}
-\label{sec:codesign_results}
+\label{sec:rl_core}
 
-\begin{table}
+We analyzed three different tasks for the \ac{RL} core. In particular, two of the tasks used \jaxsim as simulator, while the third one used NVIDIA \textsc{Isaac Gym}.
+
+\begin{table}[h]
     \centering
     \begin{tabular}{l c c c}
         \toprule
-        \multicolumn{4}{c}{\textsc{Training Setups}}                             \\
+        \multicolumn{4}{c}{\textsc{Training Setups}}                                       \\
         \midrule
-        Model              & ErgoCub   & ErgoCub            & CartPole           \\
-        Simulator          & Isaac Gym & JAXsim             & JAXsim             \\
-        Simulation Device  & GPU       & CPU                & CPU                \\
-        Training Device    & GPU       & GPU                & GPU                \\
-        Training Framework & RL Games  & Stable Baselines 3 & Stable Baselines 3 \\
-        Used with Codesign & No        & No                 & Yes                \\
+        Model              & ErgoCub            & ErgoCub            & CartPole            \\
+        Simulator          & \textsc{Isaac Gym} & \jaxsim            & \jaxsim             \\
+        Simulation Device  & GPU                & CPU                & CPU                 \\
+        Training Device    & GPU                & GPU                & GPU                 \\
+        Training Framework & RL Games           & Stable Baselines 3 & Stable Baselines 3  \\
+        Used with Codesign & No                 & No                 & Yes                 \\
         \bottomrule
     \end{tabular}
     \caption{RL Training Setups.}
+    \label{tab:training_setup}
 \end{table}
 
-In reinforcement learning scenarios, a crucial task is represented by the definition of the reward function, which is used to evaluate the performance of the agent. This process is usually called \textit{reward shaping}. The reward function is usually defined as a function of the state of the system, labeling it to be more or less desirable in order to achieve the intended behavior.
+% In reinforcement learning scenarios, a crucial task is represented by the definition of the reward function, which is used to evaluate the performance of the agent. This process is usually called \textit{reward shaping}. The reward function is usually defined as a function of the state of the system, labeling it to be more or less desirable in order to achieve the intended behavior. 
 
 \subsection{Cartpole Swingup Task}
 
@@ -44,10 +47,10 @@ In reinforcement learning scenarios, a crucial task is represented by the defini
     \centering
     \caption{JAXsim -- CartPole RL Training Visualization}
     \label{fig:cartpole}
-    \includegraphics[width=0.7\textwidth]{Images/cartpole.png}
+    \includegraphics[width=0.6\textwidth]{Images/cartpole.png}
 \end{figure}
 
-The problem of codesign could easily become exponentially complex and computationally expensive, for this reason, the main focus of this work was to develop a scalable framework that could be customized in order to adapt to the complexity of the task as the computation resources increase in power. For this reason, the first task that has been used to test the \ac{RL} framework together with the \jaxsim simulator is the cartpole swingup task. In this task, the aim is to find a policy $\pi$ that is able to balance a pole attached to the cart, which is moving on a rail, and balance it to the upright position while minimizing the torques applied to the joints. In this case, the reward function is defined as a function of the state of the system, which is composed of the $x$-component of the position of the cart $x$, the velocity of the cart $\dot{x}$, the angle of the pole $\theta$ and the angular velocity of the pole $\dot{\theta}$:
+The problem of codesign could easily become exponentially complex and computationally expensive, for this reason, the main focus of this work was to develop a scalable framework that could be customized in order to adapt to the complexity of the task as the computation resources increase in power. As a consequence, the first task that has been used to test the \ac{RL} framework together with the \jaxsim simulator is the cartpole swingup task. In this task, the aim is to find a policy $\pi$ that is able to move a pole attached to the cart, which is moving on a rail, and balance it to the upright position while minimizing the torques applied to the joints. In this case, the reward function is defined as a function of the state of the system, which is composed of the $x$-component of the position of the cart $x$, the velocity of the cart $\dot{x}$, the angle of the pole $\theta$ and the angular velocity of the pole $\dot{\theta}$:
 
 \begin{equation}
     r _t = \begin{cases}
@@ -60,12 +63,12 @@ where $\theta_{\text{max}}$ and $x _{\text{max}}$ are respectively the imposed m
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{Images/cartpole_reward.png}
+    \includegraphics[width=0.7\textwidth]{Images/cartpole_reward.png}
     \caption{Cartpole Swingup Task -- Reward Function.}
     \label{fig:cartpolereward}
 \end{figure}
 
-The reward space is then defined to have a clear bound between positive and null reward, in order to make the learning process more stable the robot will have zero rewards when outside of the space defined by $\theta_{\text{max}}$ and $x _{\text{max}}$ and a reward that maximizes to the number of joints if the balance is achieved following a quadratic function dependent on the torques applied, as shown in \cref{fig:cartpolereward}. A penalty associated with the torques is also taken into account. It has a dual purpose, on the one hand, it allows minimizing the torques applied to the joints, on the other hand, it allows to effectively find an equilibrium position, which is not trivial in the case of a simple reward function based on the angle of the pole.
+The reward space is therefore defined such a way that there is a clear bound between positive and null reward, in order to make the learning process more stable the robot will have zero rewards when outside of the space defined by $\theta_{\text{max}}$ and $x _{\text{max}}$ and a reward that maximizes to the number of joints if the balance is achieved following a quadratic function dependent on the torques applied, as shown in \cref{fig:cartpolereward}. A penalty associated with the torques is also taken into account. It has a dual purpose, on the one hand, it allows minimizing the torques applied to the joints, on the other hand, it allows to effectively find an equilibrium position, which is not trivial in the case of a simple reward function based on the angle of the pole.
 
 With that in mind, the action space will be defined as the set of torques applied to the joints, the observation space will be defined as the set of position and velocity of the cart and the pole, and the reward space will be a positive real number in the range $[0,2]$. The \cref{tab:cartpoleswinguptaskspacedef} summarizes the definition of the spaces used in this task.
 
@@ -282,9 +285,8 @@ Rewards, actions, and observations are then normalized to the range $[0,1]$ in o
 \section{Evolutionary Algorithm Core}
 \label{sec:EvolutionAlgo}
 
-The evolutionary algorithm has been used in the codesign loop to select three main motor parameters from a discrete search space. The evolutionary algorithm has been based on the \texttt{deap} library \citep{DEAP_JMLR2012}.
-
-The motor set of parameters is composed of three main components: motor inertia $\mathbb{M}^M$, motor viscous friction $\mathbf{K}_v$, and gear ratio $\boldsymbol{\Gamma}$. At each iteration, the fitness is computed using the \ac{RL} framework, which returns the reward associated with the individual. The reward is then used as the fitness function of the evolutionary algorithm. The evolutionary algorithm then selects the best individuals, which are then used to update the population. The process is then repeated until it reaches the maximum number of generations. The total number of combination are given by the following equation:
+The \ac{GA} implementation based on the \texttt{deap} library \citep{DEAP_JMLR2012} has been used in the codesign loop to select three main motor parameters from a discrete search space.
+The motor set of parameters is composed of three main components: motor inertia $\mathbb{M}^M$, motor viscous friction $\mathbf{K}_v$, and gear ratio $\boldsymbol{\Gamma}$. At each iteration, the fitness is computed using the \ac{RL} framework, which returns the reward associated with the individual. The reward is then used as the fitness function of the evolutionary algorithm. The \ac{GA} then selects the best individuals, which are then used to update the population. The process is then repeated until it reaches the maximum number of generations. The total number of combination are given by the following equation:
 
 \begin{equation}
     H = n^k = 2^9 = 512
@@ -292,7 +294,7 @@ The motor set of parameters is composed of three main components: motor inertia 
 
 where $n$ is the number of joints and $k$ is the number of motors.
 
-The evolutionary algorithm has been used to select the motor parameters from the set of possible values. The discrete set of possible values for each parameter shown in the \cref{tab:motorparams} has been based on a set of motors used in the ErgoCub robot.
+The evolutionary algorithm has been used to select the motor parameters from the set of possible values. The discrete set of possible values for each parameter has been based on a set of motors used in the ErgoCub robot:
 
 \begin{table}[h]
     \centering
@@ -316,7 +318,7 @@ The evolutionary algorithm has been used to select the motor parameters from the
 \end{table}
 
 
-Considering the computation-expensive nature of the \ac{RL} framework, the hyperparameters for the evolutionary algorithm have been tuned to prefer a more explorative approach, in order to avoid the need for a large number of generations. In particular, the hyperparameters reported in \cref{tab:ga_hyperparams} have been selected.
+Considering the computation-expensive nature of the \ac{RL} framework, the hyperparameters for the evolutionary algorithm have been tuned to prefer a more explorative approach, in order to avoid the need for a large number of generations. In particular, the following hyperparameters have been selected:
 
 \begin{table}
     \centering

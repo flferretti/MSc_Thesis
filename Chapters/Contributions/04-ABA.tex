@@ -9,7 +9,7 @@ This chapter describes the formalism and the algorithms involved in the multibod
     \centering
     \caption{Harmonic Drive Model.}
     \label{fig:harmonic_drive}
-    \includegraphics[width=0.8\textwidth]{Images/harmonic_drive.png}
+    \includegraphics[width=0.6\textwidth]{Images/harmonic_drive.png}
 \end{figure}
 
 Starting from the equation of motion of a multibody floating base system, as expressed in \cref{sec:back_eom}:
@@ -162,12 +162,12 @@ With these hypotheses, we can reformulate the motion subspace definition reporte
     \caption{Visual comparison between the unconstrained and constrained kinematic tree.}
     \label{fig:uc_and_constr_tree}
     \subfloat[Constrained System]{
-        \resizebox{0.45\textwidth}{!}{
+        \resizebox{0.48\textwidth}{!}{
             \input{Images/TikZ/constrained_system.tex}
         }
     }
     \subfloat[Uncostrained System]{
-        \resizebox{0.45\textwidth}{!}{
+        \resizebox{0.48\textwidth}{!}{
             \input{Images/TikZ/unconstrained_system.tex}
         }
     }
@@ -365,14 +365,12 @@ The main difference between the \ac{ABA} approach and the approach adopted in th
     \centering
     \caption{Motor Dynamics Modelling Comparison for Forward Dynamics.}
     \label{fig:ABA_comparison}
-    \subfloat[ABA]{
-        \resizebox{0.5\textwidth}{!}{
-            \input{Images/TikZ/aba_comparison_aba.tex}
-        }}
+    \subfloat[Articulated Body Algorithm]{
+        \includegraphics[width=0.48\textwidth]{Images/aba_comparison.png}
+        }
     \subfloat[Inertia-Matrix-Based]{
-        \resizebox{0.5\textwidth}{!}{
-            \input{Images/TikZ/aba_comparison_imb.tex}
-        }}
+        \includegraphics[width=0.43\textwidth]{Images/imb_comparison.png}
+        }
 \end{figure}
 
 The recursive approach allows therefore to consider a much greater variety of kinematic chains and also it is more computationally efficient. As a consequence, there is a significant difference between the accelerations computed by the two methods, as the inertia-matrix-based method leverages the hypotheses for which the rotor is lumped to the parent link, which leads to a much different result when the motor inertia increases.

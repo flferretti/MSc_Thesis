@@ -25,7 +25,7 @@ As robotics and reinforcement learning continue to merge and advance, with the i
     \centering
     \caption{NVIDIA Isaac Gym.}
     \label{fig:isaac_gym}
-    \includegraphics[width=0.7\textwidth]{Images/isaacgym_humanoid.png}
+    \includegraphics[width=0.7\textwidth]{Images/isaacgym_amp.png}
 \end{figure}
 
 In recent times, the use of \textit{Adversarial Motion Priors} \citep{peng_amp_2021} for reinforcement learning, which will be further discussed in \cref{chp:back_RLGA} has brought to the development of a new framework for physics simulation, called \textsc{isaac gym} \citep{makoviychuk_isaac_2021} which allows to simulate complex environments basing on \textsc{isaac sim} \citep{zhou_towards_2023}, a cyber-physical simulator that exploits NVIDIA PhysX and Omniverse, which offer a high-performance, cross-platform, real-time physics engine that allows to simulate rigid bodies in reduced coordinate articulations. \textsc{Isaac gym} then leverages the power of \texttt{rl\_games} \citep{rl-games2021} to completely work with \texttt{pytorch} \citep{paszke_pytorch_2019} tensors on \ac{GPU}s to accelerate the simulation process, allowing to train complex environments with multiple agents and objects.
