@@ -16,7 +16,7 @@ The introduction of motor dynamics in the context of a recursive forward dynamic
     \includegraphics[width=0.65\textwidth]{Images/Results/time_comparison_aba.png}
 \end{figure}
 
-Regarding the computational performance, the modified \ac{ABA} algorithm is expected to be slower than the original one, due to the additional computations required to compute the motor dynamics. However, from the results reported in \cref{fig:fd_benchmark}, it is possible to see that the modified \ac{ABA} algorithm is comparably fast to the original one, with a difference of less than $1\%$ in the execution time. This is due to the fact that the additional computations required to compute the motor dynamics are negligible compared to the other computations required by the algorithm.
+Regarding the computational performance, the modified \ac{ABA} algorithm is expected to be slower than the original one, due to the additional computations required to compute the motor dynamics. However, from the results reported in \cref{fig:fd_benchmark}, it is possible to see that the modified \ac{ABA} algorithm is comparably fast to the original one, with a difference of less than $1\%$ in the execution time. This is due to the fact that the additional computations required to compute the motor dynamics are negligible compared to the other computations performed by the algorithm.
 
 \begin{figure}
     \centering
@@ -37,7 +37,7 @@ As an example, the number of generations of the genetic algorithm is strictly re
 
 \begin{figure}
     \centering
-    \caption{Cartpole RL Training Metrics}
+    \caption{Cartpole RL Training Metrics.}
     \label{fig:cartpoleresults}
     \subfloat[Explained Variance]{\includegraphics[width=0.48\textwidth]{Images/Results/expvariance_cartpole.png}}
     \subfloat[Approximated KL]{\includegraphics[width=0.48\textwidth]{Images/Results/kl_cartpole.png}} \\
@@ -48,10 +48,10 @@ As an example, the number of generations of the genetic algorithm is strictly re
 In reinforcement learning, it is crucial to keep track of some metrics during the training, in order to evaluate the performance of the algorithm, detect possible issues, and stop the training if the maximum reward is reached. In fact, if the training does not have an early stopping condition, the agent might begin to forget the optimal policy, leading to disastrous results. With the aim of logging the training metrics, we opted for the use of \textit{Weights {\&} Biases}\footnote{\url{https://wandb.ai}}, a tool that allows for the tracking, which in opposition to the most common \textit{Tensorboard}\footnote{\url{https://www.tensorflow.org/tensorboard}} tool, supports online logging and real-time monitoring of the training metrics. The main metrics that we tracked during the training are:
 
 \begin{itemize}
-    \item \textbf{Explained Variance}: a metric that measures how much the variance of the return is explained by the value function.
-    \item \textbf{Approximated KL}: a metric that measures the distance between the new policy and the old policy.
-    \item \textbf{Value Loss}: a metric that measures the difference between the algorithm's expectation of a state's value and the empirically observed value of that state.
-    \item \textbf{Episodic Mean Reward}: the mean reward obtained during the episode.
+    \item \textbf{Explained Variance}: a metric that measures the proportion to which the value function is a good predictor for the returns;
+    \item \textbf{Approximated KL}: a metric that measures the distance between the new policy and the old policy;
+    \item \textbf{Value Loss}: a metric that measures the difference between the algorithm's expectation of a state's value and the empirically observed value of that state;
+    \item \textbf{Episodic Mean Reward}: the mean reward obtained during the episode;
     \item \textbf{Episodic Mean Length}: the mean length of the episode.
 \end{itemize}
 

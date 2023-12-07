@@ -18,7 +18,7 @@ Starting from the equation of motion of a multibody floating base system, as exp
     \mathbb{M}(\mathbf{q})\dot{\boldsymbol{\nu}} + \mathbf{h}(\mathbf{q},\boldsymbol{\nu}) = \mathbf{B}\boldsymbol{\tau} + \mathbf{J} ^\top \mathbf{f}
 \end{equation}
 
-where $\mathbf{h}(\mathbf{q},\boldsymbol{\nu})$ is the bias forces vector taking into account Coriolis forces and gravity effects, $\mathbf{B}$ is the selector matrix for the joint torques, $\boldsymbol{\tau}$ is actuation torques vector, $\mathbf{J}$ is the Jacobian matrix and $\mathbf{f}$ is the external wrenches vector, we can isolate the terms related to the base link from the rest of the kinematic chain by recalling that:
+where $\mathbf{h}(\mathbf{q},\boldsymbol{\nu})$ is the bias forces vector taking into account Coriolis forces and gravity effects, $\mathbf{B}$ is the selector matrix for the joint torques, $\boldsymbol{\tau}$ is actuation torques vector, $\mathbf{J}$ is the stacked Jacobian matrix and $\mathbf{f}$ is the external wrenches vector, we can isolate the terms related to the base link from the rest of the kinematic chain by recalling that:
 
 \begin{align}
     \boldsymbol{\nu} =
@@ -49,8 +49,8 @@ Therefore, the equation of motion can be rewritten in its matrix form as:
         \mathbf{h} _S
     \end{bmatrix}=
     \begin{bmatrix}
-        \mathbbm{0} \\
-        \mathbbm{1}
+        \mathbbm{0}_{6\times n} \\
+        \mathbbm{1}_{n}
     \end{bmatrix}
     \boldsymbol{\tau}
     +
@@ -64,11 +64,11 @@ Therefore, the equation of motion can be rewritten in its matrix form as:
 Given that the dynamics of the set of $N _M = n$ motors, each of which is connected to a joint by means of a harmonic drive, graphically represented as in \cref{fig:harmonic_drive} \citep{folga2010}, we can write their equation of motion neglecting the Coulomb friction as:
 
 \begin{equation}
-    \mathbb{M} ^M \ddot{\boldsymbol{\theta}} + \mathbf{K}_v \dot{\boldsymbol{\theta}} = \boldsymbol{\tau}_m - \boldsymbol{\tau}
+    \mathbb{M} ^M \ddot{\boldsymbol{\theta}} + \mathbf{K}_{\mathrm{v}} \dot{\boldsymbol{\theta}} = \boldsymbol{\tau}_m - \boldsymbol{\tau}
     \label{eqn:mot_dyn}
 \end{equation}
 
-where $\mathbf{K}_v \in \mathbb{R}^{n\times n}$ is the diagonal matrix of motor viscous friction coefficients and $\mathbb{M}^M \in \mathbb{R}^{n \times n}$ is the matrix of motors' inertias. Considering that given the set of transmission ratios $\boldsymbol{\Gamma} \in \mathbb{R}^n$, the relation between the joints' velocities and the motors' velocities is:
+where $\mathbf{K}_{\mathrm{v}} \in \mathbb{R}^{n\times n}$ is the diagonal matrix of motor viscous friction coefficients and $\mathbb{M}^M \in \mathbb{R}^{n \times n}$ is the matrix of motors' inertias. Considering that given the set of transmission ratios $\boldsymbol{\Gamma} \in \mathbb{R}^n$, the relation between the joints' velocities and the motors' velocities is:
 
 \begin{align}
     \mathbf{s} = \boldsymbol{\theta} \boldsymbol{\Gamma} &  & \dot{\mathbf{s}} = \frac{d}{dt} \mathbf{s} = \dot{\boldsymbol{\theta}} \boldsymbol{\Gamma} &  & \ddot{\mathbf{s}} = \frac{d^2}{dt^2} \mathbf{s} = \ddot{\boldsymbol{\theta}} \boldsymbol{\Gamma}
@@ -78,22 +78,22 @@ Hence, can rewrite the equation \cref{eqn:mot_dyn} in the joints' space as:
 
 \begin{equation}
     \label{eqn:mot_dyn_jointspace}
-    \boldsymbol{\tau} = \boldsymbol{\tau}_m - \boldsymbol{\Gamma} ^{-T} (\mathbb{M} ^M\boldsymbol{\Gamma} ^{-1} \ddot{s} + \mathbf{K}_v \boldsymbol{\Gamma} ^{-1}\dot{s})
+    \boldsymbol{\tau} = \boldsymbol{\tau}_m - \boldsymbol{\Gamma} ^{-T} (\mathbb{M} ^M\boldsymbol{\Gamma} ^{-1} \ddot{s} + \mathbf{K}_{\mathrm{v}} \boldsymbol{\Gamma} ^{-1}\dot{s})
 \end{equation}
 
 Therefore, the \ac{EoM} of the multibody system can be reformulated as:
 
 \begin{equation}
     \underbrace{\begin{bmatrix}
-            \mathbb{M} _{\mathcal{B}}(q)        & \mathbb{M} _{\mathcal{B}S}(q)                                                      \\
-            \mathbb{M} _{\mathcal{B}S} ^\top(q) & \mathbb{M} _s(q) + \boldsymbol{\Gamma} ^{-T}\mathbb{M} ^M\boldsymbol{\Gamma} ^{-1}
-        \end{bmatrix}} _{\bar{\mathbb{M}}(q)}
+            \mathbb{M} _{\mathcal{B}}(\mathbf{q})        & \mathbb{M} _{\mathcal{B}S}(\mathbf{q})                                                      \\
+            \mathbb{M} _{\mathcal{B}S} ^\top(\mathbf{q}) & \mathbb{M} _s(\mathbf{q}) + \boldsymbol{\Gamma} ^{-T}\mathbb{M} ^M\boldsymbol{\Gamma} ^{-1}
+        \end{bmatrix}} _{\bar{\mathbb{M}}(\mathbf{q})}
     \begin{bmatrix}
-        \dot{\mathrm{\mathbf{v}}} \\
+        \dot{\mathbf{v}}\\
         \ddot{\mathbf{s}}
     \end{bmatrix}+
     \mathbf{h}
-    (q,\boldsymbol{\nu}) =
+    (\mathbf{q},\boldsymbol{\nu}) =
     \underbrace{\begin{bmatrix}
             \mathbbm{0} \\
             \boldsymbol{\Gamma} ^{-T}
@@ -105,10 +105,10 @@ Therefore, the \ac{EoM} of the multibody system can be reformulated as:
     -
     \underbrace{\begin{bmatrix}
             \mathbbm{0} \\
-            \boldsymbol{\Gamma} ^{-T}\mathbf{K _v}\boldsymbol{\Gamma} ^{-1}
-        \end{bmatrix}} _\mathbf{\bar{K _v}}
+            \boldsymbol{\Gamma} ^{-T}\mathbf{K} _{\mathrm{v}}\boldsymbol{\Gamma} ^{-1}
+        \end{bmatrix}} _{\mathbf{\bar{K}}_{\mathrm{v}}}
     \begin{bmatrix}
-        \mathrm{\mathbf{v}} \\
+        \mathbf{v} \\
         \dot{\mathbf{s}}
     \end{bmatrix}
 \end{equation}
@@ -127,13 +127,13 @@ only under the following hypotheses:
 In a more compact form, the \ac{EoM} can be also expressed as:
 
 \begin{equation}
-    \mathbf{\bar{M}}(q)\dot{\boldsymbol{\nu}} + \mathbf{h}(q,\boldsymbol{\nu}) = \mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^\top \mathbf{f} - \bar{\mathbf{K _v}}\boldsymbol{\nu}
+    \mathbb{\bar{M}}(\mathbf{q})\dot{\boldsymbol{\nu}} + \mathbf{h}(\mathbf{q},\boldsymbol{\nu}) = \mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^\top \mathbf{f} - \bar{\mathbf{K} _{\mathrm{v}}}\boldsymbol{\nu}
 \end{equation}
 
 This yields the wanted output from the forward dynamics, the rigid body acceleration vector:
 
 \begin{equation}
-    \dot{\boldsymbol{\nu}} = \mathbf{\bar{M}}(q) ^{-1} (\mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^\top \mathbf{f} - \mathbf{h}(q,\boldsymbol{\nu}) - \bar{\mathbf{K _v}}\boldsymbol{\nu})
+    \dot{\boldsymbol{\nu}} = \mathbb{\bar{M}}(\mathbf{q}) ^{-1} (\mathbf{\bar{B}}\boldsymbol{\tau} _m + \mathbf{J} ^\top \mathbf{f} - \mathbf{h}(\mathbf{q},\boldsymbol{\nu}) - \bar{\mathbf{K} _{\mathrm{v}}}\boldsymbol{\nu})
 \end{equation}
 
 \section{Rotor-conditioned Articulated Body Algorithm}
@@ -159,7 +159,7 @@ With these hypotheses, we can reformulate the motion subspace definition reporte
 % === FIG: Unconstrained Tree === %
 \begin{figure}
     \centering
-    \caption{Visual comparison between the unconstrained and constrained kinematic tree.}
+    \caption{Visual comparison between Unconstrained and Constrained Kinematic Tree.}
     \label{fig:uc_and_constr_tree}
     \subfloat[Constrained System]{
         \resizebox{0.48\textwidth}{!}{
@@ -176,10 +176,10 @@ With these hypotheses, we can reformulate the motion subspace definition reporte
 An unconstrained system refers to a system where the links are geometrically fixed in place, thereby defining the dynamics of each link independently of the forces interacting with the rest of the system, as represented in \cref{fig:uc_and_constr_tree}. In this setup, similarly to the equation represented in \cref{eqn:motor_subspace}, the rotor experiences the same force of the joint, but the torque is increased proportionally by the gear ratio, as illustrated in \cref{fig:disassembled_motor}
 
 \begin{equation}
-    \mathbf{a} ^{uc} _{R _i} = (\mathbb{M} ^M _i) ^{-1}(\boldsymbol{\Phi} _i \frac{\boldsymbol{\tau} _i}{\boldsymbol{\Gamma} _i} - \mathbf{p} ^M _i)
+    \mathbf{a} ^{uc} _{R _i} = (\mathbb{I} ^M _i) ^{-1}(\boldsymbol{\Phi} _i \frac{\boldsymbol{\tau} _i}{\boldsymbol{\Gamma} _i} - \mathbf{p} ^M _i)
 \end{equation}
 
-where $\mathbb{M} ^M _i$ is the rotor inertia matrix, $\mathbf{p} ^M _i$ is the bias force of the rotor defined recalling \cref{eqn:biasforce} as  $\mathbf{p} ^M _i = {} ^M \mathbf{v} _i\times ^* \mathbb{M} ^M _i {} ^M \mathbf{v} _i$, where ${} ^M \mathbf{v} = \mathbf{v} _{\lambda (i)} + {} ^M \boldsymbol{\Phi} _i \dot{\mathbf{s}} _i$ and $\boldsymbol{\Gamma} _i$ is the gear ratio.
+where $\mathbb{I} ^M _i$ is the rotor inertia matrix, $\mathbf{p} ^M _i$ is the bias force of the rotor defined recalling \cref{eqn:biasforce} as  $\mathbf{p} ^M _i = {} ^M \mathbf{v} _i\times ^* \mathbb{I} ^M _i {} ^M \mathbf{v} _i$, where ${} ^M \mathbf{v} = \mathbf{v} _{\lambda (i)} + {} ^M \boldsymbol{\Phi} _i \dot{\mathbf{s}} _i$ and $\boldsymbol{\Gamma} _i$ is the gear ratio.
 
 Beginning with the Gaussian principle of least constraint, the objective is to determine the joint accelerations $\ddot{\mathbf{s}}$ that fulfill the equation of motion as described in \cref{eqn:equation_of_motion}. This task can be framed as a constrained optimization problem:
 
@@ -221,13 +221,13 @@ where $\mathbf{c} _i$ is the Coriolis acceleration. The equation for the rotor i
 This yields the modified version of the constrained problem of \cref{eqn:aba_optim}:
 
 \begin{align}
-    \underset{\ddot{\mathbf{s}}}{\arg \min} & \qquad (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbb{I} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbb{M} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \nonumber                         \\
+    \underset{\ddot{\mathbf{s}}}{\arg \min} & \qquad (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbb{I} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbb{I} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \nonumber                         \\
     \text{where }                           & \qquad \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \mathbf{c} _i \text{ and } {} ^M \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + {} ^M  \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + {} ^M \mathbf{c} _i \nonumber \\
 \end{align}
 
 \begin{equation}
     \begin{aligned}
-         & \underset{\ddot{\mathbf{s}}}{\arg \min} &  & (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbb{I} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbb{M} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc})                                   \\
+         & \underset{\ddot{\mathbf{s}}}{\arg \min} &  & (\mathbf{a} _i - \mathbf{a} _i ^{uc}) \mathbb{I} ^A _i (\mathbf{a} _i - \mathbf{a} _i ^{uc}) + ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc}) \mathbb{I} ^M _i ({} ^M \mathbf{a} _i - {} ^M \mathbf{a} _i ^{uc})                                   \\
          & \text{where }                           &  & \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + \mathbf{c} _i \text{ and } {} ^M \mathbf{a} _i = \mathbf{a} _{\lambda (i)} + {} ^M  \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + {} ^M \mathbf{c} _i \nonumber
     \end{aligned}
 \end{equation}
@@ -236,7 +236,7 @@ whose objective function can be then expanded as:
 
 \begin{flalign}
     J = & \ \mathbf{a} ^\top _i \mathbb{I} ^A _i \mathbf{a} _i - 2\mathbf{a} ^\top _i \mathbb{I} ^A _i \mathbf{a} ^{uc} _i + (\mathbf{a} ^{uc} _i) ^\top \mathbb{I} ^A _i \mathbf{a} ^{uc} _i +                             \\
-        & + {} ^M \mathbf{a} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} _i - 2\mathbf{a} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} ^{uc} _i + ({} ^M \mathbf{a} ^{uc} _i) ^\top \mathbb{M} ^M _i {} ^M \mathbf{a} ^{uc} _i
+        & + {} ^M \mathbf{a} ^\top _i \mathbb{I} ^M _i {} ^M \mathbf{a} _i - 2\mathbf{a} ^\top _i \mathbb{I} ^M _i {} ^M \mathbf{a} ^{uc} _i + ({} ^M \mathbf{a} ^{uc} _i) ^\top \mathbb{I} ^M _i {} ^M \mathbf{a} ^{uc} _i
 \end{flalign}
 
 as any term that is not quadratic in $\ddot{\mathbf{s}}$ is zero when computing the gradient, we can extract the two relevant terms of $J$:
@@ -244,7 +244,7 @@ as any term that is not quadratic in $\ddot{\mathbf{s}}$ is zero when computing 
 \begin{equation}
     \begin{aligned}
         J _1 & = \mathbf{a} ^\top _i \mathbb{I} ^A _i \mathbf{a} _i - 2\mathbf{a} ^\top _i \mathbb{I} ^A _i \mathbf{a} ^{uc} _i                          \\
-        J _2 & = {} ^M \mathbf{a} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} _i - 2 {} ^M \mathbf{a} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} ^{uc} _i
+        J _2 & = {} ^M \mathbf{a} ^\top _i \mathbb{I} ^M _i {} ^M \mathbf{a} _i - 2 {} ^M \mathbf{a} ^\top _i \mathbb{I} ^M _i {} ^M \mathbf{a} ^{uc} _i
     \end{aligned}
 \end{equation}
 
@@ -252,20 +252,20 @@ substituting the constraints in the objective function, removing terms not depen
 
 \begin{align}
     \frac{\partial J _1}{\partial \ddot{\mathbf{s}} _i} & = 2 \boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + 2 \boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i) - 2 \boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i \mathbf{a} ^{uc} _i \nonumber                                        \\
-    \frac{\partial J _2}{\partial \ddot{\mathbf{s}} _i} & = 2 {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i {} ^M \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + 2 {} ^M  \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i (\mathbf{a} _{\lambda (i)} + {} ^M  \mathbf{c} _i) - 2 {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i {} ^M \mathbf{a} ^{uc} _i  \nonumber
+    \frac{\partial J _2}{\partial \ddot{\mathbf{s}} _i} & = 2 {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{I} ^M _i {} ^M \boldsymbol{\Phi} _i \ddot{\mathbf{s}} _i + 2 {} ^M  \boldsymbol{\Phi} ^\top _i \mathbb{I} ^M _i (\mathbf{a} _{\lambda (i)} + {} ^M  \mathbf{c} _i) - 2 {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{I} ^M _i {} ^M \mathbf{a} ^{uc} _i  \nonumber
 \end{align}
 
 Adding up the two terms and defining for compactness:
 
 \begin{equation}
-    \mathbf{D} _i = \boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i \boldsymbol{\Phi} _i + {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i {} ^M \boldsymbol{\Phi} _i
+    \mathbf{D} _i = \boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i \boldsymbol{\Phi} _i + {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{I} ^M _i {} ^M \boldsymbol{\Phi} _i
 \end{equation}
 
 we get to:
 
 \begin{equation}
     \label{eqn:aba_jointacc}
-    \ddot{\mathbf{s}} _i = \mathbf{D} _i ^{-1} (\boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i - \mathbf{a} ^{uc} _i) + {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{M} ^M _i ( \mathbf{a} _{\lambda (i)} + {} ^M \mathbf{c} _i - {} ^M \mathbf{a} ^{uc} _i))
+    \ddot{\mathbf{s}} _i = \mathbf{D} _i ^{-1} (\boldsymbol{\Phi} ^\top _i \mathbb{I} ^A _i (\mathbf{a} _{\lambda (i)} + \mathbf{c} _i - \mathbf{a} ^{uc} _i) + {} ^M \boldsymbol{\Phi} ^\top _i \mathbb{I} ^M _i ( \mathbf{a} _{\lambda (i)} + {} ^M \mathbf{c} _i - {} ^M \mathbf{a} ^{uc} _i))
 \end{equation}
 
 from which we can derive the recursive relations for the accelerations, which is independent from the rest of the kinematic chain. Considering an external force on the parent link $\lambda (i)$, it will be propagated to the child link $i$ resulting in the following balance of forces:
@@ -296,7 +296,7 @@ which can be substituted in \cref{eqn:aba_mpA} to obtain the two recursive relat
 and
 
 \begin{equation}
-    \mathbf{p} ^A _{\lambda (i)} = \mathbf{p} ^A _{\lambda (i)} + \mathbf{p} ^A_i + \mathbf{p} ^M_i  + \mathbb{I} ^A _{\lambda (i)}  \mathbf{c}_i + \mathbb{M} {} ^M _i \mathbf{c} ^M _i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i + {} ^M \mathbf{U} _i \mathbf{D} ^{-1} _i {} ^M\mathbf{u} _i
+    \mathbf{p} ^A _{\lambda (i)} = \mathbf{p} ^A _{\lambda (i)} + \mathbf{p} ^A_i + \mathbf{p} ^M_i  + \mathbb{I} ^A _{\lambda (i)}  \mathbf{c}_i + \mathbb{I} {} ^M _i \mathbf{c} ^M _i + {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i + {} ^M \mathbf{U} _i \mathbf{D} ^{-1} _i {} ^M\mathbf{u} _i
 \end{equation}
 
 The final version of the algorithm is reported in \cref{alg:rotaba}, utilizes the term  ${}^i\mathbf{X} _{\lambda (i)}$ to denote the transformation from the parent link to the child link, which was necessary in the implementation in \jaxsim as they are not necessarily coincident as in the case of \citet{featherstone_rigid_2008} hypotheses.
@@ -338,7 +338,7 @@ The final version of the algorithm is reported in \cref{alg:rotaba}, utilizes th
         \State $\color{webgreen}{{}^M\mathbf{u}_i = \boldsymbol{\Gamma}^{-T}\boldsymbol{\tau}_i - {}^M\boldsymbol{\Phi}_i\mathbf{p}_i^M}$
         \If{$\lambda_i \neq 0$}
         \State $\mathbb{I} ^A = \mathbb{I} ^A _{\lambda (i)} + {}^i\mathbf{X} _{\lambda (i)} ^\top (\mathbb{I} _i ^A + \textcolor{webgreen}{\mathbb{I} _i ^M } - {}  \mathbf{U} _i  \mathbf{D} ^{-1} _i  {}  \mathbf{U} ^\top _i \textcolor{webgreen}{- {} ^M \mathbf{U} _i  \mathbf{D} ^{-1} _i {} ^M \mathbf{U} ^\top _i}) {} ^i \mathbf{X} _{\lambda (i)} $
-        \State $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {}^i\mathbf{X} _{\lambda (i)} ^\top (\mathbf{p} ^A_i + \textcolor{webgreen}{\mathbf{p} ^M_i } + \mathbb{I} ^A _{\lambda (i)}  \mathbf{c}_i + \textcolor{webgreen}{\mathbb{M} {} ^M _i \mathbf{c} ^M _i }+ {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i + \textcolor{webgreen}{{} ^M \mathbf{U} _i \mathbf{D} ^{-1} _i {} ^M\mathbf{u} _i}) $
+        \State $\mathbf{p} ^A = \mathbf{p} ^A _{\lambda (i)} + {}^i\mathbf{X} _{\lambda (i)} ^\top (\mathbf{p} ^A_i + \textcolor{webgreen}{\mathbf{p} ^M_i } + \mathbb{I} ^A _{\lambda (i)}  \mathbf{c}_i + \textcolor{webgreen}{\mathbb{I} {} ^M _i \mathbf{c} ^M _i }+ {}  \mathbf{U} _i \mathbf{D} ^{-1} _i {} \mathbf{u} _i + \textcolor{webgreen}{{} ^M \mathbf{U} _i \mathbf{D} ^{-1} _i {} ^M\mathbf{u} _i}) $
         \EndIf
         \EndFor
 

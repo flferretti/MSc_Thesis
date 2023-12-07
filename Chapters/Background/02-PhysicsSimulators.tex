@@ -12,7 +12,7 @@ Regarding simulators that exploit hardware accelerations, NVIDIA \textsc{Isaac g
 
 \begin{figure}
     \centering
-    \caption[MuJoCo Simulator GUI]{MuJoco Simulator \ac{GUI}.}
+    \caption[MuJoCo Simulator GUI.]{MuJoco Simulator \ac{GUI}.}
     \label{fig:mujoco}
     \includegraphics[width=0.7\textwidth]{Images/mujoco_ergocub.png}
 \end{figure}
@@ -189,7 +189,7 @@ A perfectly elastic collision corresponds to $\psi = 1$ in which the outbound ve
     E _{+} - E _{-} = \mathcal{T}(q, v _{+}) - \mathcal{T}(q, v _{-}) = (\psi ^2 - 1) \mathcal{T}(q, v _{-}) \leq 0
 \end{equation}
 
-To generalize in three dimensions, we define an estimate of the normal component of the incident velocity with respect to the contact manifold as $C _k v _{-}$ where $C _k$ is the $n _c \times n$ Jacobian matrix of the $n _c$ contact surface evaluated at the discrete time $k$. Using the complementarity formulation, assuming the presence of other inequality constraints with the agglomerated Jacobian $J$, adding regularization parameters with diagonal non-negative matrices $\Sigma$ and $\Xi$, and considering the diagonal matrix for restitution coefficients $\Psi = \text{diag}(\psi _1, \psi _2, \dots, \psi _{n _c}),  \psi _i \in [0, 1]$, we get the following linear complementarity problem (LCP):
+To generalize in three dimensions, we define an estimate of the normal component of the incident velocity with respect to the contact manifold as $C _k v _{-}$ where $C _k$ is the $n _c \times n$ Jacobian matrix of the $n _c$ contact surface evaluated at the discrete time $k$. Using the complementarity formulation, assuming the presence of other inequality constraints with the agglomerated Jacobian $G$, adding regularization parameters with diagonal non-negative matrices $\Sigma$ and $\Xi$, and considering the diagonal matrix for restitution coefficients $\Psi = \text{diag}(\psi _1, \psi _2, \dots, \psi _{n _c}),  \psi _i \in [0, 1]$, we get the following linear complementarity problem (LCP):
 
 \begin{equation}
     \begin{rcases}

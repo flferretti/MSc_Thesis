@@ -13,19 +13,20 @@ For what concerns robot design, the morphological and physical properties are so
 Opportunities for improvement can be found then optimizing hardware and control together to achieve the foreseen level of performance. With this methodology, the robot's body is not just a passive component but an active part of the control system loop, and the control system is not just a set of algorithms but a key parameter in the robot morphology design. This concept is commonly referred to as \textit{codesign} \citep{allison_2014}. This comprehensive approach is pivotal because it consists of optimizing the inherent characteristics of the robot's physical design in conjunction with the hardware. This optimization enhances efficiency and effectiveness for a predetermined set of tasks, ensuring a synergistic alignment between the physical attributes and the control mechanisms.
 Previous attempts at codesign for robotics have been made using mainly gradient-free optimization methods, such as genetic algorithms in bi-level optimizations \citep{sartore_optimization_2022,fadini_simulation_2022}. The use of deep reinforcement learning instead, until now exclusively associated with control, has been bounded to environments with limited complexity, such as 2D planes \citep{ha_reinforcement_2019}, optimizing simplified hardware with a limited number of links \citep{chen_hardware_2020} or avoiding retraining the \textit{neural network}s (NN) model at each optimizer iteration \citep{bjelonic_learning-based_2023}, potentially leading to sub-optimal resulting parameters propagating throughout the whole design process. Although taking into account the whole-body dynamics of a humanoid robot can result in a more realistic and accurate model, it requires high computational power and time as seen when designing control architectures \citep{ramuzat_benchmarking_2022}, making it difficult to use in a codesign loop. Hence, it has not been widely investigated in the field of codesign for robotics. However, these computations are by nature highly parallelizable. In fact, they are composed of a large number of matrix operations, which could be solved in an efficient and fast way via parallel computing \citep{gyawali_comparative_2023, tuma_2023}. As a matter of fact, the use of specialized hardware components for computation such as \ac{GPU}s and \ac{TPU}s could be exploited, significantly speeding up complex and resource-extensive computations, usually referred to as \textit{hardware acceleration}. Moreover, when training a \ac{RL} agent, the high parallelization can help to gain noticeably more experience, as multiple copies of the same agent can be run at the same time, each one interacting with the environment and collecting data. At the same time, it speeds up the neural networks training process, since it involves a large number of matrix operations that can be parallelized \citep{pandey_transformational_2022,gyawali_comparative_2023}.
 
-In light of the limitations identified in previous codesign efforts, which often operated with simplified environments and models, this work aims to explore a novel approach, trying to overcome the challenges of codesign by exploiting the capabilities of modern hardware-accelerated architectures as a support for combining genetic algorithms and deep reinforcement learning.
+In light of the limitations identified in previous codesign efforts, which often operated with simplified environments and models, this work aims to explore a novel approach, trying to overcome the challenges of codesign by exploiting the capabilities of modern hardware-accelerated architectures as a support for combining genetic algorithms and deep reinforcement learning in a synergic approach.
 
 \section*{Contributions}
 
 The main contributions of this work can be summarized as follows:
 
 \begin{enumerate}
-    \item An in-depth analysis and enhancement of a differentiable physics simulator, with a focus on contact dynamics and forward dynamics computation.
-    \item A formulation for the forward dynamics of a rigid multibody system considering motor dynamics with the use of recursive propagation methods and the related implementation in a hardware-accelerated simulator.
+    \item An in-depth analysis and enhancement of a hardware accelerated physics simulator, with a focus on contact dynamics and forward dynamics computation.
+    \item A formulation for the forward dynamics of a rigid multibody system considering motor dynamics with the use of recursive propagation methods and the related implementation in a hardware accelerated simulator.
     \item A codesign framework for humanoid robots, that exploits the potential of deep reinforcement learning and genetic algorithms, supported by hardware acceleration.
     \item A set of experiments that demonstrate the effectiveness and the limitations of the proposed framework.
 \end{enumerate}
 
+\clearpage
 
 \section*{Outline}
 
@@ -37,8 +38,8 @@ The present work is organized as follows:
 
           \begin{description}
               \item[{\hyperref[chp:back_RBDynamics]{Chapter 1:}}] The mathematical foundations of rigid body dynamics are presented, along with the notation and conventions that are used throughout the work.
-              \item[{\hyperref[chp:back_PhysicsSimulators]{Chapter 2:}}] The current state of the art of physics simulators is presented, with a focus on the differentiable simulators. In particular, the focus will be on the one exploited and modified for the purpose of this work.
-              \item [{\hyperref[chp:back_RLGA]{Chapter 3:}}] The fundamentals of reinforcement learning and evolutionary algorithms are presented, with a focus on the algorithms and the techniques that are exploited in the codesign loop.
+              \item[{\hyperref[chp:back_PhysicsSimulators]{Chapter 2:}}] The current state of the art of physics simulators is presented, with a focus on the hardware accelerated simulators. In particular, the focus will be on the one exploited and modified for the purpose of this work.
+              \item [{\hyperref[chp:back_RLGA]{Chapter 3:}}] The fundamentals of reinforcement learning and evolutionary algorithms are presented, with a focus on the methodologies and the techniques that are used in the codesign loop.
           \end{description}
 
     \item{\hyperref[part:contributions]{Part II: Contributions}}

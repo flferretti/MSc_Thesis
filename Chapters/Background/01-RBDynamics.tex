@@ -139,8 +139,8 @@ A more compact notation can be obtained by multiplying it on the left by the inv
 in which the product ${}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B$ is an element of $\mathrm{SO}(3)$. The \cref{eqn:transformation_derivative} can be described by two three-dimensional velocity vectors representing the linear and the angular components:
 
 \begin{align}
-    {}^B\bm{v}_{A,B} & = {}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{o}}_B                              \\
-    {}^B\boldsymbol{\omega}_{A,B} & = \left({}^B\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B \right)^\vee \nonumber
+    {}^B\bm{v}_{A,B} & = {}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{o}}_B                              \\
+    {}^B\boldsymbol{\omega}_{A,B} & = \left({}^A\mathbf{R}_B^\top {}^A\dot{\mathbf{R}}_B \right)^\vee \nonumber
 \end{align}
 
 and therefore we can serialize the two components obtaining the \textit{left trivialized} $6$D velocity vector in \textit{body representation}:
@@ -177,7 +177,7 @@ Similarly, by defining the $6$D velocity vector such that the linear component i
 The acceleration between two frames $A$ and $B$ in relative motion can be expressed as the time derivative of their relative velocity:
 
 \begin{equation}
-    {}^C\dot{\mathbf{v}} = \frac{d}{dt}\left( {}^C \mathbf{v}_{A,B}\right)
+    {}^C\dot{\mathbf{v}}_{A,B} = \frac{d}{dt}\left( {}^C \mathbf{v}_{A,B}\right)
 \end{equation}
 
 By recalling the definition for the left trivialized velocity defined in \cref{eqn:left_trivialized}, we obtain:
@@ -321,11 +321,11 @@ As anticipated, the inversion of the mass matrix for a multi-body system with a 
     \caption{Kinematic subtree visualization.}
     \label{fig:kin_tree}
     \subfloat[Branched kinematic tree]{
-        \resizebox{0.45\textwidth}{!}{
+        \resizebox{0.5\textwidth}{!}{
             \input{Images/TikZ/kinematic_tree.tex}
         }}
     \subfloat[Kinematic subtree division.]{
-        \resizebox{0.45\textwidth}{!}{
+        \resizebox{0.5\textwidth}{!}{
             \input{Images/TikZ/kinematic_subtree.tex}
         }}
 \end{figure}
@@ -420,7 +420,7 @@ In \cref{alg:aba}, we will make use of some additional symbols and model propert
         \Else
         \State $\mathbf{a}' = {}^{\lambda(i)}\mathbf{X}_i \mathbf{a}_{\lambda(i)}$
         \State $\ddot{\mathbf{s}}_i = \mathbf{D}^{-1} (\mathbf{u}_i - (\mathbf{U}_i^\top)\mathbf{a}')$
-        \State $\mathbf{a}_i = \mathbf{a}' + \boldsymbol{\Phi}_i\mathbf{\ddot{q}}_i + \mathbf{c} _i$
+        \State $\mathbf{a}_i = \mathbf{a}' + \boldsymbol{\Phi}_i\mathbf{\ddot{s}}_i + \mathbf{c} _i$
         \EndIf
         \EndFor
     \end{algorithmic}
